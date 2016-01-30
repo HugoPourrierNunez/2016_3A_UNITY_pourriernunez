@@ -5,29 +5,40 @@ public class MoveScript : MonoBehaviour
 {
 
     [SerializeField]
-    Transform tr;
+    Transform characterTransform;
 
     [SerializeField]
     float speed;
+
+    [SerializeField]
+    Transform cameraTransform;
+
+    [SerializeField]
+    float vitesseRotation = 1;
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKey(KeyCode.Z))
         {
-            tr.position += Vector3.forward * speed * Time.deltaTime;
+            /*if (characterTransform.rotation.y != cameraTransform.rotation.y)
+                characterTransform.Rotate(0, cameraTransform.eulerAngles.y, 0);*/
+           //Reste encore à faire la rotation du perso en fonction de la camera
+            //characterTransform.Rotate(cameraTransform.rotation.x, 0, cameraTransform.eulerAngles.z);
+            characterTransform.position += new Vector3(cameraTransform.forward.x, 0, cameraTransform.forward.z) * speed * Time.deltaTime;
+            //characterTransform.Rotate(0, cameraTransform.rotation.y, 0);
         }
         if (Input.GetKey(KeyCode.D))
         {
-            tr.position += Vector3.right * speed * Time.deltaTime;
+            characterTransform.position += characterTransform.right * speed * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.Q))
         {
-            tr.position += Vector3.left * speed * Time.deltaTime;
+            characterTransform.position -= characterTransform.right * speed * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            tr.position += Vector3.back * speed * Time.deltaTime;
+            characterTransform.position -= characterTransform.forward * speed * Time.deltaTime;
         }
     }
 }
