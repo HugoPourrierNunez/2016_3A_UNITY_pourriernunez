@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class VisibilityGameObjectScript : MonoBehaviour {
+public class PullingGameObjectScript : MonoBehaviour {
 
     [SerializeField]
     Renderer myRenderer;
