@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 
-public class SpawnGameObjectWithCursorScript : MonoBehaviour {
+
+public class SpawnGameObjectWithCursorScript : NetworkBehaviour {
 
     [SerializeField]
     Camera myCamera;
@@ -13,14 +15,12 @@ public class SpawnGameObjectWithCursorScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if(Input.GetKeyDown(KeyCode.Mouse0))
+        if(Input.GetKeyDown(KeyCode.Mouse1))
         {
-            // Declare a new GameObject
-            GameObject newGameObject = new GameObject("MasterGO");
-            var ray = myCamera.ScreenPointToRay(Input.mousePosition);
-
-            // Instantiate the GameObject with the position of the cursor
-            newGameObject = (GameObject)Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), Input.mousePosition, Quaternion.identity);
+            var screenPos = Input.mousePosition;
+            screenPos.z = 20;
+            var worldPos = myCamera.ScreenToWorldPoint(screenPos);
+            GameObject newGameObject = (GameObject)Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), worldPos, Quaternion.identity);
         }
 	}
 }

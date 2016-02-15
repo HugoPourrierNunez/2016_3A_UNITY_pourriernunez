@@ -1,44 +1,54 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Collections;
 
-public class CollisionControllerScript : MonoBehaviour {
+public class CollisionControllerScript : NetworkBehaviour {
 
     [SerializeField]
-    AudioSource myShootSound;
+    Text myDistance;
 
     [SerializeField]
     Text myScore;
 
+    [SerializeField]
+    Transform spawnRunner;
     
     int i = 0;
-    float timeLose;
-    float timeStart;
+    private float distance;
+    private float result;
+    private static float myRes;
 
 	// Use this for initialization
 	void Start () 
     {
-        timeStart = Time.deltaTime;
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-	
+        distance = Vector3.Distance(transform.position, spawnRunner.position);
+        myDistance.text = "Distance : " + distance;
 	}
 
 
     void OnCollisionEnter(Collision col)
     {
-        if (i > 0)
+        if (col.gameObject.tag != "Sol" && col.gameObject.tag != "Wall")
         {
             print("Tu as perdu !");
-            myShootSound.Play();
-            timeLose = Time.deltaTime;
-            float result = timeLose - timeStart;
-            myScore.text = "Score : "+result;
+            result = distance;
+            transform.Translate(Vector3.back * result);
+            print("Ton score est de  : " + result);
+            myRes = result;
+            Application.LoadLevel(1);
         }
 
         i++;
+    }
+
+    void OnLevelWasLoaded()
+    {
+        myScore.text = "Ton score est de  : " + myRes;
     }
 }
