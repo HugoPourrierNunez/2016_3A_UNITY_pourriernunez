@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scene/InMenu.unity
+- path: Assets/Scene/InGameRunnerOnline.unity
   isLoaded: 1
   isActive: 1

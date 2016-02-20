@@ -57,7 +57,7 @@ public class RunnerMoveScript : NetworkBehaviour {
         }
 	}
 
-    void OnCollisionEnter(Collision col)
+    /*void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.tag != "Sol" && col.gameObject.tag != "Wall")
         {
@@ -66,5 +66,5 @@ public class RunnerMoveScript : NetworkBehaviour {
         }
 
         i++;
-    }
+    }*/
 }
