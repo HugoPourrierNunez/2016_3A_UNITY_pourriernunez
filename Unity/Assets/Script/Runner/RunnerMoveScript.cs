@@ -3,7 +3,8 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Collections;
 
-public class RunnerMoveScript : NetworkBehaviour {
+public class RunnerMoveScript : MonoBehaviour
+{
 
     [SerializeField]
     Rigidbody myRb;
@@ -30,6 +31,7 @@ public class RunnerMoveScript : NetworkBehaviour {
 
     public void SetMoveSpeedRunner()
     {
+        print("test");
         myShootSound.Play();
         moveSpeed = moveSpeedParam;
     }

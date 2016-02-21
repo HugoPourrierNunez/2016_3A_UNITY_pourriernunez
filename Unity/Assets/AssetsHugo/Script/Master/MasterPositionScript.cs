@@ -10,9 +10,16 @@ public class MasterPositionScript : MonoBehaviour {
 	void Start () {
 	
 	}
+
+
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        this.transform.position = new Vector3(runner.position.x - 15f, runner.position.y+20f, runner.position.z);
+        this.transform.position = new Vector3(runner.position.x - 7f, runner.position.y+13f, runner.position.z);
 	}
+
+    public void setRunner(Transform tr)
+    {
+        runner = tr;
+    }
 }

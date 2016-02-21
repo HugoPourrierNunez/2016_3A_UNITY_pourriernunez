@@ -4,7 +4,7 @@ using System.Collections;
 public class MasterClickScript : MonoBehaviour {
 
     [SerializeField]
-    Transform target;
+    Transform target=null;
 
     [SerializeField]
     Camera cam;
@@ -13,8 +13,9 @@ public class MasterClickScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-	    
-	}
+	    if(target==null)
+            target = GameObject.Find("Floor").transform;
+    }
 	
 	// Update is called once per frame
 	void Update () {

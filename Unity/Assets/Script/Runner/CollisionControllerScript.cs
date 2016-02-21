@@ -1,18 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class CollisionControllerScript : NetworkBehaviour {
+public class CollisionControllerScript : MonoBehaviour
+{
 
-    [SerializeField]
+    /*[SerializeField]
     Text myDistance;
 
     [SerializeField]
-    Text myScore;
-
-    [SerializeField]
-    Transform spawnRunner;
+    Text myScore;*/
 
     [SerializeField]
     RectTransform barreDeVie;
@@ -23,9 +22,12 @@ public class CollisionControllerScript : NetworkBehaviour {
     private static float myRes;
     private float vie ;
 
-	// Use this for initialization
-	void Start () 
+    private Transform spawnRunner;
+
+    // Use this for initialization
+    void Start () 
     {
+        spawnRunner = transform;
         vie = barreDeVie.sizeDelta.x;
 	}
 	
@@ -33,7 +35,7 @@ public class CollisionControllerScript : NetworkBehaviour {
 	void Update ()
     {
         distance = Vector3.Distance(transform.position, spawnRunner.position);
-        myDistance.text = "Distance : " + distance;
+        //myDistance.text = "Distance : " + distance;
 	}
 
 
@@ -50,7 +52,7 @@ public class CollisionControllerScript : NetworkBehaviour {
                 transform.Translate(Vector3.back * result);
                 print("Ton score est de  : " + result);
                 myRes = result;
-                Application.LoadLevel(1);
+                SceneManager.LoadScene("InGameRunnerOnline");
             }
         }
 
@@ -59,6 +61,6 @@ public class CollisionControllerScript : NetworkBehaviour {
 
     void OnLevelWasLoaded()
     {
-        myScore.text = "Ton score est de  : " + myRes;
+        //myScore.text = "Ton score est de  : " + myRes;
     }
 }

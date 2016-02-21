@@ -11,6 +11,8 @@ GameObject:
   - 33: {fileID: 3343930}
   - 135: {fileID: 13587602}
   - 23: {fileID: 2300628}
+  - 114: {fileID: 11440696}
+  - 114: {fileID: 11457702}
   m_Layer: 0
   m_Name: Monstre
   m_TagString: Untagged
@@ -63,6 +65,58 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 156572}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &11440696
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 156572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 37
+    i1: 255
+    i2: 102
+    i3: 149
+    i4: 187
+    i5: 202
+    i6: 36
+    i7: 180
+    i8: 234
+    i9: 237
+    i10: 96
+    i11: 64
+    i12: 70
+    i13: 71
+    i14: 157
+    i15: 5
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
+--- !u!114 &11457702
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 156572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 1
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!135 &13587602
 SphereCollider:
   m_ObjectHideFlags: 1

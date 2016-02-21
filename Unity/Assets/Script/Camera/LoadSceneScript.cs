@@ -1,16 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using System.Collections;
+
 
 public class LoadSceneScript : NetworkBehaviour {
 
     public void LoadMyGameScene()
     {
-        Application.LoadLevel(1);
+        SceneManager.LoadScene("InGameRunnerOnline");
     }
 
     public void LoadMyMenuScene()
     {
-        Application.LoadLevel(0);
+        SceneManager.LoadScene("InMenu");
     }
 }

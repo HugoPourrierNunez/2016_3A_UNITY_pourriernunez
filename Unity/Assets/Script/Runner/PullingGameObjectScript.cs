@@ -19,7 +19,7 @@ public class PullingGameObjectScript : NetworkBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	/*void Update () {
 	
         if(!IsVisibleFrom(myRenderer, myCamera))
         {
@@ -33,5 +33,5 @@ public class PullingGameObjectScript : NetworkBehaviour {
     {
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(camera);
         return GeometryUtility.TestPlanesAABB(planes, renderer.bounds);
-    }
+    }*/
 }
