@@ -10,17 +10,22 @@ public class SpawningScript : NetworkBehaviour {
     int idMaster;
 
     [SerializeField]
-    Transform spawnMaster;
+    Camera camRunner;
 
     [SerializeField]
-    Transform spawnRunner;
+    Camera camMaster;
 
     [SerializeField]
-    Camera cameraPlayer; // C'est pour tester, donc je mets seulement la caméra
+    GameObject goMaster;
+
+    [SerializeField]
+    GameObject goRunner;
 
 	// Use this for initialization
 	void Start () {
 
+        goRunner.SetActive(false);
+        goMaster.SetActive(false);
         playerCount = PlayerPrefs.GetInt("CountPlayer", playerCount); // Permet de sauvegarder des variables
         idMaster = PlayerPrefs.GetInt("IdMaster", idMaster);
 
@@ -39,24 +44,33 @@ public class SpawningScript : NetworkBehaviour {
 	
     void OnServerAddPlayer()
     {
-        int idPlayer = playerCount;
-
-        if (idPlayer == idMaster)
+        if (isLocalPlayer)
         {
-            // Si l'idPlayer correspond à l'idMaster alors on fait spawn le joueur au spawn Master
-            cameraPlayer.transform.Rotate(spawnMaster.transform.position);
-            
-            // Rester à réussir à donner la rotation de la caméra
-        }
-        else
-        {
-            // Autrement, il spawn en tant que Runner
-            cameraPlayer.transform.Rotate(spawnRunner.transform.position);
+            int idPlayer = playerCount;
 
-            // Même chose pour la rotation
-        }
+            if (idPlayer == idMaster)
+            {
+                goMaster.SetActive(true);
+                camMaster.enabled = true;
 
-        playerCount++;
-        PlayerPrefs.SetInt("CountPlayer", playerCount);
+                goRunner.SetActive(false);
+                camRunner.enabled = false;
+                
+                Debug.Log("Je suis le Master");
+            }
+            else
+            {
+                goMaster.SetActive(false);
+                camMaster.enabled = false;
+
+                goRunner.SetActive(true);
+                camRunner.enabled = true;
+
+                Debug.Log("Je suis un Runner");
+            }
+
+            playerCount++;
+            PlayerPrefs.SetInt("CountPlayer", playerCount);
+        }
     }
 }
