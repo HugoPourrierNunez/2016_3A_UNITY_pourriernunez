@@ -18,8 +18,8 @@ public class RunnerMoveScript : NetworkBehaviour
     [SerializeField]
     float jumpSpeed;
 
-    [SerializeField]
-    Canvas myMenu;
+    //[SerializeField]
+    //Canvas myMenu;
 
     private int i;
     private float moveSpeed;
@@ -28,7 +28,7 @@ public class RunnerMoveScript : NetworkBehaviour
 	void Start () {
         if (isLocalPlayer)
         {
-            moveSpeed = 0;
+            moveSpeed = 10;
         }
 	}
 

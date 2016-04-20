@@ -21,24 +21,28 @@ public class SpawningScript : NetworkBehaviour {
     [SerializeField]
     GameObject goRunner;
 
+    [SerializeField]
+    Renderer renderer;
+
 	// Use this for initialization
 	void Start () {
-
-        goRunner.SetActive(false);
-        goMaster.SetActive(false);
-        playerCount = PlayerPrefs.GetInt("CountPlayer", playerCount); // Permet de sauvegarder des variables
-        idMaster = PlayerPrefs.GetInt("IdMaster", idMaster);
-
-        if (idMaster == null)
+        if (isLocalPlayer)
         {
-            idMaster = Random.Range(1, 4);
-            Debug.Log("IdMaster = " + idMaster);
-            PlayerPrefs.SetInt("IdMaster", idMaster);
-        }
-        
-        if (playerCount == maxPlayer)
-        {
-            Debug.Log("Nombre de joueur maximum, atteint");
+            renderer.enabled = false;
+            playerCount = PlayerPrefs.GetInt("CountPlayer", playerCount); // Permet de sauvegarder des variables
+            idMaster = PlayerPrefs.GetInt("IdMaster", idMaster);
+
+            if (idMaster == null)
+            {
+                idMaster = Random.Range(1, 4);
+                Debug.Log("IdMaster = " + idMaster);
+                PlayerPrefs.SetInt("IdMaster", idMaster);
+            }
+
+            if (playerCount == maxPlayer)
+            {
+                Debug.Log("Nombre de joueur maximum, atteint");
+            }
         }
 	}
 	
@@ -55,7 +59,7 @@ public class SpawningScript : NetworkBehaviour {
 
                 goRunner.SetActive(false);
                 camRunner.enabled = false;
-                
+                renderer.enabled = false;
                 Debug.Log("Je suis le Master");
             }
             else
@@ -65,7 +69,7 @@ public class SpawningScript : NetworkBehaviour {
 
                 goRunner.SetActive(true);
                 camRunner.enabled = true;
-
+                renderer.enabled = true;
                 Debug.Log("Je suis un Runner");
             }
 

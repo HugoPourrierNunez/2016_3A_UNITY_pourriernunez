@@ -263,7 +263,7 @@ Transform:
   - {fileID: 738531320}
   - {fileID: 660256176}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 5
 --- !u!1 &660256175
 GameObject:
   m_ObjectHideFlags: 0
@@ -516,7 +516,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
 --- !u!114 &815991658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -532,7 +532,6 @@ MonoBehaviour:
   floor2: {fileID: 660256175}
   listSize: 18
   prefab: {fileID: 111580, guid: c1be0745d62d9ee44871d01932df13bf, type: 2}
-  cam: {fileID: 0}
 --- !u!1 &878251960
 GameObject:
   m_ObjectHideFlags: 0
@@ -726,7 +725,7 @@ Transform:
   - {fileID: 878251961}
   - {fileID: 99313859}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 3
 --- !u!1 &1325519168
 GameObject:
   m_ObjectHideFlags: 0
@@ -803,26 +802,7 @@ Transform:
   - {fileID: 790344324}
   - {fileID: 48659620}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
---- !u!1 &1540625232 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 162318, guid: d90851d7d0bc35647820860a4a2f381d, type: 2}
-  m_PrefabInternal: {fileID: 1126817321}
---- !u!114 &1540625233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1540625232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77976c5f3b923914ba1f7bff6184d7fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  camRunner: {fileID: 2065618, guid: 2450f4221db4ac246862592314f5c717, type: 2}
-  camMaster: {fileID: 2072730, guid: 2450f4221db4ac246862592314f5c717, type: 2}
-  goMaster: {fileID: 143306, guid: 2450f4221db4ac246862592314f5c717, type: 2}
-  goRunner: {fileID: 140832, guid: 2450f4221db4ac246862592314f5c717, type: 2}
+  m_RootOrder: 4
 --- !u!1 &2123018841
 GameObject:
   m_ObjectHideFlags: 0
@@ -883,4 +863,4 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 1

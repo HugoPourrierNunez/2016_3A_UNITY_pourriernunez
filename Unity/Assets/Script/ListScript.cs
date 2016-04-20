@@ -16,7 +16,6 @@ public class ListScript : MonoBehaviour
     [SerializeField]
     GameObject prefab;
 
-    [SerializeField]
     Camera cam=null;
 
     private List<GameObject> listOfGO;
