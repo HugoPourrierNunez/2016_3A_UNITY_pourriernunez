@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class NetManagerCustom : NetworkManager
 {
+
+  
    private bool host = false;
 
     // etc.
