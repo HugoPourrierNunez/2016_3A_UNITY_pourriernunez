@@ -373,6 +373,8 @@ GameObject:
   - 114: {fileID: 11471370}
   - 114: {fileID: 11490714}
   - 20: {fileID: 2097406}
+  - 114: {fileID: 11410182}
+  - 114: {fileID: 11415022}
   m_Layer: 10
   m_Name: Runner
   m_TagString: Untagged
@@ -1002,6 +1004,8 @@ GameObject:
   - 114: {fileID: 11422386}
   - 114: {fileID: 11497486}
   - 20: {fileID: 2022514}
+  - 114: {fileID: 11407944}
+  - 114: {fileID: 11414714}
   m_Layer: 0
   m_Name: Master
   m_TagString: Untagged
@@ -1426,6 +1430,7 @@ GameObject:
   - 114: {fileID: 11478676}
   - 114: {fileID: 11490332}
   - 114: {fileID: 11452758}
+  - 114: {fileID: 11414486}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1858,7 +1863,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 121928}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
@@ -2416,6 +2421,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   script: {fileID: 11497486}
   obj: {fileID: 183044, guid: cab2da054a0e7eb46b74fe28638869e5, type: 2}
+--- !u!114 &11407944
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 164874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 74
+    i1: 204
+    i2: 254
+    i3: 122
+    i4: 5
+    i5: 25
+    i6: 7
+    i7: 4
+    i8: 122
+    i9: 151
+    i10: 173
+    i11: 151
+    i12: 10
+    i13: 152
+    i14: 38
+    i15: 93
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &11408200
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2470,6 +2507,38 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11410182
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 121928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 74
+    i1: 204
+    i2: 254
+    i3: 122
+    i4: 5
+    i5: 25
+    i6: 7
+    i7: 4
+    i8: 122
+    i9: 151
+    i10: 173
+    i11: 151
+    i12: 10
+    i13: 152
+    i14: 38
+    i15: 93
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &11410656
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2642,6 +2711,66 @@ MonoBehaviour:
   m_Text: 'Vie
 
 '
+--- !u!114 &11414486
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 183562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 1
+  m_SendInterval: 0.071428575
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
+--- !u!114 &11414714
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 164874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 1
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
+--- !u!114 &11415022
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 121928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &11416164
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7404,7 +7533,15 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_SendInterval
+      value: 0.071428575
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 183562}
