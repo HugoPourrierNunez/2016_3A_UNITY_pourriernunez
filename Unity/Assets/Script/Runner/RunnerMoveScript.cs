@@ -21,6 +21,9 @@ public class RunnerMoveScript : NetworkBehaviour
     //[SerializeField]
     //Canvas myMenu;
 
+    [SerializeField]
+    GameObject goRunner;
+
     private int i;
     private float moveSpeed;
 
@@ -28,7 +31,14 @@ public class RunnerMoveScript : NetworkBehaviour
 	void Start () {
         if (isLocalPlayer)
         {
-            moveSpeed = 10;
+            if (goRunner.active == true)
+            {
+                moveSpeed = 10;
+            }
+            else
+            {
+                moveSpeed = 0;
+            }
         }
 	}
 

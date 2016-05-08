@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 using System.Collections;
 
-public class ChangeCanvasScript : MonoBehaviour {
+public class ChangeCanvasScript : NetworkBehaviour {
 
     [SerializeField]
     Canvas mainCanvas;
@@ -12,6 +13,9 @@ public class ChangeCanvasScript : MonoBehaviour {
 
     [SerializeField]
     Canvas tutoCanvas;
+
+    [SerializeField]
+    NetworkManager netManager;
 
 	// Use this for initialization
 	void Start () {
@@ -31,6 +35,23 @@ public class ChangeCanvasScript : MonoBehaviour {
     {
         mainCanvas.enabled = false;
         tutoCanvas.enabled = true;
+    }
+
+    public void OnBtnPlayClic()
+    {
+        tutoCanvas.enabled = false;
+        creditsCanvas.enabled = false;
+        mainCanvas.enabled = false ;
+
+        // Modifier condition ou autre
+        if (!netManager.isNetworkActive)
+        {
+            netManager.StartHost();
+        }
+        else
+        {            
+            netManager.StartClient();
+        }
     }
 
     public void OnBtnPreviousClic()
