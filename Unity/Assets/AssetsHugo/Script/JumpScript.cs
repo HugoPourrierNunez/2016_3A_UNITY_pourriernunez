@@ -38,4 +38,10 @@ public class JumpScript : MonoBehaviour {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
         }
     }
+
+    void Start()
+    {
+        ListScript ls = GameObject.Find("Obstacle").GetComponent<ListScript>();
+        ls.setCamera(this.GetComponent<Camera>());
+    }
 }

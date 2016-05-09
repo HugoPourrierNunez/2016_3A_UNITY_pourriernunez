@@ -44,11 +44,12 @@ public class ListScript : MonoBehaviour
                 if (cam.transform.position.z < listOfGO[i].transform.position.z)
                     listOfGO[i].transform.position = new Vector3(listOfGO[i].transform.position.x, listOfGO[i].transform.position.y, listOfGO[i].transform.position.z - 42);
             }
+            if (cam.transform.position.z < floor1.transform.position.z)
+                floor2.transform.position = new Vector3(floor2.transform.position.x, floor2.transform.position.y, floor1.transform.position.z - 100);
+            if (cam.transform.position.z < floor2.transform.position.z)
+                floor1.transform.position = new Vector3(floor1.transform.position.x, floor1.transform.position.y, floor2.transform.position.z - 100);
         }
-        if (cam.transform.position.z < floor1.transform.position.z)
-            floor2.transform.position = new Vector3(floor2.transform.position.x, floor2.transform.position.y, floor1.transform.position.z - 100);
-        if (cam.transform.position.z < floor2.transform.position.z)
-            floor1.transform.position = new Vector3(floor1.transform.position.x, floor1.transform.position.y, floor2.transform.position.z - 100);
+        
     }
 
     public void setCamera(Camera c)
