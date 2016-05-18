@@ -28,6 +28,7 @@ public class LevelGenerationWindow : EditorWindow
     GameObject floor;
     GameObject wallRight;
     GameObject wallLeft;
+    GameObject endLevel;
     int numberObjectUndestroyable;
     int numberObjectDestroyable;
     int numberOfWay = 2;
@@ -55,6 +56,11 @@ public class LevelGenerationWindow : EditorWindow
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Wall left");
         wallLeft = (GameObject)EditorGUILayout.ObjectField(wallLeft, typeof(GameObject), true);
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("End level");
+        endLevel = (GameObject)EditorGUILayout.ObjectField(endLevel, typeof(GameObject), true);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
@@ -103,10 +109,13 @@ public class LevelGenerationWindow : EditorWindow
             floor.transform.localPosition = new Vector3(0, 0, levelLength / 2f);
 
             wallLeft.transform.localScale = new Vector3(0, 5, levelLength);
-            wallLeft.transform.localPosition = new Vector3(-levelWidth/2f, 0, levelLength / 2f);
+            wallLeft.transform.localPosition = new Vector3(-levelWidth/2f, 2.5f, levelLength / 2f);
 
             wallRight.transform.localScale = new Vector3(0, 5, levelLength);
-            wallRight.transform.localPosition = new Vector3(levelWidth / 2f, 0, levelLength / 2f);
+            wallRight.transform.localPosition = new Vector3(levelWidth / 2f, 2.5f, levelLength / 2f);
+
+            endLevel.transform.localScale = new Vector3(levelWidth, 5, 0);
+            endLevel.transform.localPosition = new Vector3(0, 2.5f, levelLength);
 
             // 0=gauche, 1=droite, 2=devant
 

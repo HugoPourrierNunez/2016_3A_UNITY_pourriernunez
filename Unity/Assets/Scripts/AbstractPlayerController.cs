@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.Networking;
 
-public class AbstractPlayerController : NetworkBehaviour
+public abstract class AbstractPlayerController : NetworkBehaviour
 {
 
     [SerializeField]
@@ -16,4 +16,6 @@ public class AbstractPlayerController : NetworkBehaviour
         localPlayerScript.localPlayer=this;
         controlActivated = false;
     }
+
+    public abstract void RestartPlayer();
 }

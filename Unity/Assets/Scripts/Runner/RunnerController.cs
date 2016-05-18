@@ -26,9 +26,20 @@ public class RunnerController : AbstractPlayerController
     Transform pointeur;
 
     [SerializeField]
+    Material pointeurMaterial;
+
+    [SerializeField]
+    Color pointeurColor1 = Color.black;
+
+    [SerializeField]
+    Color pointeurColor2 = Color.red;
+
+    [SerializeField]
     CapsuleCollider runnerVisualCollider;
 
     private GameObject pointedGO=null;
+
+    private Vector3 startPosition;
 
     // Use this for initialization
     public override void OnStartLocalPlayer () {
@@ -38,7 +49,13 @@ public class RunnerController : AbstractPlayerController
             Camera.main.gameObject.SetActive(false);
         }
         runnerCamera.gameObject.SetActive(true);
+        startPosition = runner.position;
 	}
+
+    public override void RestartPlayer()
+    {
+        runner.position = startPosition;
+    }
 
     void Update()
     {
@@ -71,9 +88,20 @@ public class RunnerController : AbstractPlayerController
                 RaycastHit rayInfo;
                 if(Physics.Linecast(p1, p2,out rayInfo))
                 {
-                    if(rayInfo.collider.gameObject!=runnerVisualCollider.gameObject)
+                    if(rayInfo.collider.gameObject!=runnerVisualCollider.gameObject && rayInfo.collider.gameObject.layer != LayerMask.NameToLayer("Unfocusable"))
                     {
                         pointeur.gameObject.SetActive(true);
+                        
+                        if (rayInfo.collider.gameObject.layer != LayerMask.NameToLayer("ObstacleDestroyable"))
+                        {
+                            pointeurMaterial.color = pointeurColor1;
+                            pointeurMaterial.SetColor("_EmissionColor", pointeurColor1);
+                        }
+                        else
+                        {
+                            pointeurMaterial.color = pointeurColor2;
+                            pointeurMaterial.SetColor("_EmissionColor", pointeurColor2);
+                        }
                         pointeur.position = rayInfo.point;
                         pointedGO = rayInfo.collider.gameObject;
                     }
@@ -97,7 +125,7 @@ public class RunnerController : AbstractPlayerController
                     pointedGO = null;
                 }
             }
-            CmdAutoForward(Vector3.forward * Time.deltaTime * vitesseGlobale);
+            CmdMove(Vector3.forward * vitesseGlobale * Time.deltaTime);
         }
     }
 

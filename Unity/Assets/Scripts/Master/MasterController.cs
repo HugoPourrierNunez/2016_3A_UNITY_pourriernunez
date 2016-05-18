@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
+using System;
 
 public class MasterController : AbstractPlayerController
 {
@@ -36,6 +37,11 @@ public class MasterController : AbstractPlayerController
         {
             CmdBackward();
         }*/
+    }
+
+    public override void RestartPlayer()
+    {
+       //
     }
 
     [Command]
