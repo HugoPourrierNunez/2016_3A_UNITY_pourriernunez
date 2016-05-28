@@ -29,6 +29,12 @@ public class MenuManagerScript : NetworkBehaviour {
     [SerializeField]
     LocalPlayerScript localPlayerScript;
 
+    [SerializeField]
+    MasterUIManagerScript masterUI;
+
+    [SerializeField]
+    RunnerUIManagerScript runner1UI;
+
     public void ExitPress()
     {
         quitMenu.gameObject.SetActive(true);
@@ -51,6 +57,8 @@ public class MenuManagerScript : NetworkBehaviour {
     {
         startMenu.gameObject.SetActive(false);
         localPlayerScript.localPlayer.controlActivated = true;
+        masterUI.gameObject.SetActive(true);
+        runner1UI.gameObject.SetActive(true);
     }
 
     public void StartMenuShow()
@@ -70,5 +78,7 @@ public class MenuManagerScript : NetworkBehaviour {
     {
         localPlayerScript.localPlayer.controlActivated = false;
         endMenu.gameObject.SetActive(true);
+        masterUI.gameObject.SetActive(false);
+        runner1UI.gameObject.SetActive(false);
     }
 }

@@ -1,0 +1,35 @@
+﻿using UnityEngine;
+using System.Collections;
+using UnityEngine.UI;
+
+public class HBarScript : MonoBehaviour {
+
+    [SerializeField]
+    Image image;
+
+    [SerializeField]
+    Transform myTransform;
+
+    private Color redColor = Color.red;
+    private Color greenColor = Color.green;
+    private bool changed = false;
+    private float changeColor = .2f;
+    private Vector3 scale=new Vector3(1,1,1);
+
+    public void changePercentage(float percent)
+    {
+        scale.x = percent;
+        myTransform.localScale = scale;
+        if (!changed && percent <= changeColor)
+        {
+            image.color = redColor;
+            changed = true;
+        }
+        else if (changed && percent > changeColor)
+        {
+            image.color = greenColor;
+            changed = false;
+        }
+            
+    }
+}
