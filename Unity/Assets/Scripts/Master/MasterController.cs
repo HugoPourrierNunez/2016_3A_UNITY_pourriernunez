@@ -9,10 +9,35 @@ public class MasterController : AbstractPlayerController
     Transform runnerView;
 
     [SerializeField]
+    Transform floor;
+
+    [SerializeField]
     Camera masterCamera;
 
     [SerializeField]
     Transform master;
+
+    [SerializeField]
+    float maxZoom=100;
+
+    [SerializeField]
+    float minZoom=-100;
+
+    [SerializeField]
+    float zoomSpeed = 1;
+
+    private Vector3 positionCamera=new Vector3();
+    private Vector3 translationCamera = new Vector3(0, 0, 0);
+    private float effectiveZoom = 0;
+    private float alignementGauche;
+    private SpawnableObjectScript objectSelected = null;
+
+    public void setObjectSelected(SpawnableObjectScript obj)
+    {
+        if (objectSelected != null)
+            objectSelected.gameObject.SetActive(false);
+        objectSelected = obj;
+    }
 
     // Use this for initialization
     public override void OnStartLocalPlayer()
@@ -23,20 +48,68 @@ public class MasterController : AbstractPlayerController
             Camera.main.gameObject.SetActive(false);
         }
         masterCamera.gameObject.SetActive(true);
+
+        alignementGauche = getAlignGauche();
+    }
+
+    private float getAlignGauche()
+    {
+        return (Mathf.Tan(masterCamera.fieldOfView) * Vector3.Distance(runnerView.transform.position, masterCamera.transform.position));
     }
 
     // Update is called once per frame
     void Update()
     {
-        masterCamera.transform.position= new Vector3(masterCamera.transform.position.x, masterCamera.transform.position.y, runnerView.position.z);
-        /*if (Input.GetKeyDown(KeyCode.Z) && isLocalPlayer)
+        if (isLocalPlayer)
         {
-            CmdForward();
+            if (Input.GetAxis("Mouse ScrollWheel") < 0 && effectiveZoom > minZoom) // back
+            {
+                translationCamera.z = -zoomSpeed;
+                effectiveZoom -= zoomSpeed;
+                alignementGauche = getAlignGauche();
+            }
+            else if (Input.GetAxis("Mouse ScrollWheel") > 0 && effectiveZoom < maxZoom) // forward
+            {
+                translationCamera.z = zoomSpeed;
+                effectiveZoom += zoomSpeed;
+                alignementGauche = getAlignGauche();
+            }
+            else
+            {
+                translationCamera.z = 0;
+            }
+            translationCamera.x = (runnerView.transform.position.z - masterCamera.transform.position.z) + alignementGauche;
+            masterCamera.transform.Translate(translationCamera * zoomSpeed, Space.Self);
+
+            if (objectSelected != null)
+            {
+                Vector3 p1 = masterCamera.transform.position;
+                Vector3 p2 = masterCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, masterCamera.farClipPlane));
+                RaycastHit rayInfo;
+                if (Physics.Linecast(p1, p2, out rayInfo))
+                {
+                    if (rayInfo.collider.gameObject == floor.gameObject)
+                    {
+                        p1.x = Mathf.Round(rayInfo.point.x);
+                        p1.y = Mathf.Round(rayInfo.point.y);
+                        p1.z = Mathf.Round(rayInfo.point.z-.5f) + .5f;
+                        objectSelected.UpdatePosition(p1, Vector3.Distance(p1, runnerView.position));
+                    }
+                    else objectSelected.Hide();
+                }
+                else objectSelected.Hide();
+                if(objectSelected.CanBePosed() && Input.GetMouseButtonUp(0))
+                {
+                    objectSelected.PoseObject();
+                    objectSelected = null;
+                }
+                if (Input.GetMouseButtonUp(1))
+                {
+                    objectSelected.gameObject.SetActive(false);
+                    objectSelected = null;
+                }
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.S) && isLocalPlayer)
-        {
-            CmdBackward();
-        }*/
     }
 
     public override void RestartPlayer()
@@ -44,35 +117,8 @@ public class MasterController : AbstractPlayerController
        //
     }
 
-    [Command]
-    public void CmdForward()
+    public Transform getRunnerView()
     {
-        RpcForward();
-        if (!Network.isClient)
-        {
-            master.transform.Translate(Vector3.forward);
-        }
-    }
-
-    [ClientRpc]
-    public void RpcForward()
-    {
-        master.transform.Translate(Vector3.forward);
-    }
-
-    [Command]
-    public void CmdBackward()
-    {
-        RpcBackward();
-        if (!Network.isClient)
-        {
-            master.transform.Translate(-Vector3.forward);
-        }
-    }
-
-    [ClientRpc]
-    public void RpcBackward()
-    {
-        master.transform.Translate(-Vector3.forward);
+        return runnerView;
     }
 }

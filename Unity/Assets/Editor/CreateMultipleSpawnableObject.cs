@@ -2,18 +2,18 @@
 using System.Collections;
 using UnityEditor;
 
-public class CreateGameObjectWindow : EditorWindow
+public class CreateMultipleSpawnableObject : EditorWindow
 {
 
-    private static CreateGameObjectWindow instance;
+    private static CreateMultipleSpawnableObject instance;
 
-    public static CreateGameObjectWindow Instance
+    public static CreateMultipleSpawnableObject Instance
     {
         get
         {
             if (null == instance)
             {
-                instance = new CreateGameObjectWindow();
+                instance = new CreateMultipleSpawnableObject();
             }
             return instance;
         }
@@ -21,13 +21,13 @@ public class CreateGameObjectWindow : EditorWindow
 
     int number;
     bool activated;
-    ObjectContainerScript parent;
-    GameObject gameobject;
+    SpawnableObjectContainerScript parent;
+    SpawnableObjectScript gameobject;
 
-    [MenuItem("MasterRunTools/MultipleGoCreator")]
-    public static void MyMultipleGoCreator()
+    [MenuItem("MasterRunTools/MultipleSpawnableGoCreator")]
+    public static void MyMultipleSpawnableGoCreator()
     {
-        CreateGameObjectWindow.Instance.Show();
+        CreateMultipleSpawnableObject.Instance.Show();
     }
 
     public void OnGUI()
@@ -46,12 +46,12 @@ public class CreateGameObjectWindow : EditorWindow
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Parent");
-        parent = (ObjectContainerScript)EditorGUILayout.ObjectField(parent, typeof(ObjectContainerScript), true);
+        parent = (SpawnableObjectContainerScript)EditorGUILayout.ObjectField(parent, typeof(SpawnableObjectContainerScript), true);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("GameObject");
-        gameobject = (GameObject)EditorGUILayout.ObjectField(gameobject, typeof(GameObject), false);
+        gameobject = (SpawnableObjectScript)EditorGUILayout.ObjectField(gameobject, typeof(SpawnableObjectScript), false);
         EditorGUILayout.EndHorizontal();
 
         if (GUILayout.Button("Generate multiple object"))
@@ -59,9 +59,9 @@ public class CreateGameObjectWindow : EditorWindow
             parent.initializeChildrenList();
             for (int i = 0; i < number; i++)
             {
-                var go = (GameObject)PrefabUtility.InstantiatePrefab(gameobject);
+                var go = (SpawnableObjectScript)PrefabUtility.InstantiatePrefab(gameobject);
                 go.transform.position = new Vector3(0, 0, i);
-                go.SetActive(activated);
+                go.gameObject.SetActive(activated);
                 parent.AddChildren(go);
                 Undo.RegisterCreatedObjectUndo(go, "MultipleGO");
 

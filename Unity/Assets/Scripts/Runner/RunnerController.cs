@@ -37,6 +37,9 @@ public class RunnerController : AbstractPlayerController
     [SerializeField]
     CapsuleCollider runnerVisualCollider;
 
+    [SerializeField]
+    LevelScript runnerLevel;
+
     private GameObject pointedGO=null;
 
     private Vector3 startPosition;
@@ -50,6 +53,7 @@ public class RunnerController : AbstractPlayerController
         }
         runnerCamera.gameObject.SetActive(true);
         startPosition = runner.position;
+        runnerLevel.activate();
 	}
 
     public override void RestartPlayer()

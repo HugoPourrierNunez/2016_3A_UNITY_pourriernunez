@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class ButtonMasterActionScript : MonoBehaviour {
 
     [SerializeField]
-    GameObject go;
+    SpawnableObjectContainerScript go;
 
     [SerializeField]
     Image image;
@@ -13,10 +13,13 @@ public class ButtonMasterActionScript : MonoBehaviour {
     [SerializeField]
     Button btn;
 
+    [SerializeField]
+    MasterController masterController;
+
     // Use this for initialization
     void Start () {
 
-        bool visible = (go != null);
+        bool visible = !(go == null || go.isEmpty());
         if(btn!=null)
             btn.enabled = visible;
         if(image!=null)
@@ -27,4 +30,10 @@ public class ButtonMasterActionScript : MonoBehaviour {
 	void Update () {
 	    
 	}
+
+    public void selectObject()
+    {
+        print("selectObject");
+        masterController.setObjectSelected(go.getFirstDisableGO());
+    }
 }

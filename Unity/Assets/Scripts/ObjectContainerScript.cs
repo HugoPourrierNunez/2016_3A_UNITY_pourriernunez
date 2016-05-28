@@ -8,10 +8,6 @@ public class ObjectContainerScript : MonoBehaviour {
     [SerializeField]
     List<GameObject> children;
 
-    void Start()
-    {
-
-    }
 
     public List<GameObject>  GetChildren()
     {
@@ -29,4 +25,12 @@ public class ObjectContainerScript : MonoBehaviour {
         children.Add(go);
     }
 
+
+    public GameObject getFirstDisableGO()
+    {
+        for (int i = 0; i < children.Count; i++)
+            if (children[i].active)
+                return children[i];
+        return null;
+    }
 }
