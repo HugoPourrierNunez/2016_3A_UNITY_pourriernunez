@@ -4,13 +4,19 @@ using UnityEngine.UI;
 
 public class RunnerUIManagerScript : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    [SerializeField]
+    HBarScript pvBar;
+
+    [SerializeField]
+    VBarScript avancementBar;
+
+    public HBarScript getPvBar()
+    {
+        return pvBar;
+    }
+
+    public VBarScript getavancementBar()
+    {
+        return avancementBar;
+    }
 }

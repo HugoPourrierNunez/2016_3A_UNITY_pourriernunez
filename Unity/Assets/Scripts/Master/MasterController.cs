@@ -26,6 +26,9 @@ public class MasterController : AbstractPlayerController
     [SerializeField]
     float zoomSpeed = 1;
 
+    [SerializeField]
+    MasterUIManagerScript masterUI;
+
     private Vector3 positionCamera=new Vector3();
     private Vector3 translationCamera = new Vector3(0, 0, 0);
     private float effectiveZoom = 0;
@@ -48,8 +51,14 @@ public class MasterController : AbstractPlayerController
             Camera.main.gameObject.SetActive(false);
         }
         masterCamera.gameObject.SetActive(true);
-
         alignementGauche = getAlignGauche();
+    }
+
+    public void changePV(float percent)
+    {
+        //faire un test pour savoir si c'est le runner sur lequel on a le focus ou non
+        //ou identifier si c'est le runner 1, 2 ou 3
+        masterUI.getRunnerPvBar().changePercentage(percent);
     }
 
     private float getAlignGauche()
@@ -100,7 +109,7 @@ public class MasterController : AbstractPlayerController
                 else objectSelected.Hide();
                 if(objectSelected.CanBePosed() && Input.GetMouseButtonUp(0))
                 {
-                    objectSelected.PoseObject();
+                    objectSelected.PoseObject(objectSelected.transform.position);
                     objectSelected = null;
                 }
                 if (Input.GetMouseButtonUp(1))
@@ -112,6 +121,7 @@ public class MasterController : AbstractPlayerController
         }
     }
 
+
     public override void RestartPlayer()
     {
        //
@@ -121,4 +131,5 @@ public class MasterController : AbstractPlayerController
     {
         return runnerView;
     }
+
 }

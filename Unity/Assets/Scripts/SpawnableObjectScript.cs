@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
-public class SpawnableObjectScript : MonoBehaviour {
+public class SpawnableObjectScript : NetworkBehaviour {
 
     [SerializeField]
     Collider myCollider;
@@ -57,9 +58,35 @@ public class SpawnableObjectScript : MonoBehaviour {
         }
     }
 
-    public void PoseObject()
+    public void PoseObject(Vector3 pos)
     {
+        myCollider.gameObject.transform.position = pos;
+        myCollider.gameObject.SetActive(true);
         objectRenderer.material = normal;
         myCollider.enabled = true;
+    }
+
+    [Command]
+    public void CmdPoseObject(Vector3 pos)
+    {
+        RpcPoseObject(pos);
+        if (!Network.isClient)
+        {
+            myCollider.gameObject.transform.position = pos;
+            myCollider.gameObject.SetActive(true);
+            objectRenderer.material = normal;
+            myCollider.enabled = true;
+        }
+        print("pose");
+    }
+
+    [ClientRpc]
+    public void RpcPoseObject(Vector3 pos)
+    {
+        myCollider.gameObject.transform.position = pos;
+        myCollider.gameObject.SetActive(true);
+        objectRenderer.material = normal;
+        myCollider.enabled = true;
+        print("pose");
     }
 }

@@ -8,7 +8,7 @@ public class RunnerController : AbstractPlayerController
     Camera runnerCamera;
 
     [SerializeField]
-    Transform runner;
+    RunnerCollisionScript runnerView;
 
     [SerializeField]
     float jumpForce = 5f;
@@ -40,9 +40,51 @@ public class RunnerController : AbstractPlayerController
     [SerializeField]
     LevelScript runnerLevel;
 
-    private GameObject pointedGO=null;
+    [SerializeField]
+    int maxPV=30;
 
+    [SerializeField]
+    RunnerUIManagerScript runnerUI;
+
+    [SerializeField]
+    MasterController masterController;
+
+    [SerializeField]
+    LevelScript level;
+
+    [SerializeField]
+    MenuManagerScript mmScript;
+
+    private GameObject pointedGO=null;
     private Vector3 startPosition;
+    private int PV;
+
+    public void Runnercollision(Collision col)
+    {
+        if (col.gameObject.layer != LayerMask.NameToLayer("Unfocusable") && col.gameObject!=level.getFloor().gameObject)
+        {
+            removePV(5);
+        }
+    }
+
+    public void removePV(int nb)
+    {
+        float percent;
+        PV -= nb;
+        if (PV <= 0)
+        {
+            PV = 0;
+            percent = 0;
+            mmScript.EndLevelShow();
+        }
+        else
+        {
+            percent = PV / (float)maxPV;
+        }
+
+        runnerUI.getPvBar().changePercentage(percent);
+        CmdDisplayMasterPV(percent);
+    }
 
     // Use this for initialization
     public override void OnStartLocalPlayer () {
@@ -52,13 +94,16 @@ public class RunnerController : AbstractPlayerController
             Camera.main.gameObject.SetActive(false);
         }
         runnerCamera.gameObject.SetActive(true);
-        startPosition = runner.position;
+        startPosition = runnerView.transform.position;
+        runnerView.setRunnerController(this);
+        RestartPlayer();
         runnerLevel.activate();
 	}
 
     public override void RestartPlayer()
     {
-        runner.position = startPosition;
+        PV = maxPV;
+        runnerView.transform.position = startPosition;
     }
 
     void Update()
@@ -130,7 +175,13 @@ public class RunnerController : AbstractPlayerController
                 }
             }
             CmdMove(Vector3.forward * vitesseGlobale * Time.deltaTime);
+            UpdateAvancement();
         }
+    }
+
+    private void UpdateAvancement()
+    {
+        runnerUI.getavancementBar().changePercentage(runnerView.transform.position.z/(runnerLevel.getFloor().localScale.z*10));
     }
 
     [Command]
@@ -139,14 +190,14 @@ public class RunnerController : AbstractPlayerController
         RpcMove(translateVector);
         if (!Network.isClient)
         {
-            runner.transform.Translate(translateVector, Space.World);
+            runnerView.transform.Translate(translateVector, Space.World);
         }
     }
 
     [ClientRpc]
     public void RpcMove(Vector3 translateVector)
     {
-        runner.transform.Translate(translateVector, Space.World);
+        runnerView.transform.Translate(translateVector, Space.World);
     }
 
     [Command]
@@ -171,14 +222,14 @@ public class RunnerController : AbstractPlayerController
         RpcAutoForward(velocityVector);
         if (!Network.isClient)
         {
-            runner.Translate(velocityVector, Space.World);
+            runnerView.transform.Translate(velocityVector, Space.World);
         }
     }
 
     [ClientRpc]
     public void RpcAutoForward(Vector3 velocityVector)
     {
-        runner.Translate(velocityVector, Space.World);
+        runnerView.transform.Translate(velocityVector, Space.World);
     }
 
     [Command]
@@ -195,5 +246,22 @@ public class RunnerController : AbstractPlayerController
     public void RpcUnactiveGameObject(GameObject go)
     {
         go.SetActive(false);
+    }
+
+    [Command]
+    public void CmdDisplayMasterPV(float percent)
+    {
+        RpcDisplayMasterPV(percent);
+        if (!Network.isClient)
+        {
+            masterController.changePV(percent);
+        }
+        
+    }
+
+    [ClientRpc]
+    public void RpcDisplayMasterPV(float percent)
+    {
+        masterController.changePV(percent);
     }
 }

@@ -9,9 +9,17 @@ public class LevelScript : MonoBehaviour {
     [SerializeField]
     Transform wallRight;
 
+    [SerializeField]
+    Transform floor;
+
     public void activate()
     {
         wallLeft.gameObject.SetActive(true);
         wallRight.gameObject.SetActive(true);
+    }
+
+    public Transform getFloor()
+    {
+        return floor;
     }
 }

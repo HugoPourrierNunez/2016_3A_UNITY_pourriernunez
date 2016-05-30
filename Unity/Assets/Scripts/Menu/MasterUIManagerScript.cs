@@ -22,6 +22,14 @@ public class MasterUIManagerScript : MonoBehaviour {
     [SerializeField]
     Transform panelBasSort;
 
+    [SerializeField]
+    HBarScript runnerPvBar;
+
+    public HBarScript getRunnerPvBar()
+    {
+        return runnerPvBar;
+    }
+
 
     public void hidePanelBasMonstre()
     {
