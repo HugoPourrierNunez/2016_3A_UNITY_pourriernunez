@@ -35,13 +35,19 @@ public class MasterController : AbstractPlayerController
     [SerializeField]
     AllContainerScript allContainerScript;
 
+    [SerializeField]
+    int manaOnStart = 100;
+
+    [SerializeField]
+    int incomeMana = 1;
+
     private Vector3 positionCamera=new Vector3();
     private Vector3 translationCamera = new Vector3(0, 0, 0);
     private float effectiveZoom = 0;
     private float alignementGauche;
 
     private SpawnableObjectScript objectSelected = null;
-
+    private int mana;
 
 
     // Use this for initialization
@@ -54,6 +60,15 @@ public class MasterController : AbstractPlayerController
         }
         masterCamera.gameObject.SetActive(true);
         alignementGauche = getAlignGauche();
+        mana = manaOnStart;
+        InvokeRepeating("IncomeMana", 0, 1);
+    }
+
+    private void IncomeMana()
+    {
+        mana += incomeMana;
+        if (mana > manaOnStart) mana = manaOnStart;
+        masterUI.getMasterManaBar().changePercentage(mana / (float)manaOnStart);
     }
 
     public void changePV(float percent)
@@ -112,6 +127,7 @@ public class MasterController : AbstractPlayerController
                 else objectSelected.Hide();
                 if(objectSelected.CanBePosed() && Input.GetMouseButtonUp(0))
                 {
+                    removeMana(objectSelected.getCout());
                     CmdPoseObject(objectSelected.transform.position);
                 }
                 if (Input.GetMouseButtonUp(1))
@@ -121,6 +137,17 @@ public class MasterController : AbstractPlayerController
                 }
             }
         }
+    }
+
+    public void removeMana(int nb)
+    {
+        mana -= nb;
+        masterUI.getMasterManaBar().changePercentage(mana / (float)manaOnStart);
+    }
+
+    public int getMana()
+    {
+        return mana;
     }
 
     [Command]

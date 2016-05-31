@@ -25,6 +25,14 @@ public class MasterUIManagerScript : MonoBehaviour {
     [SerializeField]
     HBarScript runnerPvBar;
 
+    [SerializeField]
+    HBarScript masterManaBar;
+
+    public HBarScript getMasterManaBar()
+    {
+        return masterManaBar;
+    }
+
     public HBarScript getRunnerPvBar()
     {
         return runnerPvBar;

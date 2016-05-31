@@ -5060,6 +5060,7 @@ MonoBehaviour:
   panelBasObject: {fileID: 1674884978}
   panelBasSort: {fileID: 241867392}
   runnerPvBar: {fileID: 290295735}
+  masterManaBar: {fileID: 1233199691}
 --- !u!114 &457676592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14285,6 +14286,8 @@ MonoBehaviour:
   masterUI: {fileID: 457676591}
   localPlayerScript: {fileID: 118913165}
   allContainerScript: {fileID: 169153200}
+  manaOnStart: 100
+  incomeMana: 1
 --- !u!114 &1267671391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14997,8 +15000,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gamerInstance:
-  - {fileID: 2085353250}
   - {fileID: 1267671390}
+  - {fileID: 2085353250}
 --- !u!114 &1297039075
 MonoBehaviour:
   m_ObjectHideFlags: 0

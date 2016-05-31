@@ -135,6 +135,7 @@ MonoBehaviour:
   objectRenderer: {fileID: 2391768}
   minimumDistanceWithRunner: 3
   id: {fileID: 11430260}
+  cout: 25
 --- !u!135 &13532884
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -194,6 +195,10 @@ Prefab:
       propertyPath: id
       value: 
       objectReference: {fileID: 11430260}
+    - target: {fileID: 0}
+      propertyPath: cout
+      value: 25
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 196540}

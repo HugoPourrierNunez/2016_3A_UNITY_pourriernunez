@@ -38,7 +38,18 @@ public class ButtonMasterActionScript : MonoBehaviour {
 
     public void selectObject()
     {
-        print("selectObject");
-        masterController.setObjectSelected(numberContainer, go.getFirstDisableGOIndice());
+        int indice = go.getFirstDisableGOIndice();
+        if (masterController.getMana() < go.GetChildren()[indice].getCout())
+        {
+            WarningMana();
+            go.GetChildren()[indice].gameObject.SetActive(false);
+        }
+        else
+            masterController.setObjectSelected(numberContainer, indice);
+    }
+
+    private void WarningMana()
+    {
+        print("Pas assez de mana");
     }
 }

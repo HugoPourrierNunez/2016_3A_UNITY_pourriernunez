@@ -50,12 +50,12 @@ public class SpawnableObjectContainerScript : MonoBehaviour {
         {
             if (!children[i].gameObject.active)
             {
-                print("find");
+                //print("find");
                 children[i].gameObject.SetActive(true);
                 return i;
             }
         }
-        print("nonfind");
+        //print("nonfind");
         return -1;
     }
 }

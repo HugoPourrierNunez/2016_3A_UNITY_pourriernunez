@@ -22,6 +22,9 @@ public class SpawnableObjectScript : NetworkBehaviour {
     [SerializeField]
     NetworkIdentity id;
 
+    [SerializeField]
+    int cout = 5;
+
     LocalPlayerScript localPlayerScript;
 
     MasterController ctrl;
@@ -34,17 +37,17 @@ public class SpawnableObjectScript : NetworkBehaviour {
     public void setLocalPlayerScript(LocalPlayerScript lps)
     {
         localPlayerScript = lps;
-        if (lps != null)
-            print("local player set");
+        /*if (lps != null)
+            print("local player set");*/
     }
 
     public void Start()
     {
         normal = objectRenderer.material;
-        if (localPlayerScript == null)
+        /*if (localPlayerScript == null)
             print("localplayerscript null");
         else
-            print("non null");
+            print("non null");*/
     }
 
     public bool CanBePosed()
@@ -73,6 +76,11 @@ public class SpawnableObjectScript : NetworkBehaviour {
             canBePosed = true;
             objectRenderer.material = materialOK;
         }
+    }
+
+    public int getCout()
+    {
+        return cout;
     }
 
     public void PoseObject(Vector3 pos)
