@@ -43,4 +43,19 @@ public class SpawnableObjectContainerScript : MonoBehaviour {
         print("nonfind");
         return null;
     }
+
+    public int getFirstDisableGOIndice()
+    {
+        for (int i = 0; i < children.Count; i++)
+        {
+            if (!children[i].gameObject.active)
+            {
+                print("find");
+                children[i].gameObject.SetActive(true);
+                return i;
+            }
+        }
+        print("nonfind");
+        return -1;
+    }
 }

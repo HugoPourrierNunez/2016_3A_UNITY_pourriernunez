@@ -96,7 +96,7 @@ MonoBehaviour:
     i13: 239
     i14: 22
     i15: 232
-  m_ServerOnly: 1
+  m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
 --- !u!114 &11450120
 MonoBehaviour:
@@ -134,6 +134,7 @@ MonoBehaviour:
   materialNotOK: {fileID: 2100000, guid: a4f647e61966f7f49bc033cf5cfca284, type: 2}
   objectRenderer: {fileID: 2391768}
   minimumDistanceWithRunner: 3
+  id: {fileID: 11430260}
 --- !u!135 &13532884
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -187,8 +188,12 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_ServerOnly
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: id
+      value: 
+      objectReference: {fileID: 11430260}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 196540}

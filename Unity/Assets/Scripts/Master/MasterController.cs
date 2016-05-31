@@ -29,18 +29,20 @@ public class MasterController : AbstractPlayerController
     [SerializeField]
     MasterUIManagerScript masterUI;
 
+    [SerializeField]
+    LocalPlayerScript localPlayerScript;
+
+    [SerializeField]
+    AllContainerScript allContainerScript;
+
     private Vector3 positionCamera=new Vector3();
     private Vector3 translationCamera = new Vector3(0, 0, 0);
     private float effectiveZoom = 0;
     private float alignementGauche;
+
     private SpawnableObjectScript objectSelected = null;
 
-    public void setObjectSelected(SpawnableObjectScript obj)
-    {
-        if (objectSelected != null)
-            objectSelected.gameObject.SetActive(false);
-        objectSelected = obj;
-    }
+
 
     // Use this for initialization
     public override void OnStartLocalPlayer()
@@ -92,6 +94,7 @@ public class MasterController : AbstractPlayerController
 
             if (objectSelected != null)
             {
+                //print("Object selected");
                 Vector3 p1 = masterCamera.transform.position;
                 Vector3 p2 = masterCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, masterCamera.farClipPlane));
                 RaycastHit rayInfo;
@@ -100,7 +103,7 @@ public class MasterController : AbstractPlayerController
                     if (rayInfo.collider.gameObject == floor.gameObject)
                     {
                         p1.x = Mathf.Round(rayInfo.point.x);
-                        p1.y = Mathf.Round(rayInfo.point.y);
+                        p1.y = Mathf.Round(rayInfo.point.y)+.5f;
                         p1.z = Mathf.Round(rayInfo.point.z-.5f) + .5f;
                         objectSelected.UpdatePosition(p1, Vector3.Distance(p1, runnerView.position));
                     }
@@ -109,8 +112,7 @@ public class MasterController : AbstractPlayerController
                 else objectSelected.Hide();
                 if(objectSelected.CanBePosed() && Input.GetMouseButtonUp(0))
                 {
-                    objectSelected.PoseObject(objectSelected.transform.position);
-                    objectSelected = null;
+                    CmdPoseObject(objectSelected.transform.position);
                 }
                 if (Input.GetMouseButtonUp(1))
                 {
@@ -120,6 +122,102 @@ public class MasterController : AbstractPlayerController
             }
         }
     }
+
+    [Command]
+    public void CmdHide()
+    {
+        RpcHide();
+        if (!Network.isClient)
+        {
+            objectSelected.Hide();
+        }
+    }
+
+    [ClientRpc]
+    public void RpcHide()
+    {
+        objectSelected.Hide();
+    }
+
+    [Command]
+    public void CmdUpdatePosition(Vector3 p1, float dist)
+    {
+        RpcUpdatePosition(p1, dist);
+        if (!Network.isClient)
+        {
+            objectSelected.UpdatePosition(p1, dist);
+        }
+    }
+
+    [ClientRpc]
+    public void RpcUpdatePosition(Vector3 p1, float dist)
+    {
+        objectSelected.UpdatePosition(p1, dist);
+    }
+
+    [Command]
+    public void CmdPoseObject(Vector3 pos)
+    {
+        RpcPoseObject(pos);
+        if (!Network.isClient)
+        {
+            objectSelected.PoseObject(pos);
+            //objectSelected = null;
+        }
+    }
+
+    [ClientRpc]
+    public void RpcPoseObject(Vector3 pos)
+    {
+        objectSelected.PoseObject(pos);
+        objectSelected = null;
+    }
+
+    [Command]
+    public void CmdUnselectObject()
+    {
+        RpcUnselectObject();
+        if (!Network.isClient)
+        {
+            objectSelected = null;
+        }
+    }
+
+    [ClientRpc]
+    public void RpcUnselectObject()
+    {
+        objectSelected = null;
+    }
+
+    public void setObjectSelected(int i, int j)
+    {
+        CmdSetObjectSelected(i, j);
+    }
+
+    [Command]
+    public void CmdSetObjectSelected(int i, int j)
+    {
+        RpcSetObjectSelected(i, j);
+        if (!Network.isClient)
+        {
+            if (objectSelected != null)
+                objectSelected.gameObject.SetActive(false);
+            objectSelected = allContainerScript.getContainer(i).GetChildren()[j];
+            objectSelected.gameObject.SetActive(true);
+            objectSelected.setLocalPlayerScript(localPlayerScript);
+        }
+    }
+
+    [ClientRpc]
+    public void RpcSetObjectSelected(int i, int j)
+    {
+        if (objectSelected != null)
+            objectSelected.gameObject.SetActive(false);
+        objectSelected = allContainerScript.getContainer(i).GetChildren()[j];
+        objectSelected.gameObject.SetActive(true);
+        objectSelected.setLocalPlayerScript(localPlayerScript);
+    }
+
 
 
     public override void RestartPlayer()

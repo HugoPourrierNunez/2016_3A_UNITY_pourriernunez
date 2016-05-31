@@ -33,6 +33,9 @@ public class CustomNetworkManager : NetworkManager
 
         // give authority to the client on the obtained controller
         NetworkServer.ReplacePlayerForConnection(conn, avatar.gameObject, playerControllerId);
+
+        avatar.setNetworkConnection(conn);
+
     }
 
     public override void OnServerDisconnect(NetworkConnection conn)

@@ -19,6 +19,11 @@ public class SpawnableObjectScript : NetworkBehaviour {
     [SerializeField]
     float minimumDistanceWithRunner = 0;
 
+    [SerializeField]
+    NetworkIdentity id;
+
+    LocalPlayerScript localPlayerScript;
+
     MasterController ctrl;
 
     private Material normal;
@@ -26,14 +31,25 @@ public class SpawnableObjectScript : NetworkBehaviour {
 
     private bool canBePosed = false;
 
+    public void setLocalPlayerScript(LocalPlayerScript lps)
+    {
+        localPlayerScript = lps;
+        if (lps != null)
+            print("local player set");
+    }
+
     public void Start()
     {
         normal = objectRenderer.material;
+        if (localPlayerScript == null)
+            print("localplayerscript null");
+        else
+            print("non null");
     }
 
     public bool CanBePosed()
     {
-        return canBePosed && isHide;
+        return canBePosed && !isHide;
     }
 
     public void Hide()
@@ -45,6 +61,7 @@ public class SpawnableObjectScript : NetworkBehaviour {
     public void UpdatePosition(Vector3 position, float distance)
     {
         objectRenderer.enabled = true;
+        isHide = false;
         objectRenderer.gameObject.transform.position = position;
         if (distance < minimumDistanceWithRunner)
         {
@@ -66,27 +83,4 @@ public class SpawnableObjectScript : NetworkBehaviour {
         myCollider.enabled = true;
     }
 
-    [Command]
-    public void CmdPoseObject(Vector3 pos)
-    {
-        RpcPoseObject(pos);
-        if (!Network.isClient)
-        {
-            myCollider.gameObject.transform.position = pos;
-            myCollider.gameObject.SetActive(true);
-            objectRenderer.material = normal;
-            myCollider.enabled = true;
-        }
-        print("pose");
-    }
-
-    [ClientRpc]
-    public void RpcPoseObject(Vector3 pos)
-    {
-        myCollider.gameObject.transform.position = pos;
-        myCollider.gameObject.SetActive(true);
-        objectRenderer.material = normal;
-        myCollider.enabled = true;
-        print("pose");
-    }
 }

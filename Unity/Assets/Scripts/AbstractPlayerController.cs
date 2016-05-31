@@ -8,6 +8,8 @@ public abstract class AbstractPlayerController : NetworkBehaviour
     [SerializeField]
     LocalPlayerScript localPlayerScript;
 
+    
+
     public bool controlActivated { get; set; }
 
     public override void OnStartLocalPlayer()
@@ -18,4 +20,9 @@ public abstract class AbstractPlayerController : NetworkBehaviour
     }
 
     public abstract void RestartPlayer();
+
+    public void setNetworkConnection(NetworkConnection conn)
+    {
+        localPlayerScript.connection = conn;
+    }
 }
