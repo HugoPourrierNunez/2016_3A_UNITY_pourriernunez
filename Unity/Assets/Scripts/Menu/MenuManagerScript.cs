@@ -71,7 +71,7 @@ public class MenuManagerScript : NetworkBehaviour {
 
     public void ExitGame()
     {
-        
+        localPlayerScript.localPlayer.Quit();
     }
 
     public void EndLevelShow()

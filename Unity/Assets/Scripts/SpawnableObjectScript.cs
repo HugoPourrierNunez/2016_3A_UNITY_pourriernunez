@@ -17,6 +17,9 @@ public class SpawnableObjectScript : NetworkBehaviour {
     Renderer objectRenderer;
 
     [SerializeField]
+    GameObject mesh;
+
+    [SerializeField]
     float minimumDistanceWithRunner = 0;
 
     [SerializeField]
@@ -43,7 +46,8 @@ public class SpawnableObjectScript : NetworkBehaviour {
 
     public void Start()
     {
-        normal = objectRenderer.material;
+        if (objectRenderer != null)
+            normal = objectRenderer.material;
         /*if (localPlayerScript == null)
             print("localplayerscript null");
         else
@@ -57,24 +61,32 @@ public class SpawnableObjectScript : NetworkBehaviour {
 
     public void Hide()
     {
-        objectRenderer.enabled = false;
+        if (objectRenderer != null)
+            objectRenderer.enabled = false;
+        else
+            mesh.SetActive(false);
         isHide = true;
     }
 
     public void UpdatePosition(Vector3 position, float distance)
     {
-        objectRenderer.enabled = true;
+        if (objectRenderer != null)
+            objectRenderer.enabled = true;
+        else
+            mesh.SetActive(true);
         isHide = false;
-        objectRenderer.gameObject.transform.position = position;
+        myCollider.gameObject.transform.position = position;
         if (distance < minimumDistanceWithRunner)
         {
             canBePosed = false;
-            objectRenderer.material = materialNotOK;
+            if(objectRenderer!=null)
+                objectRenderer.material = materialNotOK;
         }
         else
         {
             canBePosed = true;
-            objectRenderer.material = materialOK;
+            if (objectRenderer != null)
+                objectRenderer.material = materialOK;
         }
     }
 
@@ -87,7 +99,8 @@ public class SpawnableObjectScript : NetworkBehaviour {
     {
         myCollider.gameObject.transform.position = pos;
         myCollider.gameObject.SetActive(true);
-        objectRenderer.material = normal;
+        if (objectRenderer != null)
+            objectRenderer.material = normal;
         myCollider.enabled = true;
     }
 
