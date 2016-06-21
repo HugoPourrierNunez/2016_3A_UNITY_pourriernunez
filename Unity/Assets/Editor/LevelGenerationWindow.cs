@@ -236,15 +236,16 @@ public class LevelGenerationWindow : EditorWindow
             }
             way.AddRange(positionDestroyableobstacle);
 
-            /*if (numberObjectDestroyable + numberObjectUndestroyable > levelLength * levelWidth)
+            if (numberObjectDestroyable + numberObjectUndestroyable > levelLength * levelWidth)
             {
                 numberObjectUndestroyable -= (levelLength * levelWidth) - numberObjectDestroyable;
-            }*/
+            }
 
             for (int i = 0; i < undestroyable.Count; i++)
             {
                 undestroyable[i].SetActive(false); 
             }
+            
             numberOfPositionTaken = way.Count;
             for (int i = 0; i < undestroyable.Count && i < numberObjectUndestroyable && numberOfPositionTaken < numberOfPosition; i++)
             {
@@ -268,10 +269,10 @@ public class LevelGenerationWindow : EditorWindow
                     {
                         undestroyable[i].transform.localPosition = randomV;
                         undestroyable[i].SetActive(true);
-                        numberOfPosition++;
+                        numberOfPositionTaken++;
                         way.Add(randomV);
                     }
-                } while (find == true);
+                } while (find == true && numberOfPositionTaken < numberOfPosition);
 
             }
         }

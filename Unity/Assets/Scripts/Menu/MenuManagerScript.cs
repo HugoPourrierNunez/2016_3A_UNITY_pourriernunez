@@ -59,6 +59,7 @@ public class MenuManagerScript : NetworkBehaviour {
         localPlayerScript.localPlayer.controlActivated = true;
         masterUI.gameObject.SetActive(true);
         runner1UI.gameObject.SetActive(true);
+        GamerInstanceManager.Instance.incNumberOfPlayerWaiting();
     }
 
     public void StartMenuShow()

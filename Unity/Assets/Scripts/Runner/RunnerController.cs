@@ -5,6 +5,9 @@ using UnityEngine.Networking;
 public class RunnerController : AbstractPlayerController
 {
     [SerializeField]
+    LevelGeneratorScript level;
+
+    [SerializeField]
     Camera runnerCamera;
 
     [SerializeField]
@@ -48,9 +51,6 @@ public class RunnerController : AbstractPlayerController
 
     [SerializeField]
     MasterController masterController;
-
-    [SerializeField]
-    LevelScript level;
 
     [SerializeField]
     MenuManagerScript mmScript;
@@ -104,6 +104,7 @@ public class RunnerController : AbstractPlayerController
     {
         PV = maxPV;
         runnerView.transform.position = startPosition;
+        level.generateLevel();
     }
 
     void Update()
@@ -204,7 +205,7 @@ public class RunnerController : AbstractPlayerController
     public void CmdJump(Vector3 translateVector)
     {
         RpcJump(translateVector);
-        if (!Network.isClient)
+        if (!NetworkClient.active)
         {
             runnerRigidbody.AddRelativeForce(translateVector);
         }
@@ -220,7 +221,7 @@ public class RunnerController : AbstractPlayerController
     public void CmdAutoForward(Vector3 velocityVector)
     {
         RpcAutoForward(velocityVector);
-        if (!Network.isClient)
+        if (!NetworkClient.active)
         {
             runnerView.transform.Translate(velocityVector, Space.World);
         }
@@ -236,7 +237,7 @@ public class RunnerController : AbstractPlayerController
     public void CmdUnactiveGameObject(GameObject go)
     {
         RpcUnactiveGameObject(go);
-        if (!Network.isClient)
+        if (!NetworkClient.active)
         {
             go.SetActive(false);
         }
@@ -252,7 +253,7 @@ public class RunnerController : AbstractPlayerController
     public void CmdDisplayMasterPV(float percent)
     {
         RpcDisplayMasterPV(percent);
-        if (!Network.isClient)
+        if (!NetworkClient.active)
         {
             masterController.changePV(percent);
         }

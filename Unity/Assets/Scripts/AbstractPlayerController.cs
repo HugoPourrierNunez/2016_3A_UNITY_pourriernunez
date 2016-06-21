@@ -9,6 +9,7 @@ public abstract class AbstractPlayerController : NetworkBehaviour
     LocalPlayerScript localPlayerScript;
 
 
+
     public bool controlActivated { get; set; }
 
     public override void OnStartLocalPlayer()

@@ -22,6 +22,7 @@ public class GamerInstanceManager : NetworkBehaviour
     AbstractPlayerController[] gamerInstance;
 
     private Queue<AbstractPlayerController> availableControllers = null;
+    private int numberOfPlayerWaiting = 0;
 
     private Queue<AbstractPlayerController> AvailableControllers
     {
@@ -53,5 +54,16 @@ public class GamerInstanceManager : NetworkBehaviour
             return;
         }
         AvailableControllers.Enqueue(controller);
+    }
+
+    public int getNumberOfPlayerWaiting()
+    {
+        return this.numberOfPlayerWaiting;
+    }
+
+    public void incNumberOfPlayerWaiting()
+    {
+        this.numberOfPlayerWaiting++;
+        print(numberOfPlayerWaiting);
     }
 }
