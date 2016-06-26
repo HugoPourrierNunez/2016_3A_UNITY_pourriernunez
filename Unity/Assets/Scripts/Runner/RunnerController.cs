@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
+using System.Collections.Generic;
 
 public class RunnerController : AbstractPlayerController
 {
@@ -44,7 +45,7 @@ public class RunnerController : AbstractPlayerController
     LevelScript runnerLevel;
 
     [SerializeField]
-    int maxPV=30;
+    float maxPV=30;
 
     [SerializeField]
     RunnerUIManagerScript runnerUI;
@@ -55,19 +56,65 @@ public class RunnerController : AbstractPlayerController
     [SerializeField]
     MenuManagerScript mmScript;
 
+    [SerializeField]
+    SortContainerScript sortContainerScript;
+
     private GameObject pointedGO=null;
     private Vector3 startPosition;
-    private int PV;
+    private float PV;
+    private const float timeElapse = .1f;
+
+
+    List<AbstractSortScript> effectiveSorts = new List<AbstractSortScript>();
+
+    IEnumerator Start()
+    {
+        while(true)
+            yield return StartCoroutine(executeEffectiveSorts());
+    }
+
+    IEnumerator executeEffectiveSorts()
+    {
+        if (isLocalPlayer && controlActivated)
+        {
+            //print("nb effective sorts : " + effectiveSorts.Count);
+            for (int i = 0; i < effectiveSorts.Count; i++)
+            {
+                if (!effectiveSorts[i].executeSort(this, timeElapse))
+                {
+                    CmdRemoveEffectiveSort(i);
+                    i--;
+                }
+            }
+            yield return new WaitForSeconds(timeElapse);
+        }
+    }
+
+    public GameObject getView()
+    {
+        return runnerView.gameObject;
+    }
+
+    public void addEffectiveSort(int sortInd)
+    {
+        //CmdAddEffectiveSort(sortInd);
+        effectiveSorts.Add(sortContainerScript.GetChildren()[sortInd]);
+    }
+
+    public bool hasAlreadySort(AbstractSortScript sort)
+    {
+        return effectiveSorts.Contains(sort);
+    }
 
     public void Runnercollision(Collision col)
     {
         if (col.gameObject.layer != LayerMask.NameToLayer("Unfocusable") && col.gameObject!=level.getFloor().gameObject)
         {
-            removePV(5);
+            removePV(5f);
         }
     }
 
-    public void removePV(int nb)
+    public void removePV(float nb)
     {
         float percent;
         PV -= nb;
@@ -76,10 +123,11 @@ public class RunnerController : AbstractPlayerController
             PV = 0;
             percent = 0;
             mmScript.EndLevelShow();
+            CmdEndLevel();
         }
         else
         {
-            percent = PV / (float)maxPV;
+            percent = PV / maxPV;
         }
 
         runnerUI.getPvBar().changePercentage(percent);
@@ -98,7 +146,7 @@ public class RunnerController : AbstractPlayerController
         runnerView.setRunnerController(this);
         RestartPlayer();
         runnerLevel.activate();
-	}
+    }
 
     public override void RestartPlayer()
     {
@@ -186,10 +234,70 @@ public class RunnerController : AbstractPlayerController
     }
 
     [Command]
+    public void CmdRemoveEffectiveSort(int i)
+    {
+        RpcRemoveEffectiveSort(i);
+        if (!NetworkClient.active)
+        {
+            effectiveSorts[i].removePlayer(this);
+            effectiveSorts.RemoveAt(i);
+        }
+    }
+
+    [ClientRpc]
+    public void RpcRemoveEffectiveSort(int i)
+    {
+        //print("//////////////////////////////////////////remove i=" + i);
+        effectiveSorts[i].removePlayer(this);
+        effectiveSorts.RemoveAt(i) ;
+    }
+
+    [Command]
+    public void CmdEndLevel()
+    {
+        RpcEndLevel();
+        if (!NetworkClient.active)
+        {
+            for(int i =0; i<effectiveSorts.Count;i++)
+            {
+                effectiveSorts[i].removePlayer(this);
+            }
+            effectiveSorts.Clear();
+        }
+    }
+
+    [ClientRpc]
+    public void RpcEndLevel()
+    {
+        for (int i = 0; i < effectiveSorts.Count; i++)
+        {
+            effectiveSorts[i].removePlayer(this);
+        }
+        effectiveSorts.Clear();
+    }
+
+    /*[Command]
+    public void CmdAddEffectiveSort(int sortInd)
+    {
+        RpcAddEffectiveSort(sortInd);
+        if (!NetworkClient.active)
+        {
+            effectiveSorts.Add(sortContainerScript.GetChildren()[sortInd]);
+        }
+    }
+
+    [ClientRpc]
+    public void RpcAddEffectiveSort(int sortInd)
+    {
+        print("add sort");
+        effectiveSorts.Add(sortContainerScript.GetChildren()[sortInd]);
+    }*/
+
+    [Command]
     public void CmdMove(Vector3 translateVector)
     {
         RpcMove(translateVector);
-        if (!Network.isClient)
+        if (!NetworkClient.active)
         {
             runnerView.transform.Translate(translateVector, Space.World);
         }

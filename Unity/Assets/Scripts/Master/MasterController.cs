@@ -41,12 +41,19 @@ public class MasterController : AbstractPlayerController
     [SerializeField]
     int incomeMana = 1;
 
+    [SerializeField]
+    RunnerListScript runnerListScript;
+
+    [SerializeField]
+    PanelSortScript panelSortScript;
+
     private Vector3 positionCamera=new Vector3();
     private Vector3 translationCamera = new Vector3(0, 0, 0);
     private float effectiveZoom = 0;
     private float alignementGauche;
 
     private SpawnableObjectScript objectSelected = null;
+    private AbstractSortScript sortSelected = null;
     private int mana;
 
 
@@ -136,6 +143,54 @@ public class MasterController : AbstractPlayerController
                     objectSelected = null;
                 }
             }
+            else if(sortSelected!=null)
+            {
+                Vector3 p1 = masterCamera.transform.position;
+                Vector3 p2 = masterCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, masterCamera.farClipPlane));
+                RaycastHit rayInfo;
+                if (Physics.Linecast(p1, p2, out rayInfo))
+                {
+                    if (rayInfo.collider.gameObject == floor.gameObject)
+                    {
+                        p1.x = Mathf.Round(rayInfo.point.x);
+                        p1.y = Mathf.Round(rayInfo.point.y) + .5f;
+                        p1.z = Mathf.Round(rayInfo.point.z - .5f) + .5f;
+                        sortSelected.getSortVisualScript().gameObject.SetActive(true);
+                        sortSelected.getSortVisualScript().setOK(false);
+                        sortSelected.getSortVisualScript().updatePosition(p1);
+
+                    }
+                    else if(rayInfo.collider.gameObject.CompareTag("RunnerView"))
+                    {
+                        sortSelected.getSortVisualScript().gameObject.SetActive(true);
+                        sortSelected.getSortVisualScript().setOK(true);
+                        sortSelected.getSortVisualScript().updatePosition(rayInfo.collider.gameObject.transform.localPosition);
+                    }
+                    else sortSelected.getSortVisualScript().gameObject.SetActive(false);
+                }
+                else
+                {
+                    sortSelected.getSortVisualScript().gameObject.SetActive(false);
+                }
+
+                if (sortSelected.getSortVisualScript().CanBeActivate() && Input.GetMouseButtonUp(0))
+                {
+                    int tmpRunner = runnerListScript.getRunnerIdByView(rayInfo.collider.gameObject);
+                    if (tmpRunner != -1 && !sortSelected.affectAlreadyRunner(tmpRunner))
+                    {
+                        removeMana((int)sortSelected.getCout());
+                        CmdLauchSort(tmpRunner);
+                    }
+                    else
+                        print("player already affected by this sort");
+                    
+                }
+                else if (Input.GetMouseButtonUp(1))
+                {
+                    sortSelected.getSortVisualScript().gameObject.SetActive(false);
+                    sortSelected = null;
+                }
+            }
         }
     }
 
@@ -145,16 +200,74 @@ public class MasterController : AbstractPlayerController
         masterUI.getMasterManaBar().changePercentage(mana / (float)manaOnStart);
     }
 
+    public void setSortSelected(int i)
+    {
+        CmdSetSortSelected(i);
+    }
+
+    public void setObjectSelected(int i, int j)
+    {
+        CmdSetObjectSelected(i, j);
+    }
+
     public int getMana()
     {
         return mana;
     }
 
     [Command]
+    public void CmdLauchSort(int tmpRunner)
+    {
+        RpcLauchSort(tmpRunner);
+        if (!NetworkClient.active)
+        {
+            sortSelected.lauchSort(tmpRunner);
+            sortSelected.getSortVisualScript().gameObject.SetActive(false);
+            sortSelected = null;
+        }
+    }
+
+    [ClientRpc]
+    public void RpcLauchSort(int tmpRunner)
+    {
+        sortSelected.lauchSort(tmpRunner);
+        sortSelected.getSortVisualScript().gameObject.SetActive(false);
+        sortSelected = null;
+    }
+
+    [Command]
+    public void CmdSetSortSelected(int i)
+    {
+        RpcSetSortSelected(i);
+        if (!NetworkClient.active)
+        {
+            if (objectSelected != null)
+            {
+                objectSelected.gameObject.SetActive(false);
+                objectSelected = null;
+            }
+
+            sortSelected = panelSortScript.getSort(i);
+        }
+    }
+
+    [ClientRpc]
+    public void RpcSetSortSelected(int i)
+    {
+        if (objectSelected != null)
+        {
+            objectSelected.gameObject.SetActive(false);
+            objectSelected = null;
+        }
+
+        sortSelected = panelSortScript.getSort(i);
+    }
+
+    [Command]
     public void CmdHide()
     {
         RpcHide();
-        if (!Network.isClient)
+        if (!NetworkClient.active)
         {
             objectSelected.Hide();
         }
@@ -170,7 +283,7 @@ public class MasterController : AbstractPlayerController
     public void CmdUpdatePosition(Vector3 p1, float dist)
     {
         RpcUpdatePosition(p1, dist);
-        if (!Network.isClient)
+        if (!NetworkClient.active)
         {
             objectSelected.UpdatePosition(p1, dist);
         }
@@ -186,7 +299,7 @@ public class MasterController : AbstractPlayerController
     public void CmdPoseObject(Vector3 pos)
     {
         RpcPoseObject(pos);
-        if (!Network.isClient)
+        if (!NetworkClient.active)
         {
             objectSelected.PoseObject(pos);
             //objectSelected = null;
@@ -204,7 +317,7 @@ public class MasterController : AbstractPlayerController
     public void CmdUnselectObject()
     {
         RpcUnselectObject();
-        if (!Network.isClient)
+        if (!NetworkClient.active)
         {
             objectSelected = null;
         }
@@ -216,16 +329,11 @@ public class MasterController : AbstractPlayerController
         objectSelected = null;
     }
 
-    public void setObjectSelected(int i, int j)
-    {
-        CmdSetObjectSelected(i, j);
-    }
-
     [Command]
     public void CmdSetObjectSelected(int i, int j)
     {
         RpcSetObjectSelected(i, j);
-        if (!Network.isClient)
+        if (!NetworkClient.active)
         {
             if (objectSelected != null)
                 objectSelected.gameObject.SetActive(false);
