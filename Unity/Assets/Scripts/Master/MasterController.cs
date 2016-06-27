@@ -47,6 +47,9 @@ public class MasterController : AbstractPlayerController
     [SerializeField]
     PanelSortScript panelSortScript;
 
+    [SerializeField]
+    Light masterLigth;
+
     private Vector3 positionCamera=new Vector3();
     private Vector3 translationCamera = new Vector3(0, 0, 0);
     private float effectiveZoom = 0;
@@ -66,6 +69,7 @@ public class MasterController : AbstractPlayerController
             Camera.main.gameObject.SetActive(false);
         }
         masterCamera.gameObject.SetActive(true);
+        masterLigth.gameObject.SetActive(true);
         alignementGauche = getAlignGauche();
         mana = manaOnStart;
         InvokeRepeating("IncomeMana", 0, 1);

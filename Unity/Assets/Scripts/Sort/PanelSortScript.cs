@@ -16,9 +16,9 @@ public class PanelSortScript : MonoBehaviour {
     void Start()
     {
         List<AbstractSortScript> sortList  = sortContainer.GetChildren();
-        for(int i=0;i<sortList.Count && i<sortButton.Count;i++)
+        for (int i=0;i<sortList.Count && i<sortButton.Count;i++)
         {
-            sortButton[i].initButton(sortList[i],i,masterController);
+            sortButton[i].initButton(sortList[i], i, masterController);
         }
     }
 

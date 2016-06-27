@@ -26,6 +26,14 @@ public abstract class AbstractSortScript : NetworkBehaviour {
 
     public abstract bool executeSort(RunnerController player, float timeElapsed);
 
+    [SerializeField]
+    string nameSort="Default sort";
+
+    public string getNameSort()
+    {
+        return nameSort;
+    }
+
     public bool lauchSort(int runnerInd)
     {
         RunnerController runner = runnerListScript.getRunner(runnerInd);

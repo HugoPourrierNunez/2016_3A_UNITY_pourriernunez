@@ -59,6 +59,9 @@ public class RunnerController : AbstractPlayerController
     [SerializeField]
     SortContainerScript sortContainerScript;
 
+    [SerializeField]
+    Light runnerLight;
+
     private GameObject pointedGO=null;
     private Vector3 startPosition;
     private float PV;
@@ -141,11 +144,17 @@ public class RunnerController : AbstractPlayerController
         {
             Camera.main.gameObject.SetActive(false);
         }
+        runnerLight.gameObject.SetActive(true);
         runnerCamera.gameObject.SetActive(true);
         startPosition = runnerView.transform.position;
         runnerView.setRunnerController(this);
         RestartPlayer();
         runnerLevel.activate();
+    }
+
+    public Light getLight()
+    {
+        return runnerLight;
     }
 
     public override void RestartPlayer()

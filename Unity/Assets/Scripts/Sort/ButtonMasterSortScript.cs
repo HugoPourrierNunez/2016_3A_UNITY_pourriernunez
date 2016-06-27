@@ -10,6 +10,9 @@ public class ButtonMasterSortScript : MonoBehaviour {
     [SerializeField]
     Button btn;
 
+    [SerializeField]
+    Text text;
+
     private MasterController masterController;
     private AbstractSortScript sort=null;
     private int sortNumber = -1;
@@ -26,6 +29,7 @@ public class ButtonMasterSortScript : MonoBehaviour {
     {
         masterController = master;
         sort = s;
+        text.text = sort.getNameSort();
         sortNumber = number;
         if (btn != null)
             btn.enabled = true;
