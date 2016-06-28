@@ -7,4 +7,7 @@ public class LocalPlayerScript : NetworkBehaviour {
     public AbstractPlayerController localPlayer { get; set; }
 
     public NetworkConnection connection { get; set; }
+
+    public CustomNetworkManager manager { get; set; }
+
 }

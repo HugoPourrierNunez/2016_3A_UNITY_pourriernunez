@@ -20,6 +20,12 @@ public class CustomNetworkManager : NetworkManager
         }
     }
 
+    public override void OnClientConnect(NetworkConnection conn)
+    {
+        base.OnClientConnect(conn);
+
+    }
+
     public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
     {
         // Do not forget base functionalities
@@ -34,7 +40,9 @@ public class CustomNetworkManager : NetworkManager
         // give authority to the client on the obtained controller
         NetworkServer.ReplacePlayerForConnection(conn, avatar.gameObject, playerControllerId);
 
-        avatar.setNetworkConnection(conn);
+        avatar.setNetworkConnection(conn,this);
+
+        print("add player");
 
     }
 
@@ -50,6 +58,13 @@ public class CustomNetworkManager : NetworkManager
 
         // Do not forget base functionalities
         base.OnServerDisconnect(conn);
+    }
+
+    public int getNumberOfClient()
+    {
+        if (activatedGamerInstance == null)
+            return -1;
+        return activatedGamerInstance.Count;
     }
 
 }

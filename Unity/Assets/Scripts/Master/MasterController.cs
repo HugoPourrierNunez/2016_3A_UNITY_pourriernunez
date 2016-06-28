@@ -30,9 +30,6 @@ public class MasterController : AbstractPlayerController
     MasterUIManagerScript masterUI;
 
     [SerializeField]
-    LocalPlayerScript localPlayerScript;
-
-    [SerializeField]
     AllContainerScript allContainerScript;
 
     [SerializeField]

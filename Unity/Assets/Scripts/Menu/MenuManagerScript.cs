@@ -35,6 +35,27 @@ public class MenuManagerScript : NetworkBehaviour {
     [SerializeField]
     RunnerUIManagerScript runner1UI;
 
+    [SerializeField]
+    Canvas waitingMenu;
+
+    [SerializeField]
+    Canvas masterChoosePlayer;
+
+    private int numberOfPlayers = 0;
+    private int numberOfActivePlayers = 0;
+
+    public void Start()
+    {
+        if (localPlayerScript.localPlayer.isServer && localPlayerScript.localPlayer.isClient)
+        {
+            masterChoosePlayer.gameObject.SetActive(true);
+        }
+        else
+        {
+            waitingMenu.gameObject.SetActive(true);
+        }
+    }
+
     public void ExitPress()
     {
         quitMenu.gameObject.SetActive(true);
@@ -59,7 +80,41 @@ public class MenuManagerScript : NetworkBehaviour {
         localPlayerScript.localPlayer.controlActivated = true;
         masterUI.gameObject.SetActive(true);
         runner1UI.gameObject.SetActive(true);
-        GamerInstanceManager.Instance.incNumberOfPlayerWaiting();
+    }
+
+    public void setNumberOfPlayer(int nb)
+    {
+        numberOfPlayers = nb;
+    }
+
+    public int getNumberOfPlayer()
+    {
+        return numberOfPlayers ;
+    }
+
+    public void setNumberOfActivePlayers(int nb)
+    {
+        numberOfActivePlayers=nb;
+        print("nb of players actif = " + numberOfActivePlayers);
+        if(numberOfPlayers==numberOfActivePlayers && waitingMenu.gameObject.active)
+        {
+            waitingMenu.gameObject.SetActive(false);
+            startMenu.gameObject.SetActive(true);
+        }
+    }
+
+    public int getNumberOfActivePlayers()
+    {
+        return numberOfActivePlayers;
+    }
+
+    public void showWaitingMenu()
+    {
+        masterChoosePlayer.gameObject.SetActive(false);
+        if(numberOfPlayers != numberOfActivePlayers)
+            waitingMenu.gameObject.SetActive(true);
+        else
+            startMenu.gameObject.SetActive(true);
     }
 
     public void StartMenuShow()
