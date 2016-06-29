@@ -33,6 +33,9 @@ public class MenuManagerScript : NetworkBehaviour {
     MasterUIManagerScript masterUI;
 
     [SerializeField]
+    MasterController masterController;
+
+    [SerializeField]
     RunnerUIManagerScript runner1UI;
 
     [SerializeField]
@@ -76,10 +79,9 @@ public class MenuManagerScript : NetworkBehaviour {
 
     public void StartLevel()
     {
+        masterController.GenerateLevel();
+        masterController.ActivePlayers();
         startMenu.gameObject.SetActive(false);
-        localPlayerScript.localPlayer.controlActivated = true;
-        masterUI.gameObject.SetActive(true);
-        runner1UI.gameObject.SetActive(true);
     }
 
     public void setNumberOfPlayer(int nb)
@@ -133,7 +135,8 @@ public class MenuManagerScript : NetworkBehaviour {
     public void EndLevelShow()
     {
         localPlayerScript.localPlayer.controlActivated = false;
-        endMenu.gameObject.SetActive(true);
+        if(localPlayerScript.localPlayer.isServer)
+            endMenu.gameObject.SetActive(true);
         masterUI.gameObject.SetActive(false);
         runner1UI.gameObject.SetActive(false);
     }

@@ -80,7 +80,6 @@ public class RunnerController : AbstractPlayerController
     {
         if (isLocalPlayer && controlActivated)
         {
-            //print("nb effective sorts : " + effectiveSorts.Count);
             for (int i = 0; i < effectiveSorts.Count; i++)
             {
                 if (!effectiveSorts[i].executeSort(this, timeElapse))
@@ -91,6 +90,11 @@ public class RunnerController : AbstractPlayerController
             }
             yield return new WaitForSeconds(timeElapse);
         }
+    }
+
+    public RunnerUIManagerScript getUI()
+    {
+        return runnerUI;
     }
 
     public GameObject getView()
@@ -125,7 +129,6 @@ public class RunnerController : AbstractPlayerController
         {
             PV = 0;
             percent = 0;
-            mmScript.EndLevelShow();
             CmdEndLevel();
         }
         else
@@ -159,9 +162,9 @@ public class RunnerController : AbstractPlayerController
 
     public override void RestartPlayer()
     {
+        print("Restart player");
         PV = maxPV;
         runnerView.transform.position = startPosition;
-        level.generateLevel();
     }
 
     void Update()
@@ -242,6 +245,11 @@ public class RunnerController : AbstractPlayerController
         runnerUI.getavancementBar().changePercentage(runnerView.transform.position.z/(runnerLevel.getFloor().localScale.z*10));
     }
 
+    public LevelGeneratorScript getLevel()
+    {
+        return level;
+    }
+
     [Command]
     public void CmdRemoveEffectiveSort(int i)
     {
@@ -256,7 +264,6 @@ public class RunnerController : AbstractPlayerController
     [ClientRpc]
     public void RpcRemoveEffectiveSort(int i)
     {
-        //print("//////////////////////////////////////////remove i=" + i);
         effectiveSorts[i].removePlayer(this);
         effectiveSorts.RemoveAt(i) ;
     }
@@ -267,7 +274,8 @@ public class RunnerController : AbstractPlayerController
         RpcEndLevel();
         if (!NetworkClient.active)
         {
-            for(int i =0; i<effectiveSorts.Count;i++)
+            mmScript.EndLevelShow();
+            for (int i =0; i<effectiveSorts.Count;i++)
             {
                 effectiveSorts[i].removePlayer(this);
             }
@@ -278,6 +286,7 @@ public class RunnerController : AbstractPlayerController
     [ClientRpc]
     public void RpcEndLevel()
     {
+        mmScript.EndLevelShow();
         for (int i = 0; i < effectiveSorts.Count; i++)
         {
             effectiveSorts[i].removePlayer(this);

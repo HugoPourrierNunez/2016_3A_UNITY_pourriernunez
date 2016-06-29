@@ -354,6 +354,18 @@ public class MasterController : AbstractPlayerController
         objectSelected.setLocalPlayerScript(localPlayerScript);
     }
 
+    public void GenerateLevel()
+    {
+        for(int i=0;i<runnerListScript.getRunnerList().Count;i++)
+        {
+            runnerListScript.getRunner(i).getLevel().generateLevel(i);
+        }
+    }
+
+    public void ActivePlayers()
+    {
+        CmdActivePlayers();
+    }
 
 
     public override void RestartPlayer()
@@ -364,6 +376,134 @@ public class MasterController : AbstractPlayerController
     public Transform getRunnerView()
     {
         return runnerView;
+    }
+    
+    public void unactiveAllObstacles(int numRunner)
+    {
+        CmdUnactiveAllObstacles(numRunner);
+    }
+
+    public void activeDestroyableObstacle(Vector3 pos, int nb, int numRunner)
+    {
+        CmdActiveDestroyableObstacle(pos, nb, numRunner);
+    }
+
+    public void activeUndestroyableObstacle(Vector3 pos, int nb, int numRunner)
+    {
+        CmdActiveUndestroyableObstacle(pos, nb, numRunner);
+    }
+
+    [Command]
+    public void CmdActivePlayers()
+    {
+        RpcActivePlayers();
+        if (!NetworkClient.active)
+        {
+            if (isLocalPlayer)
+            {
+                controlActivated = true;
+                masterUI.gameObject.SetActive(true);
+                /*for (int i = 0; i < runnerListScript.getRunnerList().Count; i++)
+                {
+                    print("active player : " + i);
+                    runnerListScript.getRunner(i).RestartPlayer();
+                }*/
+            }
+            else
+            {
+                for (int i = 0; i < runnerListScript.getRunnerList().Count; i++)
+                {
+                    RunnerController runner = runnerListScript.getRunner(i);
+                    runner.RestartPlayer();
+                    if (runner.isLocalPlayer)
+                    {
+                        runner.controlActivated = true;
+                        runner.getUI().gameObject.SetActive(true);
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    [ClientRpc]
+    public void RpcActivePlayers()
+    {
+        if (isLocalPlayer)
+        {
+            controlActivated = true;
+            masterUI.gameObject.SetActive(true);
+            /*for (int i = 0; i < runnerListScript.getRunnerList().Count; i++)
+            {
+                print("active player : " + i);
+                runnerListScript.getRunner(i).RestartPlayer();
+            }*/
+        }
+        else
+        {
+            for (int i = 0; i < runnerListScript.getRunnerList().Count; i++)
+            {
+                RunnerController runner = runnerListScript.getRunner(i);
+                runner.RestartPlayer();
+                if (runner.isLocalPlayer)
+                {
+                    runner.controlActivated = true;
+                    runner.getUI().gameObject.SetActive(true);
+                }
+            }
+        }
+    }
+
+    [Command]
+    public void CmdUnactiveAllObstacles(int numRunner)
+    {
+        RpcUnactiveAllObstacles(numRunner);
+        if (!NetworkClient.active)
+        {
+            runnerListScript.getRunner(numRunner).getLevel().unactiveAllObstacles();
+        }
+
+    }
+
+    [ClientRpc]
+    public void RpcUnactiveAllObstacles(int numRunner)
+    {
+        runnerListScript.getRunner(numRunner).getLevel().unactiveAllObstacles();
+    }
+
+    [Command]
+    public void CmdActiveDestroyableObstacle(Vector3 pos, int nb, int numRunner)
+    {
+        RpcActiveDestroyableObstacle(pos, nb, numRunner);
+        if (!NetworkClient.active)
+        {
+            runnerListScript.getRunner(numRunner).getLevel().activeDestroyableObstacle(pos,nb);
+        }
+
+    }
+
+    [ClientRpc]
+    public void RpcActiveDestroyableObstacle(Vector3 pos, int nb, int numRunner)
+    {
+        runnerListScript.getRunner(numRunner).getLevel().activeDestroyableObstacle(pos, nb);
+    }
+
+    [Command]
+    public void CmdActiveUndestroyableObstacle(Vector3 pos, int nb, int numRunner)
+    {
+        RpcActiveUndestroyableObstacle(pos, nb, numRunner);
+        if (!NetworkClient.active)
+        {
+            runnerListScript.getRunner(numRunner).getLevel().activeUndestroyableObstacle(pos, nb);
+        }
+
+    }
+
+    [ClientRpc]
+    public void RpcActiveUndestroyableObstacle(Vector3 pos, int nb, int numRunner)
+    {
+        runnerListScript.getRunner(numRunner).getLevel().activeUndestroyableObstacle(pos, nb);
     }
 
 }

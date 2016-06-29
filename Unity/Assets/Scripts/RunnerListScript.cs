@@ -27,4 +27,9 @@ public class RunnerListScript : NetworkBehaviour {
             return null;
         return runnerList[i];
     }
+
+    public List<RunnerController>  getRunnerList()
+    {
+        return runnerList;
+    }
 }

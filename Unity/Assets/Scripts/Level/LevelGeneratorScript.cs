@@ -5,7 +5,6 @@ using UnityEngine.Networking;
 
 public class LevelGeneratorScript : NetworkBehaviour
 {
-
     [SerializeField]
     int levelWidth = 9;
 
@@ -42,6 +41,9 @@ public class LevelGeneratorScript : NetworkBehaviour
     [SerializeField]
     int numberObjectDestroyable = 50;
 
+    [SerializeField]
+    MasterController masterController;
+
     int previousDirection;
     int nbOfForward;
     int newDirection;
@@ -55,6 +57,12 @@ public class LevelGeneratorScript : NetworkBehaviour
 
     List<Vector3> way = new List<Vector3>();
 
+    void Start()
+    {
+        undestroyable = parentObstacleUndestroyable.GetChildren();
+        destroyable = parentObstacleDestroyable.GetChildren();
+    }
+
     public void activate()
     {
         wallLeft.gameObject.SetActive(true);
@@ -67,12 +75,13 @@ public class LevelGeneratorScript : NetworkBehaviour
     }
 
     // Use this for initialization
-    void Start () {
+    /*void Start () {
         this.generateLevel();
-	}
+	}*/
 	
-	public void generateLevel()
+	public void generateLevel(int numPlayer)
     {
+        print("generate level");
         floor.transform.localScale = new Vector3(levelWidth / 10f, 1, levelLength / 10f);
         floor.transform.localPosition = new Vector3(0, 0, levelLength / 2f);
 
@@ -160,7 +169,8 @@ public class LevelGeneratorScript : NetworkBehaviour
 
         bool find = false;
 
-        CmdUnactiveAllObstacles();
+        masterController.unactiveAllObstacles(numPlayer);
+        //CmdUnactiveAllObstacles();
 
         for (int i = 0; i < destroyable.Count && i < numberObjectDestroyable && numberOfPositionTaken < numberOfPosition; i++)
         {
@@ -182,7 +192,8 @@ public class LevelGeneratorScript : NetworkBehaviour
                 }
                 if (!find)
                 {
-                    CmdActiveDestroyableObstacle(randomV, i);
+                    //CmdActiveDestroyableObstacle(randomV, i);
+                    masterController.activeDestroyableObstacle(randomV, i, numPlayer);
                     numberOfPositionTaken++;
                     positionDestroyableobstacle.Add(randomV);
                 }
@@ -217,7 +228,8 @@ public class LevelGeneratorScript : NetworkBehaviour
                 }
                 if (!find)
                 {
-                    CmdActiveUndestroyableObstacle(randomV, i);
+                    //CmdActiveUndestroyableObstacle(randomV, i);
+                    masterController.activeUndestroyableObstacle(randomV, i, numPlayer);
                     numberOfPositionTaken++;
                     way.Add(randomV);
                 }
@@ -226,7 +238,7 @@ public class LevelGeneratorScript : NetworkBehaviour
         }
     }
 
-    void unactiveAllObstacles()
+    public void unactiveAllObstacles()
     {
         for (int i = 0; i < destroyable.Count; i++)
         {
@@ -238,56 +250,13 @@ public class LevelGeneratorScript : NetworkBehaviour
         }
     }
 
-    [Command]
-    public void CmdUnactiveAllObstacles()
-    {
-        RpcUnactiveAllObstacles();
-        if (!NetworkClient.active)
-        {
-            this.unactiveAllObstacles();
-        }
-
-    }
-
-    [ClientRpc]
-    public void RpcUnactiveAllObstacles()
-    {
-        this.unactiveAllObstacles();
-    }
-
-    [Command]
-    public void CmdActiveDestroyableObstacle(Vector3 pos,int nb)
-    {
-        RpcActiveDestroyableObstacle(pos,nb);
-        if (!NetworkClient.active)
-        {
-            destroyable[nb].transform.localPosition = pos;
-            destroyable[nb].gameObject.SetActive(true);
-        }
-
-    }
-
-    [ClientRpc]
-    public void RpcActiveDestroyableObstacle(Vector3 pos, int nb)
+    public void activeDestroyableObstacle(Vector3 pos, int nb)
     {
         destroyable[nb].transform.localPosition = pos;
         destroyable[nb].gameObject.SetActive(true);
     }
 
-    [Command]
-    public void CmdActiveUndestroyableObstacle(Vector3 pos, int nb)
-    {
-        RpcActiveUndestroyableObstacle(pos, nb);
-        if (!NetworkClient.active)
-        {
-            undestroyable[nb].transform.localPosition = pos;
-            undestroyable[nb].gameObject.SetActive(true);
-        }
-
-    }
-
-    [ClientRpc]
-    public void RpcActiveUndestroyableObstacle(Vector3 pos, int nb)
+    public void activeUndestroyableObstacle(Vector3 pos, int nb)
     {
         undestroyable[nb].transform.localPosition = pos;
         undestroyable[nb].gameObject.SetActive(true);
