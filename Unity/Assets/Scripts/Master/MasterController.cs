@@ -358,7 +358,9 @@ public class MasterController : AbstractPlayerController
     {
         for(int i=0;i<runnerListScript.getRunnerList().Count;i++)
         {
+            //runnerListScript.getRunner(i).activeRB(false);
             runnerListScript.getRunner(i).getLevel().generateLevel(i);
+            //runnerListScript.getRunner(i).activeRB(true);
         }
     }
 
@@ -393,6 +395,33 @@ public class MasterController : AbstractPlayerController
         CmdActiveUndestroyableObstacle(pos, nb, numRunner);
     }
 
+    public void changeSizeLevel(int numRunner)
+    {
+        CmdChangeSizeLevel(numRunner);
+    }
+
+    public void updateWaitingMenu()
+    {
+        CmdUpdateWaitingMenu();
+    }
+
+    [Command]
+    public void CmdUpdateWaitingMenu()
+    {
+        RpcUpdateWaitingMenu();
+        if (!NetworkClient.active)
+        {
+            menuManager.HideWaitingMenu();
+        }
+
+    }
+
+    [ClientRpc]
+    public void RpcUpdateWaitingMenu()
+    {
+        menuManager.HideWaitingMenu();
+    }
+
     [Command]
     public void CmdActivePlayers()
     {
@@ -403,11 +432,11 @@ public class MasterController : AbstractPlayerController
             {
                 controlActivated = true;
                 masterUI.gameObject.SetActive(true);
-                /*for (int i = 0; i < runnerListScript.getRunnerList().Count; i++)
+                for (int i = 0; i < runnerListScript.getRunnerList().Count; i++)
                 {
                     print("active player : " + i);
                     runnerListScript.getRunner(i).RestartPlayer();
-                }*/
+                }
             }
             else
             {
@@ -434,11 +463,11 @@ public class MasterController : AbstractPlayerController
         {
             controlActivated = true;
             masterUI.gameObject.SetActive(true);
-            /*for (int i = 0; i < runnerListScript.getRunnerList().Count; i++)
+            for (int i = 0; i < runnerListScript.getRunnerList().Count; i++)
             {
                 print("active player : " + i);
                 runnerListScript.getRunner(i).RestartPlayer();
-            }*/
+            }
         }
         else
         {
@@ -504,6 +533,22 @@ public class MasterController : AbstractPlayerController
     public void RpcActiveUndestroyableObstacle(Vector3 pos, int nb, int numRunner)
     {
         runnerListScript.getRunner(numRunner).getLevel().activeUndestroyableObstacle(pos, nb);
+    }
+    [Command]
+    public void CmdChangeSizeLevel(int numRunner)
+    {
+        RpcChangeSizeLevel(numRunner);
+        if (!NetworkClient.active)
+        {
+            runnerListScript.getRunner(numRunner).getLevel().changeSizeLevel();
+        }
+
+    }
+
+    [ClientRpc]
+    public void RpcChangeSizeLevel(int numRunner)
+    {
+        runnerListScript.getRunner(numRunner).getLevel().changeSizeLevel();
     }
 
 }

@@ -54,6 +54,7 @@ public class LevelGeneratorScript : NetworkBehaviour
     List<GameObject> destroyable;
     List<Vector3> positionDestroyableobstacle = new List<Vector3>();
     Vector3 randomV = new Vector3();
+    private float espace = 15f;
 
     List<Vector3> way = new List<Vector3>();
 
@@ -78,21 +79,27 @@ public class LevelGeneratorScript : NetworkBehaviour
     /*void Start () {
         this.generateLevel();
 	}*/
+
+    public void changeSizeLevel()
+    {
+        floor.transform.localScale = new Vector3(levelWidth / 10f, 1, levelLength / 10f + espace / 10f);
+        floor.transform.localPosition = new Vector3(0, 0, levelLength / 2f + espace / 2f);
+
+        wallLeft.transform.localScale = new Vector3(0, 5, levelLength + espace);
+        wallLeft.transform.localPosition = new Vector3(-levelWidth / 2f, 2.5f, levelLength / 2f + espace / 2f);
+
+        wallRight.transform.localScale = new Vector3(0, 5, levelLength + espace);
+        wallRight.transform.localPosition = new Vector3(levelWidth / 2f, 2.5f, levelLength / 2f + espace / 2f);
+
+        endLevel.transform.localScale = new Vector3(levelWidth, 5, 0);
+        endLevel.transform.localPosition = new Vector3(0, 2.5f, levelLength + espace);
+    }
 	
 	public void generateLevel(int numPlayer)
     {
         print("generate level");
-        floor.transform.localScale = new Vector3(levelWidth / 10f, 1, levelLength / 10f);
-        floor.transform.localPosition = new Vector3(0, 0, levelLength / 2f);
 
-        wallLeft.transform.localScale = new Vector3(0, 5, levelLength);
-        wallLeft.transform.localPosition = new Vector3(-levelWidth / 2f, 2.5f, levelLength / 2f);
-
-        wallRight.transform.localScale = new Vector3(0, 5, levelLength);
-        wallRight.transform.localPosition = new Vector3(levelWidth / 2f, 2.5f, levelLength / 2f);
-
-        endLevel.transform.localScale = new Vector3(levelWidth, 5, 0);
-        endLevel.transform.localPosition = new Vector3(0, 2.5f, levelLength);
+        masterController.changeSizeLevel(numPlayer);
 
         // 0=gauche, 1=droite, 2=devant
 
@@ -154,8 +161,6 @@ public class LevelGeneratorScript : NetworkBehaviour
 
                 previousDirection = newDirection;
 
-                //Undo.RegisterCreatedObjectUndo(children[i], "Level");
-
                 if (lastPosition.z + .5 >= levelLength)
                     break;
             }
@@ -170,7 +175,6 @@ public class LevelGeneratorScript : NetworkBehaviour
         bool find = false;
 
         masterController.unactiveAllObstacles(numPlayer);
-        //CmdUnactiveAllObstacles();
 
         for (int i = 0; i < destroyable.Count && i < numberObjectDestroyable && numberOfPositionTaken < numberOfPosition; i++)
         {
@@ -179,7 +183,7 @@ public class LevelGeneratorScript : NetworkBehaviour
                 find = false;
                 Vector3 randomV = new Vector3(0, .5f, 0);
                 randomV.x = Random.Range(-levelWidth / 2, levelWidth / 2 + 1);
-                randomV.z = Random.Range(0, levelLength);
+                randomV.z = Random.Range(0, levelLength) + espace;
                 randomV.z += .5f;
                 for (int j = 0; j < positionDestroyableobstacle.Count; j++)
                 {
@@ -192,7 +196,6 @@ public class LevelGeneratorScript : NetworkBehaviour
                 }
                 if (!find)
                 {
-                    //CmdActiveDestroyableObstacle(randomV, i);
                     masterController.activeDestroyableObstacle(randomV, i, numPlayer);
                     numberOfPositionTaken++;
                     positionDestroyableobstacle.Add(randomV);
@@ -215,7 +218,7 @@ public class LevelGeneratorScript : NetworkBehaviour
                 find = false;
                 randomV.Set(Random.Range(-levelWidth / 2, levelWidth / 2 + 1),
                             .5f,
-                            Random.Range(0, levelLength) + .5f);
+                            Random.Range(0, levelLength) + .5f + espace);
 
                 for (int j = 0; j < way.Count; j++)
                 {
@@ -228,7 +231,6 @@ public class LevelGeneratorScript : NetworkBehaviour
                 }
                 if (!find)
                 {
-                    //CmdActiveUndestroyableObstacle(randomV, i);
                     masterController.activeUndestroyableObstacle(randomV, i, numPlayer);
                     numberOfPositionTaken++;
                     way.Add(randomV);

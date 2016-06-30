@@ -44,12 +44,12 @@ public class MenuManagerScript : NetworkBehaviour {
     [SerializeField]
     Canvas masterChoosePlayer;
 
-    private int numberOfPlayers = 0;
+    private int numberOfPlayers = -1;
     private int numberOfActivePlayers = 0;
 
     public void Start()
     {
-        if (localPlayerScript.localPlayer.isServer && localPlayerScript.localPlayer.isClient)
+        if (localPlayerScript.localPlayer!=null && localPlayerScript.localPlayer.isServer && localPlayerScript.localPlayer.isClient)
         {
             masterChoosePlayer.gameObject.SetActive(true);
         }
@@ -79,14 +79,30 @@ public class MenuManagerScript : NetworkBehaviour {
 
     public void StartLevel()
     {
-        masterController.GenerateLevel();
-        masterController.ActivePlayers();
+        if(NetworkServer.active)
+        {
+            print("start level");
+            masterController.GenerateLevel();
+            masterController.ActivePlayers();
+        }
         startMenu.gameObject.SetActive(false);
     }
 
     public void setNumberOfPlayer(int nb)
     {
         numberOfPlayers = nb;
+        if (numberOfPlayers == numberOfActivePlayers)
+        {
+            masterController.updateWaitingMenu();
+        }
+    }
+
+    public void HideWaitingMenu()
+    {
+        print("hide waiting menu");
+        waitingMenu.gameObject.SetActive(false);
+        if (NetworkServer.active)
+            startMenu.gameObject.SetActive(true);
     }
 
     public int getNumberOfPlayer()
@@ -98,10 +114,9 @@ public class MenuManagerScript : NetworkBehaviour {
     {
         numberOfActivePlayers=nb;
         print("nb of players actif = " + numberOfActivePlayers);
-        if(numberOfPlayers==numberOfActivePlayers && waitingMenu.gameObject.active)
+        if(numberOfPlayers==numberOfActivePlayers)
         {
-            waitingMenu.gameObject.SetActive(false);
-            startMenu.gameObject.SetActive(true);
+            masterController.updateWaitingMenu();
         }
     }
 

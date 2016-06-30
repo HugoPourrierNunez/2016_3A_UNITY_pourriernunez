@@ -62,8 +62,10 @@ public class RunnerController : AbstractPlayerController
     [SerializeField]
     Light runnerLight;
 
+    [SerializeField]
+    Vector3 startPosition;
+
     private GameObject pointedGO=null;
-    private Vector3 startPosition;
     private float PV;
     private const float timeElapse = .1f;
 
@@ -149,7 +151,6 @@ public class RunnerController : AbstractPlayerController
         }
         runnerLight.gameObject.SetActive(true);
         runnerCamera.gameObject.SetActive(true);
-        startPosition = runnerView.transform.position;
         runnerView.setRunnerController(this);
         RestartPlayer();
         runnerLevel.activate();
@@ -162,9 +163,11 @@ public class RunnerController : AbstractPlayerController
 
     public override void RestartPlayer()
     {
-        print("Restart player");
-        PV = maxPV;
+        print("Restart player position="+startPosition);
         runnerView.transform.position = startPosition;
+        PV = maxPV;
+        runnerUI.getPvBar().changePercentage(1);
+        CmdDisplayMasterPV(1);
     }
 
     void Update()
@@ -231,7 +234,8 @@ public class RunnerController : AbstractPlayerController
             {
                 if(pointedGO!=null && pointedGO.layer==LayerMask.NameToLayer("ObstacleDestroyable"))
                 {
-                    CmdUnactiveGameObject(pointedGO);
+                    print("click");
+                    //CmdUnactiveGameObject(pointedGO);
                     pointedGO = null;
                 }
             }
@@ -243,6 +247,12 @@ public class RunnerController : AbstractPlayerController
     private void UpdateAvancement()
     {
         runnerUI.getavancementBar().changePercentage(runnerView.transform.position.z/(runnerLevel.getFloor().localScale.z*10));
+    }
+
+    public void activeRB(bool activate)
+    {
+        runnerRigidbody.isKinematic = activate;
+        print("isKinetic=" + activate);
     }
 
     public LevelGeneratorScript getLevel()
@@ -360,7 +370,7 @@ public class RunnerController : AbstractPlayerController
     }
 
     [Command]
-    public void CmdUnactiveGameObject(GameObject go)
+    public void CmdUnactiveGameObject(GameObject go) 
     {
         RpcUnactiveGameObject(go);
         if (!NetworkClient.active)
