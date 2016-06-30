@@ -166,6 +166,7 @@ public class RunnerController : AbstractPlayerController
         print("Restart player position="+startPosition);
         runnerView.transform.position = startPosition;
         PV = maxPV;
+        mmScript.getEndMenuRunner().gameObject.SetActive(false);
         runnerUI.getPvBar().changePercentage(1);
         CmdDisplayMasterPV(1);
     }
@@ -235,7 +236,8 @@ public class RunnerController : AbstractPlayerController
                 if(pointedGO!=null && pointedGO.layer==LayerMask.NameToLayer("ObstacleDestroyable"))
                 {
                     print("click");
-                    //CmdUnactiveGameObject(pointedGO);
+                    int ind = level.getDestroyableObjectContainer().GetChildren().IndexOf(pointedGO);
+                    CmdUnactiveGameObject(ind);
                     pointedGO = null;
                 }
             }
@@ -284,7 +286,9 @@ public class RunnerController : AbstractPlayerController
         RpcEndLevel();
         if (!NetworkClient.active)
         {
-            mmScript.EndLevelShow();
+            if (isLocalPlayer && PV > 0)
+                mmScript.EndLevelShow(true);
+            else mmScript.EndLevelShow(false);
             for (int i =0; i<effectiveSorts.Count;i++)
             {
                 effectiveSorts[i].removePlayer(this);
@@ -296,7 +300,9 @@ public class RunnerController : AbstractPlayerController
     [ClientRpc]
     public void RpcEndLevel()
     {
-        mmScript.EndLevelShow();
+        if(isLocalPlayer && PV>0)
+            mmScript.EndLevelShow(true);
+        else mmScript.EndLevelShow(false);
         for (int i = 0; i < effectiveSorts.Count; i++)
         {
             effectiveSorts[i].removePlayer(this);
@@ -370,19 +376,19 @@ public class RunnerController : AbstractPlayerController
     }
 
     [Command]
-    public void CmdUnactiveGameObject(GameObject go) 
+    public void CmdUnactiveGameObject(int i) 
     {
-        RpcUnactiveGameObject(go);
+        RpcUnactiveGameObject(i);
         if (!NetworkClient.active)
         {
-            go.SetActive(false);
+            level.getDestroyableObjectContainer().GetChildren()[i].SetActive(false);
         }
     }
 
     [ClientRpc]
-    public void RpcUnactiveGameObject(GameObject go)
+    public void RpcUnactiveGameObject(int i)
     {
-        go.SetActive(false);
+        level.getDestroyableObjectContainer().GetChildren()[i].SetActive(false);
     }
 
     [Command]

@@ -12,7 +12,16 @@ public class MenuManagerScript : NetworkBehaviour {
     Canvas quitMenu;
 
     [SerializeField]
-    Canvas endMenu;
+    Canvas endMenuMaster;
+
+    [SerializeField]
+    Text endMenuMasterText;
+
+    [SerializeField]
+    Canvas endMenuRunner;
+
+    [SerializeField]
+    Text endMenuRunnerText;
 
     [SerializeField]
     Button play;
@@ -136,10 +145,15 @@ public class MenuManagerScript : NetworkBehaviour {
 
     public void StartMenuShow()
     {
-        endMenu.gameObject.SetActive(false);
+        endMenuMaster.gameObject.SetActive(false);
         startMenu.gameObject.SetActive(true);
         localPlayerScript.localPlayer.controlActivated = false;
         localPlayerScript.localPlayer.RestartPlayer();
+    }
+
+    public Canvas getEndMenuRunner()
+    {
+        return endMenuRunner;
     }
 
     public void ExitGame()
@@ -147,12 +161,27 @@ public class MenuManagerScript : NetworkBehaviour {
         localPlayerScript.localPlayer.Quit();
     }
 
-    public void EndLevelShow()
+    public void EndLevelShow(bool runnerWin)
     {
         localPlayerScript.localPlayer.controlActivated = false;
-        if(localPlayerScript.localPlayer.isServer)
-            endMenu.gameObject.SetActive(true);
         masterUI.gameObject.SetActive(false);
         runner1UI.gameObject.SetActive(false);
+
+        if (localPlayerScript.localPlayer.isServer)
+        {
+            if (!runnerWin)
+                endMenuMasterText.text = "YOU WIN";
+            else
+                endMenuMasterText.text = "GAME OVER";
+            endMenuMaster.gameObject.SetActive(true);
+        }
+        else
+        {
+            if (runnerWin)
+                endMenuRunnerText.text = "YOU WIN";
+            else
+                endMenuRunnerText.text = "GAME OVER";
+            endMenuRunner.gameObject.SetActive(true);
+        }
     }
 }

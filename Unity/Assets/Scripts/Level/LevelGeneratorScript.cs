@@ -94,8 +94,18 @@ public class LevelGeneratorScript : NetworkBehaviour
         endLevel.transform.localScale = new Vector3(levelWidth, 5, 0);
         endLevel.transform.localPosition = new Vector3(0, 2.5f, levelLength + espace);
     }
-	
-	public void generateLevel(int numPlayer)
+
+    public ObjectContainerScript getDestroyableObjectContainer()
+    {
+        return parentObstacleDestroyable;
+    }
+
+    public ObjectContainerScript getUndestroyableObjectContainer()
+    {
+        return parentObstacleUndestroyable;
+    }
+
+    public void generateLevel(int numPlayer)
     {
         print("generate level");
 

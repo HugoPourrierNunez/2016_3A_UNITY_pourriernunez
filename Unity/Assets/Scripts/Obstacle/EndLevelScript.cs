@@ -10,6 +10,6 @@ public class EndLevelScript : NetworkBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        mmScript.EndLevelShow();
+        mmScript.EndLevelShow(true);
     }
 }
