@@ -20,7 +20,7 @@ public class SpawnableObjectScript : NetworkBehaviour {
     GameObject mesh;
 
     [SerializeField]
-    float minimumDistanceWithRunner = 0;
+    protected float minimumDistanceWithRunner = 0;
 
     [SerializeField]
     NetworkIdentity id;
@@ -28,20 +28,42 @@ public class SpawnableObjectScript : NetworkBehaviour {
     [SerializeField]
     int cout = 5;
 
+    [SerializeField]
     LocalPlayerScript localPlayerScript;
 
-    MasterController ctrl;
+    [SerializeField]
+    protected MasterController masterController;
 
     private Material normal;
     private bool isHide = false;
 
     private bool canBePosed = false;
 
+    protected bool effectActive = false;
+
+    [SerializeField]
+    protected int indice = -1;
+
+    public void setIndice(int ind)
+    {
+        indice = ind;
+    }
+
+    virtual public void Play()
+    {
+        //rien
+    }
+
     public void setLocalPlayerScript(LocalPlayerScript lps)
     {
         localPlayerScript = lps;
         /*if (lps != null)
             print("local player set");*/
+    }
+
+    public void setMasterController(MasterController ctrl)
+    {
+        masterController = ctrl;
     }
 
     public void Start()
@@ -70,6 +92,7 @@ public class SpawnableObjectScript : NetworkBehaviour {
 
     public void UpdatePosition(Vector3 position, float distance)
     {
+        effectActive = false;
         if (objectRenderer != null)
             objectRenderer.enabled = true;
         else
@@ -95,13 +118,22 @@ public class SpawnableObjectScript : NetworkBehaviour {
         return cout;
     }
 
-    public void PoseObject(Vector3 pos)
+    virtual public void PoseObject(Vector3 pos)
     {
+        effectActive = true;
         myCollider.gameObject.transform.position = pos;
         myCollider.gameObject.SetActive(true);
         if (objectRenderer != null)
             objectRenderer.material = normal;
         myCollider.enabled = true;
+    }
+    
+    public void Desactive()
+    {
+        print("desactive");
+        gameObject.SetActive(false);
+        effectActive = false;
+        myCollider.enabled = false;
     }
 
 }

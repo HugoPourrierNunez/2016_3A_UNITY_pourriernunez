@@ -24,6 +24,7 @@ public class CreateMultipleSpawnableObject : EditorWindow
     SpawnableObjectContainerScript parent;
     SpawnableObjectScript gameobject;
     LocalPlayerScript localPlayerScript;
+    MasterController masterController;
 
     [MenuItem("MasterRunTools/MultipleSpawnableGoCreator")]
     public static void MyMultipleSpawnableGoCreator()
@@ -60,6 +61,11 @@ public class CreateMultipleSpawnableObject : EditorWindow
         localPlayerScript = (LocalPlayerScript)EditorGUILayout.ObjectField(localPlayerScript, typeof(LocalPlayerScript), true);
         EditorGUILayout.EndHorizontal();
 
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Master Controller");
+        masterController = (MasterController)EditorGUILayout.ObjectField(masterController, typeof(MasterController), true);
+        EditorGUILayout.EndHorizontal();
+
         if (GUILayout.Button("Generate multiple object"))
         {
             parent.initializeChildrenList();
@@ -67,6 +73,8 @@ public class CreateMultipleSpawnableObject : EditorWindow
             {
                 var go = (SpawnableObjectScript)PrefabUtility.InstantiatePrefab(gameobject);
                 go.setLocalPlayerScript(localPlayerScript);
+                go.setMasterController(masterController);
+                go.setIndice(i);
                 go.transform.position = new Vector3(0, 0, i);
                 go.gameObject.SetActive(activated);
                 parent.AddChildren(go);

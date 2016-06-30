@@ -5,13 +5,19 @@ using UnityEngine.Networking;
 public class WalkingMonsterScript : SpawnableObjectScript {
 
     [SerializeField]
-    float vitesse;
+    float force=5;
 
     [SerializeField]
     Rigidbody rb;
 
-    float interval = .1f;
+    [SerializeField]
+    float lifeTimeInSecond = 10;
+
+    float interval = 1f;
     float nextTime = 0;
+
+    private static int numConteneur=1;
+    private float timeEnd;
 
     // Use this for initialization
     void Start () {
@@ -22,31 +28,32 @@ public class WalkingMonsterScript : SpawnableObjectScript {
 	void Update () {
         if (Time.time >= nextTime)
         {
-            if(NetworkServer.active)
+            if(NetworkServer.active && effectActive)
             {
-                //do something here every interval seconds
-                print("move");
-                CmdMove();
+                masterController.PlayMonster(numConteneur,indice);
+                if (timeEnd <= Time.time)
+                {
+                    masterController.DesactiveMonster(numConteneur, indice);
+                }
             }
             nextTime += interval;
+            
 
         }
     }
 
-    [Command]
-    public void CmdMove()
+    override public void Play()
     {
-        RpcMove();
-        if (!NetworkClient.active)
-        {
-            rb.AddForce(Vector3.up*vitesse);
-        }
+        rb.velocity = Vector3.up * force;
     }
 
-    [ClientRpc]
-    public void RpcMove()
+    public override void PoseObject(Vector3 pos)
     {
-        rb.AddForce(Vector3.up * vitesse);
+        base.PoseObject(pos);
+        timeEnd = Time.time + lifeTimeInSecond;
+
+        print("time end =" + timeEnd);
+        nextTime = 0;
     }
-    
+
 }

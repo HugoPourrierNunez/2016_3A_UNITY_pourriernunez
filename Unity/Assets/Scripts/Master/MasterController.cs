@@ -405,6 +405,16 @@ public class MasterController : AbstractPlayerController
         CmdUpdateWaitingMenu();
     }
 
+    public void PlayMonster(int i, int j)
+    {
+        CmdPlayMonster(i, j);
+    }
+
+    public void DesactiveMonster(int i, int j)
+    {
+        CmdDesactiveMonster(i, j);
+    }
+
     [Command]
     public void CmdUpdateWaitingMenu()
     {
@@ -549,6 +559,38 @@ public class MasterController : AbstractPlayerController
     public void RpcChangeSizeLevel(int numRunner)
     {
         runnerListScript.getRunner(numRunner).getLevel().changeSizeLevel();
+    }
+
+    [Command]
+    public void CmdPlayMonster(int i, int j)
+    {
+        RpcPlayMonster(i,j);
+        if (!NetworkClient.active)
+        {
+            allContainerScript.getContainer(i).GetChildren()[j].Play();
+        }
+    }
+
+    [ClientRpc]
+    public void RpcPlayMonster(int i, int j)
+    {
+        allContainerScript.getContainer(i).GetChildren()[j].Play();
+    }
+
+    [Command]
+    public void CmdDesactiveMonster(int i, int j)
+    {
+        RpcDesactiveMonster(i, j);
+        if (!NetworkClient.active)
+        {
+            allContainerScript.getContainer(i).GetChildren()[j].Desactive();
+        }
+    }
+
+    [ClientRpc]
+    public void RpcDesactiveMonster(int i, int j)
+    {
+        allContainerScript.getContainer(i).GetChildren()[j].Desactive();
     }
 
 }
