@@ -136,7 +136,9 @@ public class MasterController : AbstractPlayerController
                 if(objectSelected.CanBePosed() && Input.GetMouseButtonUp(0))
                 {
                     removeMana(objectSelected.getCout());
-                    CmdPoseObject(objectSelected.transform.position);
+                    int tmpRunner = runnerListScript.getRunnerIdByLevelFloor(rayInfo.collider.gameObject);
+                    print("name =" + rayInfo.collider.gameObject.name);
+                    CmdPoseObject(objectSelected.transform.position, tmpRunner);
                 }
                 if (Input.GetMouseButtonUp(1))
                 {
@@ -297,20 +299,20 @@ public class MasterController : AbstractPlayerController
     }
 
     [Command]
-    public void CmdPoseObject(Vector3 pos)
+    public void CmdPoseObject(Vector3 pos,int runnerInd)
     {
-        RpcPoseObject(pos);
+        RpcPoseObject(pos, runnerInd);
         if (!NetworkClient.active)
         {
-            objectSelected.PoseObject(pos);
+            objectSelected.PoseObject(pos, runnerInd);
             //objectSelected = null;
         }
     }
 
     [ClientRpc]
-    public void RpcPoseObject(Vector3 pos)
+    public void RpcPoseObject(Vector3 pos, int runnerInd)
     {
-        objectSelected.PoseObject(pos);
+        objectSelected.PoseObject(pos, runnerInd);
         objectSelected = null;
     }
 

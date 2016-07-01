@@ -13,6 +13,9 @@ public class WalkingMonsterScript : SpawnableObjectScript {
     [SerializeField]
     float lifeTimeInSecond = 10;
 
+    [SerializeField]
+    float degat = 5;
+
     float interval = 1f;
     float nextTime = 0;
 
@@ -45,11 +48,12 @@ public class WalkingMonsterScript : SpawnableObjectScript {
     override public void Play()
     {
         rb.velocity = Vector3.up * force;
+        runnerController.removePV(degat);
     }
 
-    public override void PoseObject(Vector3 pos)
+    public override void PoseObject(Vector3 pos, int runnerInd)
     {
-        base.PoseObject(pos);
+        base.PoseObject(pos, runnerInd);
         timeEnd = Time.time + lifeTimeInSecond;
 
         print("time end =" + timeEnd);

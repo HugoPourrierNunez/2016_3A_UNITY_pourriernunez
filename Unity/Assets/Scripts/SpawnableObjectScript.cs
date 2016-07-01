@@ -34,12 +34,17 @@ public class SpawnableObjectScript : NetworkBehaviour {
     [SerializeField]
     protected MasterController masterController;
 
+    [SerializeField]
+    RunnerListScript runnerList;
+
     private Material normal;
     private bool isHide = false;
 
     private bool canBePosed = false;
 
     protected bool effectActive = false;
+
+    protected RunnerController runnerController;
 
     [SerializeField]
     protected int indice = -1;
@@ -59,6 +64,11 @@ public class SpawnableObjectScript : NetworkBehaviour {
         localPlayerScript = lps;
         /*if (lps != null)
             print("local player set");*/
+    }
+
+    public void setRunnerList(RunnerListScript runner)
+    {
+        runnerList = runner;
     }
 
     public void setMasterController(MasterController ctrl)
@@ -118,7 +128,7 @@ public class SpawnableObjectScript : NetworkBehaviour {
         return cout;
     }
 
-    virtual public void PoseObject(Vector3 pos)
+    virtual public void PoseObject(Vector3 pos,int runnerInd)
     {
         effectActive = true;
         myCollider.gameObject.transform.position = pos;
@@ -126,6 +136,9 @@ public class SpawnableObjectScript : NetworkBehaviour {
         if (objectRenderer != null)
             objectRenderer.material = normal;
         myCollider.enabled = true;
+        runnerController = runnerList.getRunner(runnerInd);
+        if (runnerController == null)
+            print("non find runner num:" + runnerInd);
     }
     
     public void Desactive()

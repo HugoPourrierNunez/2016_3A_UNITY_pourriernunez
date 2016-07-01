@@ -137,9 +137,10 @@ public class RunnerController : AbstractPlayerController
         {
             percent = PV / maxPV;
         }
-
+        //print("remove pv");
         runnerUI.getPvBar().changePercentage(percent);
-        CmdDisplayMasterPV(percent);
+        if(!NetworkServer.active)
+            CmdDisplayMasterPV(percent);
     }
 
     // Use this for initialization
@@ -155,6 +156,7 @@ public class RunnerController : AbstractPlayerController
         RestartPlayer();
         runnerLevel.activate();
     }
+
 
     public Light getLight()
     {

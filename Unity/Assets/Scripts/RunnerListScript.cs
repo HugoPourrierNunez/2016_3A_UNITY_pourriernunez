@@ -21,6 +21,19 @@ public class RunnerListScript : NetworkBehaviour {
         return -1;
     }
 
+    public int getRunnerIdByLevelFloor(GameObject go)
+    {
+        for (int i = 0; i < runnerList.Count; i++)
+        {
+            if (runnerList[i].getLevel().getFloor().gameObject== go)
+            {
+                return i;
+            }
+
+        }
+        return -1;
+    }
+
     public RunnerController getRunner(int i)
     {
         if (i < 0 || i >= runnerList.Count)

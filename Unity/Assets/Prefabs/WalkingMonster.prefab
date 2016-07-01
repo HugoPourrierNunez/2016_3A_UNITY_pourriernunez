@@ -104,10 +104,12 @@ MonoBehaviour:
   cout: 5
   localPlayerScript: {fileID: 0}
   masterController: {fileID: 0}
+  runnerList: {fileID: 0}
   indice: -1
   force: 3
   rb: {fileID: 5431960}
   lifeTimeInSecond: 7
+  degat: 1
 --- !u!114 &11415906
 MonoBehaviour:
   m_ObjectHideFlags: 1
