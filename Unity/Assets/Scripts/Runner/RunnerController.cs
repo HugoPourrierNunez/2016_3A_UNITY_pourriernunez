@@ -174,7 +174,7 @@ public class RunnerController : AbstractPlayerController
     public override void RestartPlayer()
     {
         //runnerConstantForce.force = Vector3.forward * vitesseGlobale;
-        runnerView.transform.position = startPosition;
+        runnerView.transform.localPosition = startPosition;
         PV = maxPV;
         mmScript.getEndMenuRunner().gameObject.SetActive(false);
         runnerUI.getPvBar().changePercentage(1);

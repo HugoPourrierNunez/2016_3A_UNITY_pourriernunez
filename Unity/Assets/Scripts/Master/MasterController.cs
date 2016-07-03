@@ -47,6 +47,9 @@ public class MasterController : AbstractPlayerController
     [SerializeField]
     Light masterLigth;
 
+    [SerializeField]
+    Transform masterView;
+
     private Vector3 positionCamera=new Vector3();
     private Vector3 translationCamera = new Vector3(0, 0, 0);
     private float effectiveZoom = 0;
@@ -96,10 +99,15 @@ public class MasterController : AbstractPlayerController
     {
         if (isLocalPlayer)
         {
+            if(Input.GetKeyUp(KeyCode.Space))
+            {
+                print("space");
+                changeRunnerFocused();
+            }
             if (Input.GetAxis("Mouse ScrollWheel") < 0 && effectiveZoom > minZoom) // back
             {
                 translationCamera.z = -zoomSpeed;
-                effectiveZoom -= zoomSpeed;
+                effectiveZoom -= zoomSpeed; 
                 alignementGauche = getAlignGauche();
             }
             else if (Input.GetAxis("Mouse ScrollWheel") > 0 && effectiveZoom < maxZoom) // forward
@@ -194,6 +202,21 @@ public class MasterController : AbstractPlayerController
                     sortSelected = null;
                 }
             }
+        }
+    }
+
+    public void changeRunnerFocused()
+    {
+        if(menuManager.getNumberOfPlayer()==3)
+        {
+            print("runner change");
+            int i = runnerListScript.getRunnerIdByView(runnerView.gameObject);
+            if (i == 0) i = 1;
+            else i = 0;
+            runnerView = runnerListScript.getRunner(i).getView().transform;
+            floor = runnerListScript.getRunner(i).getLevel().getFloor();
+            masterView.localPosition = new Vector3(floor.position.x, masterView.localPosition.y, masterView.localPosition.z);
+            print("runnerview name =" + runnerView.name);
         }
     }
 
