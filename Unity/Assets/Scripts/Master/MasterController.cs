@@ -218,6 +218,11 @@ public class MasterController : AbstractPlayerController
         return mana;
     }
 
+    public void DesactiveAll()
+    {
+        allContainerScript.DesactiveAll();
+    }
+
     [Command]
     public void CmdLauchSort(int tmpRunner)
     {
@@ -343,6 +348,7 @@ public class MasterController : AbstractPlayerController
             objectSelected = allContainerScript.getContainer(i).GetChildren()[j];
             objectSelected.gameObject.SetActive(true);
             objectSelected.setLocalPlayerScript(localPlayerScript);
+            objectSelected.Hide();
         }
     }
 
@@ -354,6 +360,7 @@ public class MasterController : AbstractPlayerController
         objectSelected = allContainerScript.getContainer(i).GetChildren()[j];
         objectSelected.gameObject.SetActive(true);
         objectSelected.setLocalPlayerScript(localPlayerScript);
+        objectSelected.Hide();
     }
 
     public void GenerateLevel()

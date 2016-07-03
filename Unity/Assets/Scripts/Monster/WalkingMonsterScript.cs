@@ -51,13 +51,21 @@ public class WalkingMonsterScript : SpawnableObjectScript {
         runnerController.removePV(degat);
     }
 
+    public override void Desactive()
+    {
+        base.Desactive();
+        rb.isKinematic = true;
+    }
+
     public override void PoseObject(Vector3 pos, int runnerInd)
     {
         base.PoseObject(pos, runnerInd);
+        rb.isKinematic = false;
         timeEnd = Time.time + lifeTimeInSecond;
 
         print("time end =" + timeEnd);
         nextTime = 0;
     }
+
 
 }

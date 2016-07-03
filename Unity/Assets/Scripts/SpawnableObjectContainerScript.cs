@@ -28,6 +28,15 @@ public class SpawnableObjectContainerScript : MonoBehaviour {
         children.Add(go);
     }
 
+    public void DesactiveAll()
+    {
+        for (int i = 0; i < children.Count; i++)
+        {
+            children[i].Desactive();
+        }
+
+    }
+
 
     public SpawnableObjectScript getFirstDisableGO()
     {

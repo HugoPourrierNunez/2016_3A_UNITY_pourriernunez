@@ -91,7 +91,7 @@ public class SpawnableObjectScript : NetworkBehaviour {
         return canBePosed && !isHide;
     }
 
-    public void Hide()
+    virtual public void Hide()
     {
         if (objectRenderer != null)
             objectRenderer.enabled = false;
@@ -100,7 +100,7 @@ public class SpawnableObjectScript : NetworkBehaviour {
         isHide = true;
     }
 
-    public void UpdatePosition(Vector3 position, float distance)
+    virtual public void UpdatePosition(Vector3 position, float distance)
     {
         effectActive = false;
         if (objectRenderer != null)
@@ -108,7 +108,7 @@ public class SpawnableObjectScript : NetworkBehaviour {
         else
             mesh.SetActive(true);
         isHide = false;
-        myCollider.gameObject.transform.position = position;
+        myCollider.gameObject.transform.position = new Vector3(position.x, myCollider.gameObject.transform.position.y, position.z); ;
         if (distance < minimumDistanceWithRunner)
         {
             canBePosed = false;
@@ -130,8 +130,9 @@ public class SpawnableObjectScript : NetworkBehaviour {
 
     virtual public void PoseObject(Vector3 pos,int runnerInd)
     {
+        objectRenderer.enabled = true;
         effectActive = true;
-        myCollider.gameObject.transform.position = pos;
+        myCollider.gameObject.transform.position = new Vector3(pos.x, myCollider.gameObject.transform.position.y,pos.z);
         myCollider.gameObject.SetActive(true);
         if (objectRenderer != null)
             objectRenderer.material = normal;
@@ -141,7 +142,7 @@ public class SpawnableObjectScript : NetworkBehaviour {
             print("non find runner num:" + runnerInd);
     }
     
-    public void Desactive()
+    virtual public void Desactive()
     {
         print("desactive");
         gameObject.SetActive(false);

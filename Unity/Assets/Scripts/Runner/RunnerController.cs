@@ -65,6 +65,9 @@ public class RunnerController : AbstractPlayerController
     [SerializeField]
     Vector3 startPosition;
 
+    [SerializeField]
+    ConstantForce runnerConstantForce;
+
     private GameObject pointedGO=null;
     private float PV;
     private const float timeElapse = .1f;
@@ -123,6 +126,11 @@ public class RunnerController : AbstractPlayerController
         }
     }
 
+    public void RemovePVNetwork(float nb)
+    {
+        CmdRemovePV(nb);
+    }
+
     public void removePV(float nb)
     {
         float percent;
@@ -165,7 +173,7 @@ public class RunnerController : AbstractPlayerController
 
     public override void RestartPlayer()
     {
-        print("Restart player position="+startPosition);
+        //runnerConstantForce.force = Vector3.forward * vitesseGlobale;
         runnerView.transform.position = startPosition;
         PV = maxPV;
         mmScript.getEndMenuRunner().gameObject.SetActive(false);
@@ -256,12 +264,72 @@ public class RunnerController : AbstractPlayerController
     public void activeRB(bool activate)
     {
         runnerRigidbody.isKinematic = activate;
-        print("isKinetic=" + activate);
     }
 
     public LevelGeneratorScript getLevel()
     {
         return level;
+    }
+
+    [Command]
+    public void CmdRemovePV(float nb)
+    {
+        RpcRemovePV(nb);
+        if (!NetworkClient.active)
+        {
+            float percent;
+            PV -= nb;
+            if (PV <= 0)
+            {
+                PV = 0;
+                percent = 0;
+                if (isLocalPlayer && PV > 0)
+                    mmScript.EndLevelShow(true);
+                else mmScript.EndLevelShow(false);
+                for (int i = 0; i < effectiveSorts.Count; i++)
+                {
+                    effectiveSorts[i].removePlayer(this);
+                }
+                effectiveSorts.Clear();
+                masterController.DesactiveAll();
+            }
+            else
+            {
+                percent = PV / maxPV;
+            }
+            //print("remove pv");
+            runnerUI.getPvBar().changePercentage(percent);
+            CmdDisplayMasterPV(percent);
+        }
+    }
+
+    [ClientRpc]
+    public void RpcRemovePV(float nb)
+    {
+        float percent;
+        PV -= nb;
+        if (PV <= 0)
+        {
+            PV = 0;
+            percent = 0;
+            if (isLocalPlayer && PV > 0)
+                mmScript.EndLevelShow(true);
+            else mmScript.EndLevelShow(false);
+            for (int i = 0; i < effectiveSorts.Count; i++)
+            {
+                effectiveSorts[i].removePlayer(this);
+            }
+            effectiveSorts.Clear();
+            masterController.DesactiveAll();
+        }
+        else
+        {
+            percent = PV / maxPV;
+        }
+        //print("remove pv");
+        runnerUI.getPvBar().changePercentage(percent);
+        if (!NetworkServer.active)
+            CmdDisplayMasterPV(percent);
     }
 
     [Command]
@@ -311,23 +379,6 @@ public class RunnerController : AbstractPlayerController
         }
         effectiveSorts.Clear();
     }
-
-    /*[Command]
-    public void CmdAddEffectiveSort(int sortInd)
-    {
-        RpcAddEffectiveSort(sortInd);
-        if (!NetworkClient.active)
-        {
-            effectiveSorts.Add(sortContainerScript.GetChildren()[sortInd]);
-        }
-    }
-
-    [ClientRpc]
-    public void RpcAddEffectiveSort(int sortInd)
-    {
-        print("add sort");
-        effectiveSorts.Add(sortContainerScript.GetChildren()[sortInd]);
-    }*/
 
     [Command]
     public void CmdMove(Vector3 translateVector)

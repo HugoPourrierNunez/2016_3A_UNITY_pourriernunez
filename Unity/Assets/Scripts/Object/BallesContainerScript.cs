@@ -2,34 +2,33 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ObjectContainerScript : MonoBehaviour {
-
-
+public class BallesContainerScript : MonoBehaviour
+{
     [SerializeField]
-    List<GameObject> children;
+    List<BalleScript> children;
 
 
-    public List<GameObject>  GetChildren()
+    public List<BalleScript> GetChildren()
     {
         return children;
     }
 
     public void initializeChildrenList()
     {
-        children = new List<GameObject>();
+        children = new List<BalleScript>();
     }
 
-    public void AddChildren(GameObject go)
+    public void AddChildren(BalleScript go)
     {
         go.transform.parent = this.transform;
         children.Add(go);
     }
 
 
-    public GameObject getFirstDisableGO()
+    public BalleScript getFirstDisableGO()
     {
         for (int i = 0; i < children.Count; i++)
-            if (!children[i].active)
+            if (!children[i].gameObject.active)
                 return children[i];
         return null;
     }
