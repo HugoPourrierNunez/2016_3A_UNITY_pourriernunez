@@ -157,7 +157,8 @@ public class RunnerController : AbstractPlayerController
         {
             PV = 0;
             percent = 0;
-            CmdEndLevel();
+            if(controlActivated)
+                CmdEndLevel();
         }
         else
         {
@@ -379,28 +380,61 @@ public class RunnerController : AbstractPlayerController
         RpcEndLevel();
         if (!NetworkClient.active)
         {
-            if (isLocalPlayer && PV > 0)
-                mmScript.EndLevelShow(true);
-            else mmScript.EndLevelShow(false);
-            for (int i =0; i<effectiveSorts.Count;i++)
+            menuManager.setRunnerDead(menuManager.getRunnerDead() + 1);
+            if (isLocalPlayer)
             {
-                effectiveSorts[i].removePlayer(this);
+                if (PV > 0)
+                    mmScript.EndLevelShow(true);
+                else mmScript.EndLevelShow(false);
             }
-            effectiveSorts.Clear();
+
+            print("runnerdead=" + menuManager.getRunnerDead());
+            print("numberOfPlayer=" + menuManager.getNumberOfPlayer());
+            if (menuManager.getRunnerDead() == menuManager.getNumberOfPlayer() - 1)
+            {
+
+                if (isLocalPlayer && PV > 0)
+                    mmScript.EndLevelShow(true);
+                else mmScript.EndLevelShow(false);
+                for (int i = 0; i < effectiveSorts.Count; i++)
+                {
+                    effectiveSorts[i].removePlayer(this);
+                }
+                effectiveSorts.Clear();
+                menuManager.setRunnerDead(0); ;
+            }
+
         }
     }
 
     [ClientRpc]
     public void RpcEndLevel()
     {
-        if(isLocalPlayer && PV>0)
-            mmScript.EndLevelShow(true);
-        else mmScript.EndLevelShow(false);
-        for (int i = 0; i < effectiveSorts.Count; i++)
+        menuManager.setRunnerDead(menuManager.getRunnerDead() + 1);
+        if (isLocalPlayer)
         {
-            effectiveSorts[i].removePlayer(this);
+            if (PV > 0)
+                mmScript.EndLevelShow(true);
+            else mmScript.EndLevelShow(false);
         }
-        effectiveSorts.Clear();
+
+        print("runnerdead=" + menuManager.getRunnerDead());
+        print("numberOfPlayer=" + menuManager.getNumberOfPlayer());
+        if (menuManager.getRunnerDead() == menuManager.getNumberOfPlayer() - 1)
+        {
+                
+            if (isLocalPlayer && PV > 0)
+                mmScript.EndLevelShow(true);
+            else mmScript.EndLevelShow(false);
+            for (int i = 0; i < effectiveSorts.Count; i++)
+            {
+                effectiveSorts[i].removePlayer(this);
+            }
+            effectiveSorts.Clear();
+            menuManager.setRunnerDead(0); ;
+        }
+        
+        
     }
 
     [Command]

@@ -495,6 +495,8 @@ public class MasterController : AbstractPlayerController
                 }
             }
 
+            menuManager.setRunnerDead(0);
+
         }
 
     }
@@ -525,6 +527,7 @@ public class MasterController : AbstractPlayerController
                 }
             }
         }
+        menuManager.setRunnerDead(0);
     }
 
     [Command]

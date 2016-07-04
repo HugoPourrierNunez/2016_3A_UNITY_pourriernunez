@@ -74,6 +74,7 @@ public class MenuManagerScript : NetworkBehaviour {
 
     private int numberOfPlayers = -1;
     private int numberOfActivePlayers = 0;
+    private int numberOfRunnerDead = 0;
 
     public void Start()
     {
@@ -87,6 +88,16 @@ public class MenuManagerScript : NetworkBehaviour {
         }
     }
 
+    public void setRunnerDead(int nb)
+    {
+        numberOfRunnerDead = nb;
+    }
+
+    public int getRunnerDead()
+    {
+        return numberOfRunnerDead;
+    }
+
     /*Méthode qui quitte l'application*/
     public void ExitPress()
     {
@@ -96,6 +107,8 @@ public class MenuManagerScript : NetworkBehaviour {
         retry.enabled = false;
         exitEnd.enabled = false;
     }
+
+
 
     /*Méthode qui cache le menu 'quitter'*/
     public void NoPress()
@@ -207,25 +220,28 @@ public class MenuManagerScript : NetworkBehaviour {
     /*Affiche le menu de fin de partie*/
     public void EndLevelShow(bool runnerWin)
     {
-        localPlayerScript.localPlayer.controlActivated = false;
-        masterUI.gameObject.SetActive(false);
-        runner1UI.gameObject.SetActive(false);
+        if(localPlayerScript.localPlayer.controlActivated==true)
+        {
+            localPlayerScript.localPlayer.controlActivated = false;
+            masterUI.gameObject.SetActive(false);
+            runner1UI.gameObject.SetActive(false);
 
-        if (localPlayerScript.localPlayer.isServer)
-        {
-            if (!runnerWin)
-                endMenuMasterText.text = "YOU WIN";
+            if (localPlayerScript.localPlayer.isServer)
+            {
+                if (!runnerWin)
+                    endMenuMasterText.text = "YOU WIN";
+                else
+                    endMenuMasterText.text = "GAME OVER";
+                endMenuMaster.gameObject.SetActive(true);
+            }
             else
-                endMenuMasterText.text = "GAME OVER";
-            endMenuMaster.gameObject.SetActive(true);
-        }
-        else
-        {
-            if (runnerWin)
-                endMenuRunnerText.text = "YOU WIN";
-            else
-                endMenuRunnerText.text = "GAME OVER";
-            endMenuRunner.gameObject.SetActive(true);
+            {
+                if (runnerWin)
+                    endMenuRunnerText.text = "YOU WIN";
+                else
+                    endMenuRunnerText.text = "GAME OVER";
+                endMenuRunner.gameObject.SetActive(true);
+            }
         }
     }
 }
