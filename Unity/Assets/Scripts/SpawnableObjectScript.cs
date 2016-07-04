@@ -46,6 +46,7 @@ public class SpawnableObjectScript : NetworkBehaviour {
 
     protected RunnerController runnerController;
 
+
     [SerializeField]
     protected int indice = -1;
 
@@ -144,7 +145,6 @@ public class SpawnableObjectScript : NetworkBehaviour {
     
     virtual public void Desactive()
     {
-        print("desactive");
         gameObject.SetActive(false);
         effectActive = false;
         myCollider.enabled = false;

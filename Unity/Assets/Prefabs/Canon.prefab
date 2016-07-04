@@ -95,7 +95,7 @@ GameObject:
   - 114: {fileID: 11486690}
   m_Layer: 11
   m_Name: Canon
-  m_TagString: Untagged
+  m_TagString: Destroyable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

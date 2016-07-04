@@ -6,6 +6,9 @@ using System.Collections.Generic;
 public class RunnerController : AbstractPlayerController
 {
     [SerializeField]
+    AllContainerScript allContainerScript;
+
+    [SerializeField]
     LevelGeneratorScript level;
 
     [SerializeField]
@@ -105,6 +108,11 @@ public class RunnerController : AbstractPlayerController
     public GameObject getView()
     {
         return runnerView.gameObject;
+    }
+
+    public void DesactiveObject(int i,int j)
+    {
+        CmdDesactiveObject(i, j);
     }
 
     public void addEffectiveSort(int sortInd)
@@ -216,7 +224,7 @@ public class RunnerController : AbstractPlayerController
                     {
                         pointeur.gameObject.SetActive(true);
                         
-                        if (rayInfo.collider.gameObject.layer != LayerMask.NameToLayer("ObstacleDestroyable"))
+                        if (rayInfo.collider.gameObject.layer != LayerMask.NameToLayer("ObstacleDestroyable") && !rayInfo.collider.gameObject.CompareTag("Destroyable"))
                         {
                             pointeurMaterial.color = pointeurColor1;
                             pointeurMaterial.SetColor("_EmissionColor", pointeurColor1);
@@ -243,11 +251,17 @@ public class RunnerController : AbstractPlayerController
             }
             if(Input.GetMouseButtonDown(0))
             {
-                if(pointedGO!=null && pointedGO.layer==LayerMask.NameToLayer("ObstacleDestroyable"))
+                if(pointedGO!=null && (pointedGO.layer==LayerMask.NameToLayer("ObstacleDestroyable") || pointedGO.CompareTag("Destroyable")))
                 {
                     print("click");
                     int ind = level.getDestroyableObjectContainer().GetChildren().IndexOf(pointedGO);
-                    CmdUnactiveGameObject(ind);
+                    if (ind != -1)
+                        CmdUnactiveGameObject(ind);
+                    else
+                    {
+                        pointedGO.SetActive(false);
+                    }
+                        
                     pointedGO = null;
                 }
             }
@@ -459,5 +473,21 @@ public class RunnerController : AbstractPlayerController
     public void RpcDisplayMasterPV(float percent)
     {
         masterController.changePV(percent);
+    }
+
+    [Command]
+    public void CmdDesactiveObject(int i, int j)
+    {
+        RpcDesactiveObject(i, j);
+        if (!NetworkClient.active)
+        {
+            allContainerScript.getContainer(i).GetChildren()[j].Desactive();
+        }
+    }
+
+    [ClientRpc]
+    public void RpcDesactiveObject(int i, int j)
+    {
+        allContainerScript.getContainer(i).GetChildren()[j].Desactive();
     }
 }

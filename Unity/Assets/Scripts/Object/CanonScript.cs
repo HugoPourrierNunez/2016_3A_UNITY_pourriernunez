@@ -37,6 +37,11 @@ public class CanonScript : SpawnableObjectScript {
     [SerializeField]
     Transform objectToFollow = null;
 
+    void OnDisable()
+    {
+        runnerController.DesactiveObject(numConteneur, indice);
+    }
+
     // Update is called once per frame
     void Update () {
         timerRotation += Time.deltaTime;
@@ -80,7 +85,6 @@ public class CanonScript : SpawnableObjectScript {
         BalleScript b = balles.getFirstDisableGO();
         if (b != null)
         {
-            print("tir time = " + Time.time);
             b.gameObject.SetActive(true);
             b.startLifeTime(lifeTimeBalle);
             b.transform.localPosition = new Vector3(0, 0, 0);

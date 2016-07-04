@@ -175,7 +175,7 @@ public class MasterController : AbstractPlayerController
                     {
                         sortSelected.getSortVisualScript().gameObject.SetActive(true);
                         sortSelected.getSortVisualScript().setOK(true);
-                        sortSelected.getSortVisualScript().updatePosition(rayInfo.collider.gameObject.transform.localPosition);
+                        sortSelected.getSortVisualScript().updatePosition(rayInfo.collider.gameObject.transform.position);
                     }
                     else sortSelected.getSortVisualScript().gameObject.SetActive(false);
                 }
@@ -189,6 +189,7 @@ public class MasterController : AbstractPlayerController
                     int tmpRunner = runnerListScript.getRunnerIdByView(rayInfo.collider.gameObject);
                     if (tmpRunner != -1 && !sortSelected.affectAlreadyRunner(tmpRunner))
                     {
+                        print("lauch sort");
                         removeMana((int)sortSelected.getCout());
                         CmdLauchSort(tmpRunner);
                     }
