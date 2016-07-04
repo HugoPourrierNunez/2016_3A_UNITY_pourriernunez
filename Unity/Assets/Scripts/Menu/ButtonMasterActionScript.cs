@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
+/*Classe utilisée par les bouton d'action sur lequel le master appuie pour place un obstacle ou un monstre*/
 public class ButtonMasterActionScript : MonoBehaviour {
 
     [SerializeField]
@@ -36,6 +37,7 @@ public class ButtonMasterActionScript : MonoBehaviour {
 	    
 	}
 
+    /*Méthode appelée par le bouton à l'appuie pour dire au mastercontroller qu'il a selectionné l'objet*/
     public void selectObject()
     {
         int indice = go.getFirstDisableGOIndice();
@@ -48,6 +50,7 @@ public class ButtonMasterActionScript : MonoBehaviour {
             masterController.setObjectSelected(numberContainer, indice);
     }
 
+    /*Message de warning si le joueur n'a pas assez de mana*/
     private void WarningMana()
     {
         print("Pas assez de mana");

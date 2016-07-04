@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
+/*Classe qui gère la navigation dans les menus du jeu*/
 public class MenuManagerScript : NetworkBehaviour {
 
     [SerializeField]
@@ -53,6 +54,24 @@ public class MenuManagerScript : NetworkBehaviour {
     [SerializeField]
     Canvas masterChoosePlayer;
 
+    [SerializeField]
+    Slider longueurLevelSlider;
+
+    [SerializeField]
+    Slider largeurLevelSlider;
+
+    [SerializeField]
+    Slider difficultyLevelSlider;
+
+    [SerializeField]
+    Slider numberDestroyableObstacleLevelSlider;
+
+    [SerializeField]
+    Slider numberUndestroyableObstacleLevelSlider;
+
+    [SerializeField]
+    Canvas levelParameterMenu;
+
     private int numberOfPlayers = -1;
     private int numberOfActivePlayers = 0;
 
@@ -68,6 +87,7 @@ public class MenuManagerScript : NetworkBehaviour {
         }
     }
 
+    /*Méthode qui quitte l'application*/
     public void ExitPress()
     {
         quitMenu.gameObject.SetActive(true);
@@ -77,6 +97,7 @@ public class MenuManagerScript : NetworkBehaviour {
         exitEnd.enabled = false;
     }
 
+    /*Méthode qui cache le menu 'quitter'*/
     public void NoPress()
     {
         quitMenu.gameObject.SetActive(false);
@@ -86,17 +107,23 @@ public class MenuManagerScript : NetworkBehaviour {
         exitEnd.enabled = true;
     }
 
+    /*Méthode appelé au start level*/
     public void StartLevel()
     {
         if(NetworkServer.active)
         {
             print("start level");
-            masterController.GenerateLevel();
+            masterController.GenerateLevel(longueurLevelSlider.value, 
+                largeurLevelSlider.value, 
+                difficultyLevelSlider.value, 
+                numberDestroyableObstacleLevelSlider.value,
+                numberUndestroyableObstacleLevelSlider.value);
             masterController.ActivePlayers();
         }
         startMenu.gameObject.SetActive(false);
     }
 
+    /*Met à jour le nombre de player voulu sur la partie*/
     public void setNumberOfPlayer(int nb)
     {
         numberOfPlayers = nb;
@@ -106,19 +133,23 @@ public class MenuManagerScript : NetworkBehaviour {
         }
     }
 
+    /*Cache le menu d'attente de connection des joueurs*/
     public void HideWaitingMenu()
     {
         print("hide waiting menu");
         waitingMenu.gameObject.SetActive(false);
         if (NetworkServer.active)
-            startMenu.gameObject.SetActive(true);
+            levelParameterMenu.gameObject.SetActive(true);
+            //startMenu.gameObject.SetActive(true);
     }
 
+    /*Renvoie le nombre de joueurs voulu sur la partie*/
     public int getNumberOfPlayer()
     {
         return numberOfPlayers ;
     }
-
+    
+    /*Met à jour le nombre de joueurs actifs sur la partie*/
     public void setNumberOfActivePlayers(int nb)
     {
         numberOfActivePlayers=nb;
@@ -129,11 +160,13 @@ public class MenuManagerScript : NetworkBehaviour {
         }
     }
 
+    /*Retourne le nombre de joueurs voulus sur la partie*/
     public int getNumberOfActivePlayers()
     {
         return numberOfActivePlayers;
     }
 
+    /*Affiche le menu d'attente de connection des autres joueurs*/
     public void showWaitingMenu()
     {
         masterChoosePlayer.gameObject.SetActive(false);
@@ -143,24 +176,35 @@ public class MenuManagerScript : NetworkBehaviour {
             startMenu.gameObject.SetActive(true);
     }
 
+    /*Affiche le menu de début de partie, ici le menu pour paramètrer le level*/
     public void StartMenuShow()
     {
         endMenuMaster.gameObject.SetActive(false);
-        startMenu.gameObject.SetActive(true);
+        levelParameterMenu.gameObject.SetActive(true);
         localPlayerScript.localPlayer.controlActivated = false;
         localPlayerScript.localPlayer.RestartPlayer();
     }
 
+    /*Cache le menu de paramètrage du level*/
+    public void HideLevelParameterMenu()
+    {
+        levelParameterMenu.gameObject.SetActive(false);
+        startMenu.gameObject.SetActive(true);
+    }
+
+    /*Renvoie le menu de fin de partie*/
     public Canvas getEndMenuRunner()
     {
         return endMenuRunner;
     }
 
+    /*Affiche un petit menu qui demande si on veut vraiment quitter le jeu*/
     public void ExitGame()
     {
         localPlayerScript.localPlayer.Quit();
     }
 
+    /*Affiche le menu de fin de partie*/
     public void EndLevelShow(bool runnerWin)
     {
         localPlayerScript.localPlayer.controlActivated = false;

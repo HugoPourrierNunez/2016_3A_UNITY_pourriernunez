@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.Networking;
 
+/*Classe qui gère les canon*/
 public class CanonScript : SpawnableObjectScript {
 
     [SerializeField]
@@ -32,7 +33,7 @@ public class CanonScript : SpawnableObjectScript {
     private float timerShot = 0;
     private int numConteneur = 2;
 
-    private float op=0, ad=0, angleRot=0/*, angleElev*/;
+    private float op=0, ad=0, angleRot=0;
 
     [SerializeField]
     Transform objectToFollow = null;
@@ -48,7 +49,6 @@ public class CanonScript : SpawnableObjectScript {
         timerShot += Time.deltaTime;
         if (timerRotation>=interval && effectActive && objectToFollow!=null)
         {
-            //print("rotation ");
             timerRotation -= interval;
             op = Mathf.Abs(objectToFollow.position.z - transform.position.z);
             ad = Mathf.Abs(objectToFollow.position.x - transform.position.x);
@@ -57,12 +57,8 @@ public class CanonScript : SpawnableObjectScript {
                 angleRot -= angleRot * 2;
             if (objectToFollow.position.x < transform.position.x)
                 angleRot += (90- angleRot) *2;
-            /*if(objectToFollow.position.x!=transform.position.x)
-                angleElev = RadianToDegree(Mathf.Atan(Mathf.Abs(objectToFollow.position.y - transform.position.y) / Mathf.Abs(objectToFollow.position.x - transform.position.x)));
-            else
-                angleElev = RadianToDegree(Mathf.Atan(Mathf.Abs(objectToFollow.position.y - transform.position.y) / Mathf.Abs(objectToFollow.position.z - transform.position.z)));*/
             transform.rotation = Quaternion.identity;
-            transform.Rotate(new Vector3(0, angleRot, angleViseur/*+angleElev*/));
+            transform.Rotate(Vector3.up*angleRot+Vector3.forward*angleViseur);
         }
         if (timerShot>=intervalTir && effectActive && objectToFollow != null && NetworkServer.active)
         {
@@ -72,12 +68,14 @@ public class CanonScript : SpawnableObjectScript {
 
     }
 
+    /*Méthode qui enlève des pv à un joueur touché*/
     public void removePV(GameObject cible)
     {
         if(cible==runnerController.getView().gameObject && NetworkServer.active)
             runnerController.RemovePVNetwork(degat);
     }
 
+    /*Appele une séquence d'action de l'objet, ici un tir*/
     public override void Play()
     {
         base.Play();
@@ -87,17 +85,19 @@ public class CanonScript : SpawnableObjectScript {
         {
             b.gameObject.SetActive(true);
             b.startLifeTime(lifeTimeBalle);
-            b.transform.localPosition = new Vector3(0, 0, 0);
+            b.transform.localPosition = Vector3.zero;
             b.getRigidBody().velocity = Vector3.zero;
             b.getRigidBody().AddRelativeForce(Vector3.up * forceTire, ForceMode.VelocityChange);
         }
     }
 
+    /*Met à jour la posiition de l'objet*/
     override public void UpdatePosition(Vector3 position, float distance)
     {
         base.UpdatePosition(position,distance);
     }
 
+    /*Fait spawn l'objet à une position*/
     public override void PoseObject(Vector3 pos, int runnerInd)
     {
         base.PoseObject(pos, runnerInd);
@@ -110,6 +110,7 @@ public class CanonScript : SpawnableObjectScript {
         return angle * (180.0f / Mathf.PI);
     }
 
+    /*Cache l'objet*/
     public override void Hide()
     {
         base.Hide();

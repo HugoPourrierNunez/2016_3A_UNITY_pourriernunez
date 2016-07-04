@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.Networking;
 
+/*Classe abstraite qui sert de classe mère au masterController et au runnercontroller*/
 public abstract class AbstractPlayerController : NetworkBehaviour
 {
 
@@ -17,7 +18,6 @@ public abstract class AbstractPlayerController : NetworkBehaviour
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
-        print("set local player");
         localPlayerScript.localPlayer = this;
         controlActivated = false;
         CmdPreventMenuManagerOfNewPlayer();

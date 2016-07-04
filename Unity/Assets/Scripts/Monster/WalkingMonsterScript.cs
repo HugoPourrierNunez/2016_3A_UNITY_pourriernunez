@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.Networking;
 
+/*Classe qui gère un montre terrestre*/
 public class WalkingMonsterScript : SpawnableObjectScript {
 
     [SerializeField]
@@ -45,18 +46,21 @@ public class WalkingMonsterScript : SpawnableObjectScript {
         }
     }
 
+    /*Méthode qui joue une séquence d'action du monstre*/
     override public void Play()
     {
         rb.velocity = Vector3.up * force;
         runnerController.removePV(degat);
     }
 
+    /*Désactive le monstre*/
     public override void Desactive()
     {
         base.Desactive();
         rb.isKinematic = true;
     }
 
+    /*Fonction appelé lorsque l'on fait spawn le monstre*/
     public override void PoseObject(Vector3 pos, int runnerInd)
     {
         base.PoseObject(pos, runnerInd);

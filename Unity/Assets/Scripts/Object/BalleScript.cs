@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*Classe qui gère les balles, leur collision et leur temps de vie*/
 public class BalleScript : MonoBehaviour {
 
     [SerializeField]

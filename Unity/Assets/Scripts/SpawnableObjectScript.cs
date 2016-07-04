@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.Networking;
 
+/*Classe qui sert de classe mère à tout les object qui peuvent être posé sur le terrain par le master*/
 public class SpawnableObjectScript : NetworkBehaviour {
 
     [SerializeField]
@@ -63,8 +64,6 @@ public class SpawnableObjectScript : NetworkBehaviour {
     public void setLocalPlayerScript(LocalPlayerScript lps)
     {
         localPlayerScript = lps;
-        /*if (lps != null)
-            print("local player set");*/
     }
 
     public void setRunnerList(RunnerListScript runner)
@@ -81,10 +80,6 @@ public class SpawnableObjectScript : NetworkBehaviour {
     {
         if (objectRenderer != null)
             normal = objectRenderer.material;
-        /*if (localPlayerScript == null)
-            print("localplayerscript null");
-        else
-            print("non null");*/
     }
 
     public bool CanBePosed()
@@ -139,8 +134,6 @@ public class SpawnableObjectScript : NetworkBehaviour {
             objectRenderer.material = normal;
         myCollider.enabled = true;
         runnerController = runnerList.getRunner(runnerInd);
-        if (runnerController == null)
-            print("non find runner num:" + runnerInd);
     }
     
     virtual public void Desactive()

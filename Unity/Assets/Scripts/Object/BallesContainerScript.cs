@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/*Classe qui sert à gérer le système de pulling des balles des canons*/
 public class BallesContainerScript : MonoBehaviour
 {
     [SerializeField]

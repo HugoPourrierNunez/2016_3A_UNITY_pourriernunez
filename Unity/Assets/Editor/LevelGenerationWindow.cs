@@ -32,6 +32,17 @@ public class LevelGenerationWindow : EditorWindow
     int numberObjectUndestroyable;
     int numberObjectDestroyable;
     int numberOfWay = 2;
+    int espace = 15;
+    int previousDirection;
+    int nbOfForward;
+    int newDirection;
+    int numberOfPosition;
+    int numberOfPositionTaken = 0; Vector3 randomV = new Vector3();
+    List<Vector3> way = new List<Vector3>();
+    Vector3 lastPosition = new Vector3();
+    List<GameObject> undestroyable;
+    List<GameObject> destroyable;
+    List<Vector3> positionDestroyableobstacle = new List<Vector3>();
 
     [MenuItem("MasterRunTools/LevelGenerator")]
     public static void MyLevelGenerationWindow()
@@ -74,11 +85,6 @@ public class LevelGenerationWindow : EditorWindow
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Coef forward");
-        coefForward = EditorGUILayout.FloatField(coefForward);
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Number of way");
         numberOfWay = EditorGUILayout.IntField(numberOfWay);
         EditorGUILayout.EndHorizontal();
@@ -105,34 +111,29 @@ public class LevelGenerationWindow : EditorWindow
 
         if (GUILayout.Button("Generate Level"))
         {
-            floor.transform.localScale = new Vector3(levelWidth / 10f, 1, levelLength / 10f);
-            floor.transform.localPosition = new Vector3(0, 0, levelLength / 2f);
+            if (levelWidth % 2 == 0)
+                levelWidth++;
 
-            wallLeft.transform.localScale = new Vector3(0, 5, levelLength);
-            wallLeft.transform.localPosition = new Vector3(-levelWidth/2f, 2.5f, levelLength / 2f);
+            floor.transform.localScale = Vector3.right * (levelWidth / 10f) + Vector3.up * 1 + Vector3.forward * (levelWidth / 10f + espace / 10f);
+            floor.transform.localPosition = Vector3.forward * (levelLength / 2f + espace / 2f);
 
-            wallRight.transform.localScale = new Vector3(0, 5, levelLength);
-            wallRight.transform.localPosition = new Vector3(levelWidth / 2f, 2.5f, levelLength / 2f);
+            wallLeft.transform.localScale = Vector3.up * .2f + Vector3.forward * (levelLength + espace);
+            wallLeft.transform.localPosition = Vector3.right * (-levelWidth / 2f) + Vector3.up * .1f + Vector3.forward * (levelLength / 2f + espace / 2f);
 
-            endLevel.transform.localScale = new Vector3(levelWidth, 5, 0);
-            endLevel.transform.localPosition = new Vector3(0, 2.5f, levelLength);
+            wallRight.transform.localScale = Vector3.up * .2f + Vector3.forward * (levelLength + espace);
+            wallRight.transform.localPosition = Vector3.right * (levelWidth / 2f) + Vector3.up * .1f + Vector3.forward * (levelLength / 2f + espace / 2f);
+
+            endLevel.transform.localScale = Vector3.right * levelWidth + Vector3.up * 5;
+            endLevel.transform.localPosition = Vector3.up * 2.5f + Vector3.forward * (levelLength + espace);
 
             // 0=gauche, 1=droite, 2=devant
 
-            List<Vector3> way = new List<Vector3>();
+            numberOfPosition = levelLength * levelWidth;
+            way.Clear();
 
-            
-            int previousDirection;
-            int nbOfForward;
-            int newDirection;
-            int numberOfPosition = levelLength * levelWidth;
-            int numberOfPositionTaken = 0;
-
-            Vector3 lastPosition;
-
-            for (int i=0;i<numberOfWay;i++)
+            for (int i = 0; i < numberOfWay; i++)
             {
-                lastPosition = new Vector3(0, .5f, 0.5f);
+                lastPosition.Set(0, .5f, 0.5f);
                 previousDirection = 2;
                 nbOfForward = 0;
                 while (true)
@@ -171,51 +172,49 @@ public class LevelGenerationWindow : EditorWindow
                         lastPosition += Vector3.forward;
                     }
                     bool alreadyIn = false;
-                    for(int j=0;j<way.Count;j++)
+                    for (int j = 0; j < way.Count; j++)
                     {
                         Vector3 v = way[j];
-                        if(v.x==lastPosition.x && v.z==lastPosition.z)
+                        if (v.x == lastPosition.x && v.z == lastPosition.z)
                         {
                             alreadyIn = true;
-                            Debug.Log("alreadyIn");
                             break;
                         }
                     }
-                    if(!alreadyIn)
+                    if (!alreadyIn)
                         way.Add(lastPosition);
 
                     previousDirection = newDirection;
 
-                    //Undo.RegisterCreatedObjectUndo(children[i], "Level");
-
-                    if (lastPosition.z + .5 >= levelLength)
+                    if (lastPosition.z + .5 >= levelLength + espace)
                         break;
                 }
             }
-            
 
-            List<GameObject> undestroyable = parentObstacleUndestroyable.GetChildren();
-            List<GameObject> destroyable = parentObstacleDestroyable.GetChildren();
 
-            List<Vector3> positionDestroyableobstacle = new List<Vector3>();
-            
+            undestroyable = parentObstacleUndestroyable.GetChildren();
+            destroyable = parentObstacleDestroyable.GetChildren();
+
+            positionDestroyableobstacle.Clear();
+
             bool find = false;
-            
-            for (int i = 0; i < destroyable.Count ; i++)
-            {
-                destroyable[i].SetActive(false);
-            }
+
+            for (int i = 0; i < destroyable.Count; i++)
+                destroyable[i].gameObject.SetActive(false);
+
+            for (int i = 0; i < undestroyable.Count; i++)
+                undestroyable[i].gameObject.SetActive(false);
 
             for (int i = 0; i < destroyable.Count && i < numberObjectDestroyable && numberOfPositionTaken < numberOfPosition; i++)
             {
                 do
                 {
                     find = false;
-                    Vector3 randomV = new Vector3(0, .5f, 0);
-                    randomV.x = Random.Range(-levelWidth / 2, levelWidth / 2+1);
-                    randomV.z = Random.Range(0, levelLength);
+                    Vector3 randomV = Vector3.up * .5f;
+                    randomV.x = Random.Range(-levelWidth / 2, levelWidth / 2 + 1);
+                    randomV.z = Random.Range(0, levelLength) + espace;
                     randomV.z += .5f;
-                    for (int j = 0; j < positionDestroyableobstacle.Count ; j++)
+                    for (int j = 0; j < positionDestroyableobstacle.Count; j++)
                     {
                         Vector3 v = positionDestroyableobstacle[j];
                         if (v.x == randomV.x && v.z == randomV.z)
@@ -226,13 +225,12 @@ public class LevelGenerationWindow : EditorWindow
                     }
                     if (!find)
                     {
-                        destroyable[i].transform.localPosition = randomV;
                         destroyable[i].SetActive(true);
                         numberOfPositionTaken++;
                         positionDestroyableobstacle.Add(randomV);
                     }
                 } while (find == true);
-                
+
             }
             way.AddRange(positionDestroyableobstacle);
 
@@ -241,21 +239,16 @@ public class LevelGenerationWindow : EditorWindow
                 numberObjectUndestroyable -= (levelLength * levelWidth) - numberObjectDestroyable;
             }
 
-            for (int i = 0; i < undestroyable.Count; i++)
-            {
-                undestroyable[i].SetActive(false); 
-            }
-            
             numberOfPositionTaken = way.Count;
             for (int i = 0; i < undestroyable.Count && i < numberObjectUndestroyable && numberOfPositionTaken < numberOfPosition; i++)
             {
                 do
                 {
                     find = false;
-                    Vector3 randomV = new Vector3(0, .5f, 0);
-                    randomV.x = Random.Range(-levelWidth / 2, levelWidth / 2 + 1);
-                    randomV.z = Random.Range(0, levelLength);
-                    randomV.z += .5f;
+                    randomV.Set(Random.Range(-levelWidth / 2, levelWidth / 2 + 1),
+                                .5f,
+                                Random.Range(0, levelLength) + .5f + espace);
+
                     for (int j = 0; j < way.Count; j++)
                     {
                         Vector3 v = way[j];
@@ -267,7 +260,6 @@ public class LevelGenerationWindow : EditorWindow
                     }
                     if (!find)
                     {
-                        undestroyable[i].transform.localPosition = randomV;
                         undestroyable[i].SetActive(true);
                         numberOfPositionTaken++;
                         way.Add(randomV);

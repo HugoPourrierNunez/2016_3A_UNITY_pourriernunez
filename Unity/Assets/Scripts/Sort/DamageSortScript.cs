@@ -1,16 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*Sort qui inflige des dégats au joueur*/
 public class DamageSortScript : AbstractSortScript
 {
 
     public override bool executeSort(RunnerController player, float timeElapsed)
     {
-        //print("sort execute");
         float degat = degatPerSec * timeElapsed;
         if (degat > 0)
         {
-            //print("degats=" + degat);
             player.removePV(degat);
         }
 
@@ -20,7 +19,6 @@ public class DamageSortScript : AbstractSortScript
             if (startTime[player] <= 0)
             {
                 startTime.Remove(player);
-                print("fin sort");
                 return false;
             }
         }

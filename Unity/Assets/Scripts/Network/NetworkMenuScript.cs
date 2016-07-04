@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
+/*Classe qui gère le menu de connexion au réseau*/
 public class NetworkMenuScript : MonoBehaviour {
 
     [SerializeField]
@@ -13,16 +14,13 @@ public class NetworkMenuScript : MonoBehaviour {
 
     public void StartHost()
     {
+        if (ipText.text != "")
+            manager.networkAddress = ipText.text;
         manager.StartHost();
     }
 
     public void StartClient()
     {
         manager.StartClient();
-    }
-
-    public void Exit()
-    {
-
     }
 }

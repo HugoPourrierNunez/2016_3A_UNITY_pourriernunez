@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/*Classe qui met en lien les sorts et les boutons de l'UI master automatiquement*/
 public class PanelSortScript : MonoBehaviour {
 
     [SerializeField]

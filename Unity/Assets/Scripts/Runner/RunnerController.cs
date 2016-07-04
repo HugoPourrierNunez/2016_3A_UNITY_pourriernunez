@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 
+/*Classe qui gère toutes les actions des runners*/
 public class RunnerController : AbstractPlayerController
 {
     [SerializeField]
@@ -74,6 +75,7 @@ public class RunnerController : AbstractPlayerController
     private GameObject pointedGO=null;
     private float PV;
     private const float timeElapse = .1f;
+    private WaitForSeconds wait = new WaitForSeconds(timeElapse);
 
 
     List<AbstractSortScript> effectiveSorts = new List<AbstractSortScript>();
@@ -84,6 +86,7 @@ public class RunnerController : AbstractPlayerController
             yield return StartCoroutine(executeEffectiveSorts());
     }
 
+    /*Fonction utilisé par une coroutine qui appéle les actions des sort actifs sur le joueur à un interval donné*/
     IEnumerator executeEffectiveSorts()
     {
         if (isLocalPlayer && controlActivated)
@@ -96,36 +99,41 @@ public class RunnerController : AbstractPlayerController
                     i--;
                 }
             }
-            yield return new WaitForSeconds(timeElapse);
+            yield return wait;
         }
     }
 
+    /*Retourne l'interface utilisateur du joueur*/
     public RunnerUIManagerScript getUI()
     {
         return runnerUI;
     }
 
+    /*Retourne le visuel du runner*/
     public GameObject getView()
     {
         return runnerView.gameObject;
     }
 
+    /*Désactive un object dans un conteneur i au rang j*/
     public void DesactiveObject(int i,int j)
     {
         CmdDesactiveObject(i, j);
     }
 
+    /*Ajoute un sort actif sur le runner*/
     public void addEffectiveSort(int sortInd)
     {
-        //CmdAddEffectiveSort(sortInd);
         effectiveSorts.Add(sortContainerScript.GetChildren()[sortInd]);
     }
 
+    /*Retourne un boolean pour savoir si le runner a déjà ce sort qui lui est appliqué*/
     public bool hasAlreadySort(AbstractSortScript sort)
     {
         return effectiveSorts.Contains(sort);
     }
 
+    /*Méthode appelé lorsque le joueur entre en collision avec quelque chose*/
     public void Runnercollision(Collision col)
     {
         if (col.gameObject.layer != LayerMask.NameToLayer("Unfocusable") && col.gameObject!=level.getFloor().gameObject)
@@ -134,11 +142,13 @@ public class RunnerController : AbstractPlayerController
         }
     }
 
+    /*Enlève les pv au joueur et synchro l'action sur le réseau*/
     public void RemovePVNetwork(float nb)
     {
         CmdRemovePV(nb);
     }
 
+    /*Enlève des pv au runner*/
     public void removePV(float nb)
     {
         float percent;
@@ -153,7 +163,6 @@ public class RunnerController : AbstractPlayerController
         {
             percent = PV / maxPV;
         }
-        //print("remove pv");
         runnerUI.getPvBar().changePercentage(percent);
         if(!NetworkServer.active)
             CmdDisplayMasterPV(percent);
@@ -173,15 +182,15 @@ public class RunnerController : AbstractPlayerController
         runnerLevel.activate();
     }
 
-
+    /*Retourne la lumière du runner*/
     public Light getLight()
     {
         return runnerLight;
     }
 
+    /*remet à zéro les données du runner*/
     public override void RestartPlayer()
     {
-        //runnerConstantForce.force = Vector3.forward * vitesseGlobale;
         runnerView.transform.localPosition = startPosition;
         PV = maxPV;
         mmScript.getEndMenuRunner().gameObject.SetActive(false);
@@ -213,10 +222,10 @@ public class RunnerController : AbstractPlayerController
             {
                 CmdJump(Vector3.up * jumpForce);
             }
-            if(true) //Après il faudra faire en fonction de si le runner porte l'arme
+            if(true) 
             {
                 Vector3 p1 = runnerCamera.transform.position;
-                Vector3 p2 = runnerCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, runnerCamera.farClipPlane));
+                Vector3 p2 = runnerCamera.ScreenToWorldPoint(Vector3.right*Input.mousePosition.x+Vector3.up* Input.mousePosition.y+Vector3.forward* runnerCamera.farClipPlane);
                 RaycastHit rayInfo;
                 if(Physics.Linecast(p1, p2,out rayInfo))
                 {
@@ -253,7 +262,6 @@ public class RunnerController : AbstractPlayerController
             {
                 if(pointedGO!=null && (pointedGO.layer==LayerMask.NameToLayer("ObstacleDestroyable") || pointedGO.CompareTag("Destroyable")))
                 {
-                    print("click");
                     int ind = level.getDestroyableObjectContainer().GetChildren().IndexOf(pointedGO);
                     if (ind != -1)
                         CmdUnactiveGameObject(ind);
@@ -270,16 +278,19 @@ public class RunnerController : AbstractPlayerController
         }
     }
 
+    /*Met à jour l'avancement du runner */
     private void UpdateAvancement()
     {
         runnerUI.getavancementBar().changePercentage(runnerView.transform.position.z/(runnerLevel.getFloor().localScale.z*10));
     }
 
+    /*Active ou non le rigidbody du runner*/
     public void activeRB(bool activate)
     {
         runnerRigidbody.isKinematic = activate;
     }
 
+    /*Retourne le level du runner*/
     public LevelGeneratorScript getLevel()
     {
         return level;
@@ -311,7 +322,6 @@ public class RunnerController : AbstractPlayerController
             {
                 percent = PV / maxPV;
             }
-            //print("remove pv");
             runnerUI.getPvBar().changePercentage(percent);
             CmdDisplayMasterPV(percent);
         }
@@ -340,7 +350,6 @@ public class RunnerController : AbstractPlayerController
         {
             percent = PV / maxPV;
         }
-        //print("remove pv");
         runnerUI.getPvBar().changePercentage(percent);
         if (!NetworkServer.active)
             CmdDisplayMasterPV(percent);

@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 
+/*Classe abstraite qui défini les méthodes de tout les sort*/
 public abstract class AbstractSortScript : NetworkBehaviour {
 
     [SerializeField]
@@ -29,19 +30,20 @@ public abstract class AbstractSortScript : NetworkBehaviour {
     [SerializeField]
     string nameSort="Default sort";
 
-    public string getNameSort()
+    /*Retourne le non du sort*/
+    virtual public string getNameSort()
     {
         return nameSort;
     }
 
+    /*Lance le sort sur un runner*/
     public bool lauchSort(int runnerInd)
     {
         RunnerController runner = runnerListScript.getRunner(runnerInd);
 
         if (startTime.ContainsKey(runner))
             return false;
-
-        //print("sort launch");
+        
         startTime.Add(runner, totalTime);
         runner.addEffectiveSort(number);
         return true;
@@ -77,6 +79,7 @@ public abstract class AbstractSortScript : NetworkBehaviour {
         return number;
     }
 
+    /*Enleve le runner de la liste des runner sur lequel le sort est actif*/
     public void removePlayer(RunnerController player)
     {
         if(startTime.ContainsKey(player))

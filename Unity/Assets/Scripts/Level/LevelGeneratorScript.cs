@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
-
+/*Classe qui sert à la génération des niveaux*/
 public class LevelGeneratorScript : NetworkBehaviour
 {
     [SerializeField]
@@ -70,46 +70,54 @@ public class LevelGeneratorScript : NetworkBehaviour
         wallRight.gameObject.SetActive(true);
     }
 
+    /*Renvoie le sol du niveau*/
     public Transform getFloor()
     {
         return floor.transform;
     }
 
-    // Use this for initialization
-    /*void Start () {
-        this.generateLevel();
-	}*/
-
-    public void changeSizeLevel()
+    /*Met à jour la taille du niveau*/
+    public void changeSizeLevel(float longueur, float largeur)
     {
-        floor.transform.localScale = new Vector3(levelWidth / 10f, 1, levelLength / 10f + espace / 10f);
-        floor.transform.localPosition = new Vector3(0, 0, levelLength / 2f + espace / 2f);
+        floor.transform.localScale = Vector3.right*(largeur / 10f)+Vector3.up* 1+Vector3.forward* (longueur / 10f + espace / 10f);
+        floor.transform.localPosition = Vector3.forward* (longueur / 2f + espace / 2f);
 
-        wallLeft.transform.localScale = new Vector3(0, 5, levelLength + espace);
-        wallLeft.transform.localPosition = new Vector3(-levelWidth / 2f, 2.5f, levelLength / 2f + espace / 2f);
+        wallLeft.transform.localScale = Vector3.up*.2f+Vector3.forward*(longueur + espace);
+        wallLeft.transform.localPosition = Vector3.right*(-largeur / 2f)+Vector3.up*.1f+Vector3.forward* (longueur / 2f + espace / 2f);
 
-        wallRight.transform.localScale = new Vector3(0, 5, levelLength + espace);
-        wallRight.transform.localPosition = new Vector3(levelWidth / 2f, 2.5f, levelLength / 2f + espace / 2f);
+        wallRight.transform.localScale = Vector3.up*.2f+Vector3.forward*(longueur + espace);
+        wallRight.transform.localPosition = Vector3.right*(largeur / 2f)+Vector3.up* .1f+Vector3.forward*(longueur / 2f + espace / 2f);
 
-        endLevel.transform.localScale = new Vector3(levelWidth, 5, 0);
-        endLevel.transform.localPosition = new Vector3(0, 2.5f, levelLength + espace);
+        endLevel.transform.localScale = Vector3.right * largeur + Vector3.up * 5;
+        endLevel.transform.localPosition = Vector3.up*2.5f+Vector3.forward*(longueur + espace);
     }
 
+    /*Return le conteneur qui contient tout les object destructible du level*/
     public ObjectContainerScript getDestroyableObjectContainer()
     {
         return parentObstacleDestroyable;
     }
 
+    /*Return le conteneur qui contient tout les object indestructible du level*/
     public ObjectContainerScript getUndestroyableObjectContainer()
     {
         return parentObstacleUndestroyable;
     }
 
-    public void generateLevel(int numPlayer)
+    /*Fonction qui fait toute la génération de iveau en fonction des différent paremètres*/
+    public void generateLevel(int numPlayer, float longueur, float largeur, float difficulty, float numberDestroyable, float numberUndestroyable)
     {
-        print("generate level");
+        if (levelWidth % 2 == 0)
+            levelWidth++;
 
-        masterController.changeSizeLevel(numPlayer);
+        numberOfPositionTaken = 0;
+        levelLength = (int)longueur;
+        levelWidth = (int)largeur;
+        numberOfWay = 8 - (int)difficulty;
+        numberObjectDestroyable = (int)numberDestroyable;
+        numberObjectUndestroyable = (int)numberUndestroyable;
+
+        masterController.changeSizeLevel(numPlayer, longueur,largeur);
 
         // 0=gauche, 1=droite, 2=devant
 
@@ -171,7 +179,7 @@ public class LevelGeneratorScript : NetworkBehaviour
 
                 previousDirection = newDirection;
 
-                if (lastPosition.z + .5 >= levelLength)
+                if (lastPosition.z + .5 >= levelLength+espace)
                     break;
             }
         }
@@ -191,7 +199,7 @@ public class LevelGeneratorScript : NetworkBehaviour
             do
             {
                 find = false;
-                Vector3 randomV = new Vector3(0, .5f, 0);
+                Vector3 randomV = Vector3.up * .5f;
                 randomV.x = Random.Range(-levelWidth / 2, levelWidth / 2 + 1);
                 randomV.z = Random.Range(0, levelLength) + espace;
                 randomV.z += .5f;
@@ -250,6 +258,7 @@ public class LevelGeneratorScript : NetworkBehaviour
         }
     }
 
+    /*Fonction qui désactive tout les obstacles du level*/
     public void unactiveAllObstacles()
     {
         for (int i = 0; i < destroyable.Count; i++)
@@ -262,12 +271,14 @@ public class LevelGeneratorScript : NetworkBehaviour
         }
     }
 
+    /*Active et place un obstacle destructible de rang 'nb' */
     public void activeDestroyableObstacle(Vector3 pos, int nb)
     {
         destroyable[nb].transform.localPosition = pos;
         destroyable[nb].gameObject.SetActive(true);
     }
 
+    /*Active et place un obstacle indestructible de rang 'nb' */
     public void activeUndestroyableObstacle(Vector3 pos, int nb)
     {
         undestroyable[nb].transform.localPosition = pos;

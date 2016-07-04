@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 
+/*Classe utilisé pour gérer les différents gameobject qui sont associés au players à leur connection*/
 public class GamerInstanceManager : NetworkBehaviour
 {
 
@@ -58,12 +59,12 @@ public class GamerInstanceManager : NetworkBehaviour
 
     public int getNumberOfPlayerWaiting()
     {
-        return this.numberOfPlayerWaiting;
+        return numberOfPlayerWaiting;
     }
 
     public void incNumberOfPlayerWaiting()
     {
-        this.numberOfPlayerWaiting++;
+        numberOfPlayerWaiting++;
         print(numberOfPlayerWaiting);
     }
 }

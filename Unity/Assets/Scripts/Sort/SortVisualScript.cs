@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*Sort qui gère le retourne visuel qu'à le master lorsqu'il a selectionné un sort*/
 public class SortVisualScript : MonoBehaviour
 {
 

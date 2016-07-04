@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+/*Sort qui affecte la visibilité du joueur*/
 public class VisibilitySortScript : AbstractSortScript
 {
     [SerializeField]

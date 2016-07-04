@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 
+/*Classe qui hérite du networkmanager pour gérer le réseau*/
 public class CustomNetworkManager : NetworkManager
 {
     Dictionary<NetworkConnection, AbstractPlayerController> activatedGamerInstance = null;
@@ -42,8 +43,6 @@ public class CustomNetworkManager : NetworkManager
 
         avatar.setNetworkConnection(conn,this);
 
-        print("add player");
-
     }
 
     public override void OnServerDisconnect(NetworkConnection conn)
@@ -60,6 +59,7 @@ public class CustomNetworkManager : NetworkManager
         base.OnServerDisconnect(conn);
     }
 
+    /*Retourne le nombre de clients connectés*/
     public int getNumberOfClient()
     {
         if (activatedGamerInstance == null)

@@ -127,7 +127,7 @@ public class MasterController : AbstractPlayerController
             {
                 //print("Object selected");
                 Vector3 p1 = masterCamera.transform.position;
-                Vector3 p2 = masterCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, masterCamera.farClipPlane));
+                Vector3 p2 = masterCamera.ScreenToWorldPoint(Vector3.right*Input.mousePosition.x+ Vector3.up*Input.mousePosition.y+ Vector3.forward*masterCamera.farClipPlane);
                 RaycastHit rayInfo;
                 if (Physics.Linecast(p1, p2, out rayInfo))
                 {
@@ -157,7 +157,7 @@ public class MasterController : AbstractPlayerController
             else if(sortSelected!=null)
             {
                 Vector3 p1 = masterCamera.transform.position;
-                Vector3 p2 = masterCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, masterCamera.farClipPlane));
+                Vector3 p2 = masterCamera.ScreenToWorldPoint(Vector3.right * Input.mousePosition.x + Vector3.up * Input.mousePosition.y + Vector3.forward * masterCamera.farClipPlane);
                 RaycastHit rayInfo;
                 if (Physics.Linecast(p1, p2, out rayInfo))
                 {
@@ -216,7 +216,7 @@ public class MasterController : AbstractPlayerController
             else i = 0;
             runnerView = runnerListScript.getRunner(i).getView().transform;
             floor = runnerListScript.getRunner(i).getLevel().getFloor();
-            masterView.localPosition = new Vector3(floor.position.x, masterView.localPosition.y, masterView.localPosition.z);
+            masterView.localPosition = Vector3.right * floor.position.x + Vector3.up* masterView.localPosition.y+Vector3.forward* masterView.localPosition.z;
             print("runnerview name =" + runnerView.name);
         }
     }
@@ -387,12 +387,12 @@ public class MasterController : AbstractPlayerController
         objectSelected.Hide();
     }
 
-    public void GenerateLevel()
+    public void GenerateLevel(float longueur, float largeur, float difficulty, float numberDestroyableObject, float numberUndestroyableObject)
     {
         for(int i=0;i<runnerListScript.getRunnerList().Count;i++)
         {
             //runnerListScript.getRunner(i).activeRB(false);
-            runnerListScript.getRunner(i).getLevel().generateLevel(i);
+            runnerListScript.getRunner(i).getLevel().generateLevel(i, longueur, largeur, difficulty,numberDestroyableObject,numberUndestroyableObject);
             //runnerListScript.getRunner(i).activeRB(true);
         }
     }
@@ -428,9 +428,9 @@ public class MasterController : AbstractPlayerController
         CmdActiveUndestroyableObstacle(pos, nb, numRunner);
     }
 
-    public void changeSizeLevel(int numRunner)
+    public void changeSizeLevel(int numRunner, float longueur, float largueur)
     {
-        CmdChangeSizeLevel(numRunner);
+        CmdChangeSizeLevel(numRunner,longueur,largueur);
     }
 
     public void updateWaitingMenu()
@@ -578,20 +578,20 @@ public class MasterController : AbstractPlayerController
         runnerListScript.getRunner(numRunner).getLevel().activeUndestroyableObstacle(pos, nb);
     }
     [Command]
-    public void CmdChangeSizeLevel(int numRunner)
+    public void CmdChangeSizeLevel(int numRunner, float longueur, float largeur)
     {
-        RpcChangeSizeLevel(numRunner);
+        RpcChangeSizeLevel(numRunner, longueur, largeur);
         if (!NetworkClient.active)
         {
-            runnerListScript.getRunner(numRunner).getLevel().changeSizeLevel();
+            runnerListScript.getRunner(numRunner).getLevel().changeSizeLevel(longueur,largeur);
         }
 
     }
 
     [ClientRpc]
-    public void RpcChangeSizeLevel(int numRunner)
+    public void RpcChangeSizeLevel(int numRunner, float longueur, float largeur)
     {
-        runnerListScript.getRunner(numRunner).getLevel().changeSizeLevel();
+        runnerListScript.getRunner(numRunner).getLevel().changeSizeLevel(longueur, largeur);
     }
 
     [Command]

@@ -14,8 +14,7 @@ public class LevelScript : MonoBehaviour {
 
     public void activate()
     {
-        wallLeft.gameObject.SetActive(true);
-        wallRight.gameObject.SetActive(true);
+        
     }
 
     public Transform getFloor()

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*Classe utilisé pour bouger la camera du runner mais qui n'est finalement pas utilisée*/
 public class CameraDirectionScript : MonoBehaviour {
 
     [SerializeField]
@@ -88,6 +89,6 @@ public class CameraDirectionScript : MonoBehaviour {
 
 
 
-        cameraTransform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+        cameraTransform.eulerAngles = Vector3.right*pitch+Vector3.up* yaw+Vector3.forward* 0.0f;
     }
 }

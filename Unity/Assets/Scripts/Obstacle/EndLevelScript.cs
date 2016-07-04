@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.Networking;
 
+/*Classe qui permet de savoir quand la fin de niveau est touché par le joueur*/
 public class EndLevelScript : NetworkBehaviour
 {
 

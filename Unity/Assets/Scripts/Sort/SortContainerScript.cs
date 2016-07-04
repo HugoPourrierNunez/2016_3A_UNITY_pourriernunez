@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/*Classe qui sert à référencer et à accéder à tout les types de sorts*/
 public class SortContainerScript : MonoBehaviour
 {
     [SerializeField]

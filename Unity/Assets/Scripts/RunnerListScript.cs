@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
 
+/*Classe qui référence tout les runners possibles*/
 public class RunnerListScript : NetworkBehaviour {
 
     [SerializeField]

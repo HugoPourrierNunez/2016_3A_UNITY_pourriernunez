@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/*Classe qui sert à contenir des gameobject et à s'en servir pour du pulling*/
 public class ObjectContainerScript : MonoBehaviour {
 
 

@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
+/*Classe utiliser par les bouton de l'UI du master qui servent à selectionné les sorts*/
 public class ButtonMasterSortScript : MonoBehaviour {
 
     [SerializeField]
@@ -16,14 +17,6 @@ public class ButtonMasterSortScript : MonoBehaviour {
     private MasterController masterController;
     private AbstractSortScript sort=null;
     private int sortNumber = -1;
-
-    /*void Start()
-    {
-        if (btn != null)
-            btn.enabled = false;
-        if (image != null)
-            image.enabled = false;
-    }*/
 
     public void initButton(AbstractSortScript s, int number, MasterController master)
     {
