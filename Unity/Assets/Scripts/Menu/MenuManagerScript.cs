@@ -129,6 +129,7 @@ public class MenuManagerScript : NetworkBehaviour {
             {
                 masterUI.activeRunner2PVBar();
             }
+            masterController.DesactiveAll();
             masterController.GenerateLevel(longueurLevelSlider.value, 
                 largeurLevelSlider.value, 
                 difficultyLevelSlider.value, 
@@ -152,7 +153,6 @@ public class MenuManagerScript : NetworkBehaviour {
     /*Cache le menu d'attente de connection des joueurs*/
     public void HideWaitingMenu()
     {
-        print("hide waiting menu");
         waitingMenu.gameObject.SetActive(false);
         if (NetworkServer.active)
             levelParameterMenu.gameObject.SetActive(true);
@@ -169,7 +169,6 @@ public class MenuManagerScript : NetworkBehaviour {
     public void setNumberOfActivePlayers(int nb)
     {
         numberOfActivePlayers=nb;
-        print("nb of players actif = " + numberOfActivePlayers);
         if(numberOfPlayers==numberOfActivePlayers)
         {
             masterController.updateWaitingMenu();

@@ -264,10 +264,12 @@ public class LevelGeneratorScript : NetworkBehaviour
         for (int i = 0; i < destroyable.Count; i++)
         {
             destroyable[i].SetActive(false);
+            destroyable[i].transform.localPosition = -Vector3.one;
         }
         for (int i = 0; i < undestroyable.Count; i++)
         {
             undestroyable[i].SetActive(false);
+            undestroyable[i].transform.localPosition = -Vector3.one;
         }
     }
 
@@ -283,5 +285,37 @@ public class LevelGeneratorScript : NetworkBehaviour
     {
         undestroyable[nb].transform.localPosition = pos;
         undestroyable[nb].gameObject.SetActive(true);
+    }
+
+    public void DesactiveDestroyableObstacle(int nb)
+    {
+        destroyable[nb].gameObject.SetActive(false);
+    }
+
+    public void DesactiveUndestroyableObstacle(int nb)
+    {
+        undestroyable[nb].gameObject.SetActive(false);
+    }
+
+    public int getIndiceObstacle(Vector3 pos, out bool isDestroyable)
+    {
+        for (int i = 0; i < destroyable.Count; i++)
+        {
+            if(destroyable[i].transform.localPosition==pos)
+            {
+                isDestroyable = true;
+                return i;
+            }
+        }
+        for (int i = 0; i < undestroyable.Count; i++)
+        {
+            if (undestroyable[i].transform.localPosition == pos)
+            {
+                isDestroyable = false;
+                return i;
+            }
+        }
+        isDestroyable = false;
+        return -1;
     }
 }

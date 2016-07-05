@@ -79,6 +79,7 @@ public class RunnerController : AbstractPlayerController
     private float PV;
     private const float timeElapse = .1f;
     private WaitForSeconds wait = new WaitForSeconds(timeElapse);
+    private bool right=false,left=false,forward=false,back=false;
 
 
     List<AbstractSortScript> effectiveSorts = new List<AbstractSortScript>();
@@ -195,37 +196,68 @@ public class RunnerController : AbstractPlayerController
     /*remet à zéro les données du runner*/
     public override void RestartPlayer()
     {
+        runnerRigidbody.isKinematic = false;
         runnerView.transform.localPosition = startPosition;
         PV = maxPV;
         mmScript.getEndMenuRunner().gameObject.SetActive(false);
         runnerUI.getPvBar().changePercentage(1);
-        CmdDisplayMasterPV(1, runnerList.getRunnerList().IndexOf(this));
+        if(isLocalPlayer)
+            CmdDisplayMasterPV(1, runnerList.getRunnerList().IndexOf(this));
+    }
+
+    void FixedUpdate()
+    {
+        if (isLocalPlayer && controlActivated)
+        {
+            if (Input.GetKey(KeyCode.Z))
+            {
+                CmdMove(Vector3.forward * vitesseMovement + Vector3.forward * vitesseGlobale);
+                forward = true;
+            }
+            else
+                forward = false;
+            if (Input.GetKey(KeyCode.S))
+            {
+                CmdMove(Vector3.back * vitesseMovement + Vector3.forward * vitesseGlobale);
+                back = true;
+            }
+            else
+                back = false;
+            if (Input.GetKey(KeyCode.Q))
+            {
+                if (runnerRigidbody.velocity.z < vitesseGlobale / 10)
+                    CmdMove(Vector3.left * vitesseMovement * 2);
+                else
+                    CmdMove(Vector3.left * vitesseMovement * 2 + Vector3.forward * vitesseGlobale);
+                left = true;
+            }
+            else
+                left = false;
+            if (Input.GetKey(KeyCode.D))
+            {
+                if (runnerRigidbody.velocity.z < vitesseGlobale / 10)
+                    CmdMove(Vector3.right * vitesseMovement * 1.5f);
+                else
+                    CmdMove(Vector3.right * vitesseMovement * 1.5f + Vector3.forward * vitesseGlobale);
+                right = true;
+            }
+            else
+                right = false;
+            if(!Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.Q) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.Z))
+            {
+                CmdMove(Vector3.forward * vitesseGlobale);
+            }
+        }
+        else if(isLocalPlayer && !controlActivated && mmScript.getEndMenuRunner().gameObject.active && !runnerRigidbody.isKinematic)
+        {
+            CmdKinematic(true);
+        }
     }
 
     void Update()
     {
         if(isLocalPlayer && controlActivated)
         {
-            if (Input.GetKey(KeyCode.Z))
-            {
-                CmdMove(Vector3.forward * vitesseMovement * Time.deltaTime);
-            }
-            if (Input.GetKey(KeyCode.S))
-            {
-                CmdMove(Vector3.back * vitesseMovement * Time.deltaTime);
-            }
-            if (Input.GetKey(KeyCode.Q))
-            {
-                CmdMove(Vector3.left * vitesseMovement * Time.deltaTime);
-            }
-            if (Input.GetKey(KeyCode.D))
-            {
-                CmdMove(Vector3.right * vitesseMovement * Time.deltaTime);
-            }
-            if (Input.GetKeyDown(KeyCode.Space) && Mathf.Abs(runnerRigidbody.velocity.y)<=0.0001f)
-            {
-                CmdJump(Vector3.up * jumpForce);
-            }
             if(true) 
             {
                 Vector3 p1 = runnerCamera.transform.position;
@@ -277,7 +309,6 @@ public class RunnerController : AbstractPlayerController
                     pointedGO = null;
                 }
             }
-            CmdMove(Vector3.forward * vitesseGlobale * Time.deltaTime);
             UpdateAvancement();
         }
     }
@@ -306,57 +337,14 @@ public class RunnerController : AbstractPlayerController
         RpcRemovePV(nb);
         if (!NetworkClient.active)
         {
-            float percent;
-            PV -= nb;
-            if (PV <= 0)
-            {
-                PV = 0;
-                percent = 0;
-                if (isLocalPlayer && PV > 0)
-                    mmScript.EndLevelShow(true);
-                else mmScript.EndLevelShow(false);
-                for (int i = 0; i < effectiveSorts.Count; i++)
-                {
-                    effectiveSorts[i].removePlayer(this);
-                }
-                effectiveSorts.Clear();
-                masterController.DesactiveAll();
-            }
-            else
-            {
-                percent = PV / maxPV;
-            }
-            runnerUI.getPvBar().changePercentage(percent);
-            CmdDisplayMasterPV(percent, runnerList.getRunnerList().IndexOf(this));
+            removePV(nb);
         }
     }
 
     [ClientRpc]
     public void RpcRemovePV(float nb)
     {
-        float percent;
-        PV -= nb;
-        if (PV <= 0)
-        {
-            PV = 0;
-            percent = 0;
-            if (isLocalPlayer && PV > 0)
-                mmScript.EndLevelShow(true);
-            else mmScript.EndLevelShow(false);
-            for (int i = 0; i < effectiveSorts.Count; i++)
-            {
-                effectiveSorts[i].removePlayer(this);
-            }
-            effectiveSorts.Clear();
-            masterController.DesactiveAll();
-        }
-        else
-        {
-            percent = PV / maxPV;
-        }
-        runnerUI.getPvBar().changePercentage(percent);
-        if (!NetworkServer.active)
-            CmdDisplayMasterPV(percent, runnerList.getRunnerList().IndexOf(this));
+        removePV(nb);
     }
 
     [Command]
@@ -390,9 +378,6 @@ public class RunnerController : AbstractPlayerController
                     mmScript.EndLevelShow(true);
                 else mmScript.EndLevelShow(false);
             }
-
-            print("runnerdead=" + menuManager.getRunnerDead());
-            print("numberOfPlayer=" + menuManager.getNumberOfPlayer());
             if (menuManager.getRunnerDead() == menuManager.getNumberOfPlayer() - 1)
             {
 
@@ -420,9 +405,6 @@ public class RunnerController : AbstractPlayerController
                 mmScript.EndLevelShow(true);
             else mmScript.EndLevelShow(false);
         }
-
-        print("runnerdead=" + menuManager.getRunnerDead());
-        print("numberOfPlayer=" + menuManager.getNumberOfPlayer());
         if (menuManager.getRunnerDead() == menuManager.getNumberOfPlayer() - 1)
         {
                 
@@ -446,14 +428,30 @@ public class RunnerController : AbstractPlayerController
         RpcMove(translateVector);
         if (!NetworkClient.active)
         {
-            runnerView.transform.Translate(translateVector, Space.World);
+            runnerRigidbody.velocity =  translateVector;
         }
     }
 
     [ClientRpc]
     public void RpcMove(Vector3 translateVector)
     {
-        runnerView.transform.Translate(translateVector, Space.World);
+        runnerRigidbody.velocity = translateVector;
+    }
+
+    [Command]
+    public void CmdKinematic(bool isKine)
+    {
+        RpcKinematic(isKine);
+        if (!NetworkClient.active)
+        {
+            runnerRigidbody.isKinematic = isKine;
+        }
+    }
+
+    [ClientRpc]
+    public void RpcKinematic(bool isKine)
+    {
+        runnerRigidbody.isKinematic = isKine;
     }
 
     [Command]
@@ -535,5 +533,27 @@ public class RunnerController : AbstractPlayerController
     public void RpcDesactiveObject(int i, int j)
     {
         allContainerScript.getContainer(i).GetChildren()[j].Desactive();
+    }
+
+    [Command]
+    public void CmdDesactiveObstacleLevel(int i, bool destroyable)
+    {
+        RpcDesactiveObstacleLevel(i,destroyable);
+        if (!NetworkClient.active)
+        {
+            if(destroyable)
+                level.DesactiveDestroyableObstacle(i);
+            else
+                level.DesactiveUndestroyableObstacle(i);
+        }
+    }
+
+    [ClientRpc]
+    public void RpcDesactiveObstacleLevel(int i, bool destroyable)
+    {
+        if (destroyable)
+            level.DesactiveDestroyableObstacle(i);
+        else
+            level.DesactiveUndestroyableObstacle(i);
     }
 }

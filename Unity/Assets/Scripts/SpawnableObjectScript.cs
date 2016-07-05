@@ -47,6 +47,9 @@ public class SpawnableObjectScript : NetworkBehaviour {
 
     protected RunnerController runnerController;
 
+    [SerializeField]
+    int numConteneur;
+
 
     [SerializeField]
     protected int indice = -1;
@@ -54,6 +57,11 @@ public class SpawnableObjectScript : NetworkBehaviour {
     public void setIndice(int ind)
     {
         indice = ind;
+    }
+
+    void OnDisable()
+    {
+        runnerController.DesactiveObject(numConteneur, indice);
     }
 
     virtual public void Play()
