@@ -21,6 +21,8 @@ public class NetworkMenuScript : MonoBehaviour {
 
     public void StartClient()
     {
+        if (ipText.text != "")
+            manager.networkAddress = ipText.text;
         manager.StartClient();
     }
 }
