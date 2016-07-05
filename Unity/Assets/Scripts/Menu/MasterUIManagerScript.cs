@@ -27,7 +27,22 @@ public class MasterUIManagerScript : MonoBehaviour {
     HBarScript runnerPvBar;
 
     [SerializeField]
+    HBarScript runner2PvBar;
+
+    [SerializeField]
+    GameObject runner2PVPanel;
+
+    [SerializeField]
+    Image backgroundRunner1;
+
+    [SerializeField]
+    Image backgroundRunner2;
+
+    [SerializeField]
     HBarScript masterManaBar;
+
+    private Color colorFocused = new Color(1, 1, 1, 1);
+    private Color colorUnfocused = new Color(1, 1, 1, .39f);
 
     /*Renvoie la barre de progression de mana du master*/
     public HBarScript getMasterManaBar()
@@ -39,6 +54,32 @@ public class MasterUIManagerScript : MonoBehaviour {
     public HBarScript getRunnerPvBar()
     {
         return runnerPvBar;
+    }
+
+    /*Renvoie la barre de progression des pv du runner2*/
+    public HBarScript getRunner2PvBar()
+    {
+        return runner2PvBar;
+    }
+
+    public void activeRunner2PVBar()
+    {
+        runner2PVPanel.SetActive(true);
+    }
+
+    public void setRunnerFocused(int i)
+    {
+        if (i == 0)
+        {
+            backgroundRunner1.color = colorFocused;
+            backgroundRunner2.color = colorUnfocused;
+        }
+        else
+        {
+            backgroundRunner1.color = colorUnfocused;
+            backgroundRunner2.color = colorFocused;
+        }
+            
     }
 
     /*Change le panel actif et visible*/

@@ -125,7 +125,10 @@ public class MenuManagerScript : NetworkBehaviour {
     {
         if(NetworkServer.active)
         {
-            print("start level");
+            if (numberOfPlayers== 3)
+            {
+                masterUI.activeRunner2PVBar();
+            }
             masterController.GenerateLevel(longueurLevelSlider.value, 
                 largeurLevelSlider.value, 
                 difficultyLevelSlider.value, 

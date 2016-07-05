@@ -82,11 +82,14 @@ public class MasterController : AbstractPlayerController
         masterUI.getMasterManaBar().changePercentage(mana / (float)manaOnStart);
     }
 
-    public void changePV(float percent)
+    public void changePV(float percent, int ind)
     {
         //faire un test pour savoir si c'est le runner sur lequel on a le focus ou non
         //ou identifier si c'est le runner 1, 2 ou 3
-        masterUI.getRunnerPvBar().changePercentage(percent);
+        if(ind==0)
+            masterUI.getRunnerPvBar().changePercentage(percent);
+        else
+            masterUI.getRunner2PvBar().changePercentage(percent);
     }
 
     private float getAlignGauche()
@@ -210,14 +213,13 @@ public class MasterController : AbstractPlayerController
     {
         if(menuManager.getNumberOfPlayer()==3)
         {
-            print("runner change");
             int i = runnerListScript.getRunnerIdByView(runnerView.gameObject);
             if (i == 0) i = 1;
             else i = 0;
             runnerView = runnerListScript.getRunner(i).getView().transform;
             floor = runnerListScript.getRunner(i).getLevel().getFloor();
             masterView.localPosition = Vector3.right * floor.position.x + Vector3.up* masterView.localPosition.y+Vector3.forward* masterView.localPosition.z;
-            print("runnerview name =" + runnerView.name);
+            masterUI.setRunnerFocused(i);
         }
     }
 

@@ -72,6 +72,9 @@ public class RunnerController : AbstractPlayerController
     [SerializeField]
     ConstantForce runnerConstantForce;
 
+    [SerializeField]
+    RunnerListScript runnerList;
+
     private GameObject pointedGO=null;
     private float PV;
     private const float timeElapse = .1f;
@@ -166,7 +169,7 @@ public class RunnerController : AbstractPlayerController
         }
         runnerUI.getPvBar().changePercentage(percent);
         if(!NetworkServer.active)
-            CmdDisplayMasterPV(percent);
+            CmdDisplayMasterPV(percent, runnerList.getRunnerList().IndexOf(this));
     }
 
     // Use this for initialization
@@ -196,7 +199,7 @@ public class RunnerController : AbstractPlayerController
         PV = maxPV;
         mmScript.getEndMenuRunner().gameObject.SetActive(false);
         runnerUI.getPvBar().changePercentage(1);
-        CmdDisplayMasterPV(1);
+        CmdDisplayMasterPV(1, runnerList.getRunnerList().IndexOf(this));
     }
 
     void Update()
@@ -324,7 +327,7 @@ public class RunnerController : AbstractPlayerController
                 percent = PV / maxPV;
             }
             runnerUI.getPvBar().changePercentage(percent);
-            CmdDisplayMasterPV(percent);
+            CmdDisplayMasterPV(percent, runnerList.getRunnerList().IndexOf(this));
         }
     }
 
@@ -353,7 +356,7 @@ public class RunnerController : AbstractPlayerController
         }
         runnerUI.getPvBar().changePercentage(percent);
         if (!NetworkServer.active)
-            CmdDisplayMasterPV(percent);
+            CmdDisplayMasterPV(percent, runnerList.getRunnerList().IndexOf(this));
     }
 
     [Command]
@@ -502,20 +505,20 @@ public class RunnerController : AbstractPlayerController
     }
 
     [Command]
-    public void CmdDisplayMasterPV(float percent)
+    public void CmdDisplayMasterPV(float percent, int ind)
     {
-        RpcDisplayMasterPV(percent);
+        RpcDisplayMasterPV(percent,ind);
         if (!NetworkClient.active)
         {
-            masterController.changePV(percent);
+            masterController.changePV(percent,ind);
         }
         
     }
 
     [ClientRpc]
-    public void RpcDisplayMasterPV(float percent)
+    public void RpcDisplayMasterPV(float percent, int ind)
     {
-        masterController.changePV(percent);
+        masterController.changePV(percent,ind);
     }
 
     [Command]
