@@ -78,6 +78,7 @@ public class MenuManagerScript : NetworkBehaviour {
 
     public void Start()
     {
+        initSliders();
         if (localPlayerScript.localPlayer!=null && localPlayerScript.localPlayer.isServer && localPlayerScript.localPlayer.isClient)
         {
             masterChoosePlayer.gameObject.SetActive(true);
@@ -86,6 +87,24 @@ public class MenuManagerScript : NetworkBehaviour {
         {
             waitingMenu.gameObject.SetActive(true);
         }
+    }
+
+    public void initSliders()
+    {
+        difficultyLevelSlider.maxValue = LevelGeneratorScript.MAX_DIFFICULTY;
+        difficultyLevelSlider.minValue = LevelGeneratorScript.MIN_DIFFICULTY;
+
+        longueurLevelSlider.maxValue = LevelGeneratorScript.MAX_LENGTH;
+        longueurLevelSlider.minValue = LevelGeneratorScript.MIN_LENGTH;
+
+        largeurLevelSlider.maxValue = LevelGeneratorScript.MAX_WIDTH;
+        largeurLevelSlider.minValue = LevelGeneratorScript.MIN_WIDTH;
+
+        numberDestroyableObstacleLevelSlider.maxValue = LevelGeneratorScript.MAX_DESTROYABLEOBJECT;
+        numberDestroyableObstacleLevelSlider.minValue = LevelGeneratorScript.MIN_DESTROYABLEOBJECT;
+
+        numberUndestroyableObstacleLevelSlider.maxValue = LevelGeneratorScript.MAX_UNDESTROYABLEOBJECT;
+        numberUndestroyableObstacleLevelSlider.minValue = LevelGeneratorScript.MAX_UNDESTROYABLEOBJECT;
     }
 
     public void setRunnerDead(int nb)

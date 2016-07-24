@@ -437,7 +437,8 @@ public class MasterController : AbstractPlayerController
 
     public void updateWaitingMenu()
     {
-        CmdUpdateWaitingMenu();
+        if(isLocalPlayer)
+            CmdUpdateWaitingMenu();
     }
 
     public void PlayMonster(int i, int j)

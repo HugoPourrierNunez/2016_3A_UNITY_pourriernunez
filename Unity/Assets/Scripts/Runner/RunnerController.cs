@@ -492,14 +492,14 @@ public class RunnerController : AbstractPlayerController
         RpcUnactiveGameObject(i);
         if (!NetworkClient.active)
         {
-            level.getDestroyableObjectContainer().GetChildren()[i].SetActive(false);
+            level.DesactiveDestroyableObstacle(i);
         }
     }
 
     [ClientRpc]
     public void RpcUnactiveGameObject(int i)
     {
-        level.getDestroyableObjectContainer().GetChildren()[i].SetActive(false);
+        level.DesactiveDestroyableObstacle(i);
     }
 
     [Command]
@@ -525,7 +525,9 @@ public class RunnerController : AbstractPlayerController
         RpcDesactiveObject(i, j);
         if (!NetworkClient.active)
         {
-            allContainerScript.getContainer(i).GetChildren()[j].Desactive();
+            SpawnableObjectScript obj = allContainerScript.getContainer(i).GetChildren()[j];
+            obj.Desactive();
+            level.setPositionNotOccuped(obj.gameObject.transform.position, false);
         }
     }
 

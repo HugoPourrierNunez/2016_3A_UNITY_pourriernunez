@@ -61,7 +61,8 @@ public class SpawnableObjectScript : NetworkBehaviour {
 
     void OnDisable()
     {
-        runnerController.DesactiveObject(numConteneur, indice);
+        if(runnerController!=null)
+            runnerController.DesactiveObject(numConteneur, indice);
     }
 
     virtual public void Play()
@@ -112,7 +113,7 @@ public class SpawnableObjectScript : NetworkBehaviour {
         else
             mesh.SetActive(true);
         isHide = false;
-        myCollider.gameObject.transform.position = new Vector3(position.x, myCollider.gameObject.transform.position.y, position.z); ;
+        myCollider.gameObject.transform.position = new Vector3(position.x, myCollider.gameObject.transform.position.y, position.z);
         if (distance < minimumDistanceWithRunner)
         {
             canBePosed = false;
@@ -142,6 +143,9 @@ public class SpawnableObjectScript : NetworkBehaviour {
             objectRenderer.material = normal;
         myCollider.enabled = true;
         runnerController = runnerList.getRunner(runnerInd);
+
+        //pos = Vector3.right * (pos.x - runnerController.getLevel().getFloor().transform.position.x) + Vector3.up * pos.y + Vector3.forward * pos.z;
+        runnerController.getLevel().setPositionOccuped(pos,false);
     }
     
     virtual public void Desactive()

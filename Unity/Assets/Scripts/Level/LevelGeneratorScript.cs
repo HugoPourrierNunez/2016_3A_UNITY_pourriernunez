@@ -5,6 +5,21 @@ using UnityEngine.Networking;
 /*Classe qui sert à la génération des niveaux*/
 public class LevelGeneratorScript : NetworkBehaviour
 {
+    public static readonly int MAX_LENGTH = 500;
+    public static readonly int MIN_LENGTH = 70;
+
+    public static readonly int MAX_WIDTH = 15;
+    public static readonly int MIN_WIDTH = 7;
+
+    public static readonly int MAX_DIFFICULTY = 5;
+    public static readonly int MIN_DIFFICULTY = 1;
+
+    public static readonly int MAX_DESTROYABLEOBJECT = 500;
+    public static readonly int MIN_DESTROYABLEOBJECT = 0;
+
+    public static readonly int MAX_UNDESTROYABLEOBJECT = 500;
+    public static readonly int MIN_UNDESTROYABLEOBJECT = 0;
+
     [SerializeField]
     int levelWidth = 9;
 
@@ -42,6 +57,9 @@ public class LevelGeneratorScript : NetworkBehaviour
     int numberObjectDestroyable = 50;
 
     [SerializeField]
+    GameObject runnerContainer;
+
+    [SerializeField]
     MasterController masterController;
 
     int previousDirection;
@@ -53,6 +71,7 @@ public class LevelGeneratorScript : NetworkBehaviour
     List<GameObject> undestroyable;
     List<GameObject> destroyable;
     List<Vector3> positionDestroyableobstacle = new List<Vector3>();
+    int[] grid = new int[MAX_WIDTH * MAX_LENGTH]; 
     Vector3 randomV = new Vector3();
     private float espace = 15f;
 
@@ -107,8 +126,13 @@ public class LevelGeneratorScript : NetworkBehaviour
     /*Fonction qui fait toute la génération de iveau en fonction des différent paremètres*/
     public void generateLevel(int numPlayer, float longueur, float largeur, float difficulty, float numberDestroyable, float numberUndestroyable)
     {
-        if (levelWidth % 2 == 0)
-            levelWidth++;
+        for(int i=0;i<grid.Length;i++)
+        {
+            grid[i] = 0;
+        }
+
+        if (largeur % 2 == 0)
+            largeur++;
 
         numberOfPositionTaken = 0;
         levelLength = (int)longueur;
@@ -258,6 +282,40 @@ public class LevelGeneratorScript : NetworkBehaviour
         }
     }
 
+    public void setPositionOccuped(Vector3 pos, bool localPosition)
+    {
+        if(localPosition)
+        {
+            /*print("active x=" + (pos.x) + "   y=" + (int)(pos.z + .5f));
+            print("index = " + ((int)(pos.z - .5f) * levelWidth + (int)pos.x + (levelWidth - 1) / 2));*/
+            grid[((int)(pos.z - .5f) * levelWidth + (int)pos.x + (levelWidth - 1) / 2)] = int.MaxValue;
+        }
+        else
+        {
+            print("active x=" + (pos.x) + "   y=" + (int)(pos.z + .5f));
+            print("index = " + ((int)(pos.z - .5f) * levelWidth + (int)(pos.x - runnerContainer.transform.position.x + (levelWidth - 1) / 2)));
+            grid[((int)(pos.z - .5f) * levelWidth + (int)(pos.x - runnerContainer.transform.position.x+(levelWidth - 1)/2))] = int.MaxValue;
+        }
+    }
+
+    public void setPositionNotOccuped(Vector3 pos,bool localPosition)
+    {
+        grid[((int)(pos.z - .5f) * levelWidth + (int)pos.x + (levelWidth - 1) / 2)] = 0;
+
+        if (localPosition)
+        {
+            /*print("active x=" + (pos.x) + "   y=" + (int)(pos.z + .5f));
+            print("index = " + ((int)(pos.z - .5f) * levelWidth + (int)pos.x + (levelWidth - 1) / 2));*/
+            grid[((int)(pos.z - .5f) * levelWidth + (int)pos.x + (levelWidth - 1) / 2)] = int.MaxValue;
+        }
+        else
+        {
+            print("active x=" + (pos.x) + "   y=" + (int)(pos.z + .5f));
+            print("index = " + ((int)(pos.z - .5f) * levelWidth + (int)(pos.x - runnerContainer.transform.position.x + (levelWidth - 1) / 2)));
+            grid[((int)(pos.z - .5f) * levelWidth + (int)(pos.x - runnerContainer.transform.position.x + (levelWidth - 1) / 2))] = int.MaxValue;
+        }
+    }
+
     /*Fonction qui désactive tout les obstacles du level*/
     public void unactiveAllObstacles()
     {
@@ -276,6 +334,7 @@ public class LevelGeneratorScript : NetworkBehaviour
     /*Active et place un obstacle destructible de rang 'nb' */
     public void activeDestroyableObstacle(Vector3 pos, int nb)
     {
+        setPositionOccuped(pos,true);
         destroyable[nb].transform.localPosition = pos;
         destroyable[nb].gameObject.SetActive(true);
     }
@@ -283,17 +342,20 @@ public class LevelGeneratorScript : NetworkBehaviour
     /*Active et place un obstacle indestructible de rang 'nb' */
     public void activeUndestroyableObstacle(Vector3 pos, int nb)
     {
+        setPositionOccuped(pos,true);
         undestroyable[nb].transform.localPosition = pos;
         undestroyable[nb].gameObject.SetActive(true);
     }
 
     public void DesactiveDestroyableObstacle(int nb)
     {
+        setPositionNotOccuped(destroyable[nb].gameObject.transform.localPosition,true);
         destroyable[nb].gameObject.SetActive(false);
     }
 
     public void DesactiveUndestroyableObstacle(int nb)
     {
+        setPositionNotOccuped(undestroyable[nb].gameObject.transform.localPosition,true);
         undestroyable[nb].gameObject.SetActive(false);
     }
 
