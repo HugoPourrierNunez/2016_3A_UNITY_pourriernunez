@@ -107,6 +107,12 @@ public class RunnerController : AbstractPlayerController
         }
     }
 
+    public void DesactiveObstacle(int i,bool isDestroyable)
+    {
+        if(isLocalPlayer)
+            CmdDesactiveObstacleLevel(i, isDestroyable);
+    }
+
     /*Retourne l'interface utilisateur du joueur*/
     public RunnerUIManagerScript getUI()
     {
@@ -298,7 +304,7 @@ public class RunnerController : AbstractPlayerController
             {
                 if(pointedGO!=null && (pointedGO.layer==LayerMask.NameToLayer("ObstacleDestroyable") || pointedGO.CompareTag("Destroyable")))
                 {
-                    int ind = level.getDestroyableObjectContainer().GetChildren().IndexOf(pointedGO);
+                    int ind = level.getIndexDestroyableObstacle(pointedGO);
                     if (ind != -1)
                         CmdUnactiveGameObject(ind);
                     else

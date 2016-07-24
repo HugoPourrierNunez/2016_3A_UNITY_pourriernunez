@@ -33,10 +33,10 @@ public class LevelGeneratorScript : NetworkBehaviour
     int numberOfWay = 2;
 
     [SerializeField]
-    ObjectContainerScript parentObstacleDestroyable;
+    ObstacleContainerScript parentObstacleDestroyable;
 
     [SerializeField]
-    ObjectContainerScript parentObstacleUndestroyable;
+    ObstacleContainerScript parentObstacleUndestroyable;
 
     [SerializeField]
     GameObject floor;
@@ -62,14 +62,17 @@ public class LevelGeneratorScript : NetworkBehaviour
     [SerializeField]
     MasterController masterController;
 
+    [SerializeField]
+    RunnerController runnerController;
+
     int previousDirection;
     int nbOfForward;
     int newDirection;
     int numberOfPosition;
     int numberOfPositionTaken = 0;
     Vector3 lastPosition = new Vector3();
-    List<GameObject> undestroyable;
-    List<GameObject> destroyable;
+    List<LevelObstacleScript> undestroyable;
+    List<LevelObstacleScript> destroyable;
     List<Vector3> positionDestroyableobstacle = new List<Vector3>();
     int[] grid = new int[MAX_WIDTH * MAX_LENGTH]; 
     Vector3 randomV = new Vector3();
@@ -83,10 +86,25 @@ public class LevelGeneratorScript : NetworkBehaviour
         destroyable = parentObstacleDestroyable.GetChildren();
     }
 
+    public RunnerController getRunnerController()
+    {
+        return this.runnerController;
+    }
+
     public void activate()
     {
         wallLeft.gameObject.SetActive(true);
         wallRight.gameObject.SetActive(true);
+    }
+
+    public int getIndexDestroyableObstacle(GameObject go)
+    {
+        for(int i=0;i<destroyable.Count;i++)
+        {
+            if (go == destroyable[i].gameObject)
+                return i;
+        }
+        return -1;
     }
 
     /*Renvoie le sol du niveau*/
@@ -112,13 +130,13 @@ public class LevelGeneratorScript : NetworkBehaviour
     }
 
     /*Return le conteneur qui contient tout les object destructible du level*/
-    public ObjectContainerScript getDestroyableObjectContainer()
+    public ObstacleContainerScript getDestroyableObjectContainer()
     {
         return parentObstacleDestroyable;
     }
 
     /*Return le conteneur qui contient tout les object indestructible du level*/
-    public ObjectContainerScript getUndestroyableObjectContainer()
+    public ObstacleContainerScript getUndestroyableObjectContainer()
     {
         return parentObstacleUndestroyable;
     }
@@ -286,14 +304,10 @@ public class LevelGeneratorScript : NetworkBehaviour
     {
         if(localPosition)
         {
-            /*print("active x=" + (pos.x) + "   y=" + (int)(pos.z + .5f));
-            print("index = " + ((int)(pos.z - .5f) * levelWidth + (int)pos.x + (levelWidth - 1) / 2));*/
             grid[((int)(pos.z - .5f) * levelWidth + (int)pos.x + (levelWidth - 1) / 2)] = int.MaxValue;
         }
         else
         {
-            /*print("active x=" + (pos.x) + "   y=" + (int)(pos.z + .5f));
-            print("index = " + ((int)(pos.z - .5f) * levelWidth + (int)(pos.x - runnerContainer.transform.position.x + (levelWidth - 1) / 2)));*/
             grid[((int)(pos.z - .5f) * levelWidth + (int)(pos.x - runnerContainer.transform.position.x+(levelWidth - 1)/2))] = int.MaxValue;
         }
     }
@@ -302,14 +316,10 @@ public class LevelGeneratorScript : NetworkBehaviour
     {
         if (localPosition)
         {
-            /*print("active x=" + (pos.x) + "   y=" + (int)(pos.z + .5f));
-            print("index = " + ((int)(pos.z - .5f) * levelWidth + (int)pos.x + (levelWidth - 1) / 2));*/
             grid[((int)(pos.z - .5f) * levelWidth + (int)pos.x + (levelWidth - 1) / 2)] = int.MaxValue;
         }
         else
         {
-            /*print("active x=" + (pos.x) + "   y=" + (int)(pos.z + .5f));
-            print("index = " + ((int)(pos.z - .5f) * levelWidth + (int)(pos.x - runnerContainer.transform.position.x + (levelWidth - 1) / 2)));*/
             grid[((int)(pos.z - .5f) * levelWidth + (int)(pos.x - runnerContainer.transform.position.x + (levelWidth - 1) / 2))] = int.MaxValue;
         }
     }
@@ -319,12 +329,12 @@ public class LevelGeneratorScript : NetworkBehaviour
     {
         for (int i = 0; i < destroyable.Count; i++)
         {
-            destroyable[i].SetActive(false);
+            destroyable[i].gameObject.SetActive(false);
             destroyable[i].transform.localPosition = -Vector3.one;
         }
         for (int i = 0; i < undestroyable.Count; i++)
         {
-            undestroyable[i].SetActive(false);
+            undestroyable[i].gameObject.SetActive(false);
             undestroyable[i].transform.localPosition = -Vector3.one;
         }
     }
@@ -338,6 +348,27 @@ public class LevelGeneratorScript : NetworkBehaviour
         else
         {
             return (grid[((int)(pos.z - .5f) * levelWidth + (int)(pos.x - runnerContainer.transform.position.x + (levelWidth - 1) / 2))] != 0);
+        }
+    }
+
+    public void setAllObstacleTransparent(bool isTransparent)
+    {
+        for(int i=0;i<destroyable.Count;i++)
+        {
+            LevelObstacleScript obs = destroyable[i];
+            if (obs.gameObject.active)
+            {
+                obs.setTransparent(isTransparent);
+            }
+        }
+
+        for (int i = 0; i < undestroyable.Count; i++)
+        {
+            LevelObstacleScript obs = undestroyable[i];
+            if (obs.gameObject.active)
+            {
+                obs.setTransparent(isTransparent);
+            }
         }
     }
 
@@ -361,12 +392,14 @@ public class LevelGeneratorScript : NetworkBehaviour
     {
         setPositionNotOccuped(destroyable[nb].gameObject.transform.localPosition,true);
         destroyable[nb].gameObject.SetActive(false);
+        destroyable[nb].setTransparent(false);
     }
 
     public void DesactiveUndestroyableObstacle(int nb)
     {
         setPositionNotOccuped(undestroyable[nb].gameObject.transform.localPosition,true);
         undestroyable[nb].gameObject.SetActive(false);
+        destroyable[nb].setTransparent(false);
     }
 
     public int getIndiceObstacle(Vector3 pos, out bool isDestroyable)

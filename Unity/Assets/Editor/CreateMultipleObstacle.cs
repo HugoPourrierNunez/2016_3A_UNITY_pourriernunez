@@ -21,7 +21,7 @@ public class CreateMultipleObstacle : EditorWindow
 
     int number;
     bool activated;
-    ObjectContainerScript parent;
+    ObstacleContainerScript parent;
     LevelObstacleScript obstacle;
     LevelGeneratorScript level;
 
@@ -47,7 +47,7 @@ public class CreateMultipleObstacle : EditorWindow
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Parent");
-        parent = (ObjectContainerScript)EditorGUILayout.ObjectField(parent, typeof(ObjectContainerScript), true);
+        parent = (ObstacleContainerScript)EditorGUILayout.ObjectField(parent, typeof(ObstacleContainerScript), true);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
@@ -70,7 +70,7 @@ public class CreateMultipleObstacle : EditorWindow
                 obs.gameObject.SetActive(activated);
                 obs.setIndice(i);
                 obs.setLevel(level);
-                parent.AddChildren(obs.gameObject);
+                parent.AddChildren(obs);
                 Undo.RegisterCreatedObjectUndo(obs.gameObject, "MultipleObstacle");
 
             }

@@ -161,11 +161,13 @@ public class MasterController : AbstractPlayerController
                     removeMana(objectSelected.getCout());
                     print("name =" + rayInfo.collider.gameObject.name);
                     CmdPoseObject(objectSelected.transform.position, runnerId);
+                    runnerController.getLevel().setAllObstacleTransparent(false);
                 }
                 if (Input.GetMouseButtonUp(1))
                 {
                     objectSelected.gameObject.SetActive(false);
                     objectSelected = null;
+                    runnerController.getLevel().setAllObstacleTransparent(false);
                 }
             }
             else if(sortSelected!=null)
@@ -229,10 +231,21 @@ public class MasterController : AbstractPlayerController
             else i = 0;
             runnerView = runnerListScript.getRunner(i).getView().transform;
             runnerId = i;
-            runnerController = runnerListScript.getRunner(i);
+            if(objectSelected!=null)
+            {
+                runnerController.getLevel().setAllObstacleTransparent(false);
+                runnerController = runnerListScript.getRunner(i);
+                runnerController.getLevel().setAllObstacleTransparent(true);
+            }
+            else
+            {
+                runnerController = runnerListScript.getRunner(i);
+            }
             floor = runnerListScript.getRunner(i).getLevel().getFloor();
             masterView.localPosition = Vector3.right * floor.position.x + Vector3.up* masterView.localPosition.y+Vector3.forward* masterView.localPosition.z;
             masterUI.setRunnerFocused(i);
+
+
         }
     }
 
@@ -249,6 +262,7 @@ public class MasterController : AbstractPlayerController
 
     public void setObjectSelected(int i, int j)
     {
+        runnerController.getLevel().setAllObstacleTransparent(true);
         CmdSetObjectSelected(i, j);
     }
 
@@ -420,7 +434,7 @@ public class MasterController : AbstractPlayerController
 
     public override void RestartPlayer()
     {
-       //
+        mana = manaOnStart;
     }
 
     public Transform getRunnerView()
