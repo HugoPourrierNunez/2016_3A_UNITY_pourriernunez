@@ -104,7 +104,7 @@ public class MenuManagerScript : NetworkBehaviour {
         numberDestroyableObstacleLevelSlider.minValue = LevelGeneratorScript.MIN_DESTROYABLEOBJECT;
 
         numberUndestroyableObstacleLevelSlider.maxValue = LevelGeneratorScript.MAX_UNDESTROYABLEOBJECT;
-        numberUndestroyableObstacleLevelSlider.minValue = LevelGeneratorScript.MAX_UNDESTROYABLEOBJECT;
+        numberUndestroyableObstacleLevelSlider.minValue = LevelGeneratorScript.MIN_UNDESTROYABLEOBJECT;
     }
 
     public void setRunnerDead(int nb)
