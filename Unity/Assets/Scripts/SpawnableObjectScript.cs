@@ -105,7 +105,7 @@ public class SpawnableObjectScript : NetworkBehaviour {
         isHide = true;
     }
 
-    virtual public void UpdatePosition(Vector3 position, float distance)
+    virtual public void UpdatePosition(Vector3 position, float distance, bool placeOccuped)
     {
         effectActive = false;
         if (objectRenderer != null)
@@ -114,7 +114,7 @@ public class SpawnableObjectScript : NetworkBehaviour {
             mesh.SetActive(true);
         isHide = false;
         myCollider.gameObject.transform.position = new Vector3(position.x, myCollider.gameObject.transform.position.y, position.z);
-        if (distance < minimumDistanceWithRunner)
+        if (distance < minimumDistanceWithRunner || placeOccuped)
         {
             canBePosed = false;
             if(objectRenderer!=null)

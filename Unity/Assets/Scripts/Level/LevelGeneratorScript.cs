@@ -292,16 +292,14 @@ public class LevelGeneratorScript : NetworkBehaviour
         }
         else
         {
-            print("active x=" + (pos.x) + "   y=" + (int)(pos.z + .5f));
-            print("index = " + ((int)(pos.z - .5f) * levelWidth + (int)(pos.x - runnerContainer.transform.position.x + (levelWidth - 1) / 2)));
+            /*print("active x=" + (pos.x) + "   y=" + (int)(pos.z + .5f));
+            print("index = " + ((int)(pos.z - .5f) * levelWidth + (int)(pos.x - runnerContainer.transform.position.x + (levelWidth - 1) / 2)));*/
             grid[((int)(pos.z - .5f) * levelWidth + (int)(pos.x - runnerContainer.transform.position.x+(levelWidth - 1)/2))] = int.MaxValue;
         }
     }
 
     public void setPositionNotOccuped(Vector3 pos,bool localPosition)
     {
-        grid[((int)(pos.z - .5f) * levelWidth + (int)pos.x + (levelWidth - 1) / 2)] = 0;
-
         if (localPosition)
         {
             /*print("active x=" + (pos.x) + "   y=" + (int)(pos.z + .5f));
@@ -310,8 +308,8 @@ public class LevelGeneratorScript : NetworkBehaviour
         }
         else
         {
-            print("active x=" + (pos.x) + "   y=" + (int)(pos.z + .5f));
-            print("index = " + ((int)(pos.z - .5f) * levelWidth + (int)(pos.x - runnerContainer.transform.position.x + (levelWidth - 1) / 2)));
+            /*print("active x=" + (pos.x) + "   y=" + (int)(pos.z + .5f));
+            print("index = " + ((int)(pos.z - .5f) * levelWidth + (int)(pos.x - runnerContainer.transform.position.x + (levelWidth - 1) / 2)));*/
             grid[((int)(pos.z - .5f) * levelWidth + (int)(pos.x - runnerContainer.transform.position.x + (levelWidth - 1) / 2))] = int.MaxValue;
         }
     }
@@ -328,6 +326,18 @@ public class LevelGeneratorScript : NetworkBehaviour
         {
             undestroyable[i].SetActive(false);
             undestroyable[i].transform.localPosition = -Vector3.one;
+        }
+    }
+
+    public bool isPositionOccuped(Vector3 pos, bool localPosition)
+    {
+        if (localPosition)
+        {
+            return (grid[((int)(pos.z - .5f) * levelWidth + (int)pos.x + (levelWidth - 1) / 2)] != 0);
+        }
+        else
+        {
+            return (grid[((int)(pos.z - .5f) * levelWidth + (int)(pos.x - runnerContainer.transform.position.x + (levelWidth - 1) / 2))] != 0);
         }
     }
 

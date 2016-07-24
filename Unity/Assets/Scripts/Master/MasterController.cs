@@ -59,6 +59,9 @@ public class MasterController : AbstractPlayerController
     private AbstractSortScript sortSelected = null;
     private int mana;
 
+    private RunnerController runnerController=null;
+    private int runnerId = -1;
+
 
     // Use this for initialization
     public override void OnStartLocalPlayer()
@@ -73,6 +76,15 @@ public class MasterController : AbstractPlayerController
         alignementGauche = getAlignGauche();
         mana = manaOnStart;
         InvokeRepeating("IncomeMana", 0, 1);
+
+        int i = 0;
+        runnerView = runnerListScript.getRunner(i).getView().transform;
+        runnerId = i;
+        runnerController = runnerListScript.getRunner(i);
+        floor = runnerListScript.getRunner(i).getLevel().getFloor();
+        masterView.localPosition = Vector3.right * floor.position.x + Vector3.up * masterView.localPosition.y + Vector3.forward * masterView.localPosition.z;
+        masterUI.setRunnerFocused(i);
+
     }
 
     private void IncomeMana()
@@ -139,7 +151,7 @@ public class MasterController : AbstractPlayerController
                         p1.x = Mathf.Round(rayInfo.point.x);
                         p1.y = Mathf.Round(rayInfo.point.y)+.5f;
                         p1.z = Mathf.Round(rayInfo.point.z-.5f) + .5f;
-                        objectSelected.UpdatePosition(p1, Vector3.Distance(p1, runnerView.position));
+                        objectSelected.UpdatePosition(p1, Vector3.Distance(p1, runnerView.position),runnerController.getLevel().isPositionOccuped(p1,false));
                     }
                     else objectSelected.Hide();
                 }
@@ -147,9 +159,8 @@ public class MasterController : AbstractPlayerController
                 if(objectSelected.CanBePosed() && Input.GetMouseButtonUp(0))
                 {
                     removeMana(objectSelected.getCout());
-                    int tmpRunner = runnerListScript.getRunnerIdByLevelFloor(rayInfo.collider.gameObject);
                     print("name =" + rayInfo.collider.gameObject.name);
-                    CmdPoseObject(objectSelected.transform.position, tmpRunner);
+                    CmdPoseObject(objectSelected.transform.position, runnerId);
                 }
                 if (Input.GetMouseButtonUp(1))
                 {
@@ -217,6 +228,8 @@ public class MasterController : AbstractPlayerController
             if (i == 0) i = 1;
             else i = 0;
             runnerView = runnerListScript.getRunner(i).getView().transform;
+            runnerId = i;
+            runnerController = runnerListScript.getRunner(i);
             floor = runnerListScript.getRunner(i).getLevel().getFloor();
             masterView.localPosition = Vector3.right * floor.position.x + Vector3.up* masterView.localPosition.y+Vector3.forward* masterView.localPosition.z;
             masterUI.setRunnerFocused(i);
@@ -313,7 +326,7 @@ public class MasterController : AbstractPlayerController
         objectSelected.Hide();
     }
 
-    [Command]
+    /*[Command]
     public void CmdUpdatePosition(Vector3 p1, float dist)
     {
         RpcUpdatePosition(p1, dist);
@@ -327,7 +340,7 @@ public class MasterController : AbstractPlayerController
     public void RpcUpdatePosition(Vector3 p1, float dist)
     {
         objectSelected.UpdatePosition(p1, dist);
-    }
+    }*/
 
     [Command]
     public void CmdPoseObject(Vector3 pos,int runnerInd)

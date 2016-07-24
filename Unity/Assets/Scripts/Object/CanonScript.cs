@@ -92,9 +92,9 @@ public class CanonScript : SpawnableObjectScript {
     }
 
     /*Met à jour la posiition de l'objet*/
-    override public void UpdatePosition(Vector3 position, float distance)
+    override public void UpdatePosition(Vector3 position, float distance, bool placeOccuped)
     {
-        base.UpdatePosition(position,distance);
+        base.UpdatePosition(position,distance, placeOccuped);
     }
 
     /*Fait spawn l'objet à une position*/
