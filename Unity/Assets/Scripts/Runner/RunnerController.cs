@@ -179,6 +179,24 @@ public class RunnerController : AbstractPlayerController
             CmdDisplayMasterPV(percent, runnerList.getRunnerList().IndexOf(this));
     }
 
+    public void addPV(float nb)
+    {
+        float percent;
+        PV += nb;
+        if (PV >= maxPV)
+        {
+            PV = maxPV;
+            percent = 1;
+        }
+        else
+        {
+            percent = PV / maxPV;
+        }
+        runnerUI.getPvBar().changePercentage(percent);
+        if (!NetworkServer.active)
+            CmdDisplayMasterPV(percent, runnerList.getRunnerList().IndexOf(this));
+    }
+
     // Use this for initialization
     public override void OnStartLocalPlayer () {
         base.OnStartLocalPlayer();
@@ -498,6 +516,7 @@ public class RunnerController : AbstractPlayerController
         RpcUnactiveGameObject(i);
         if (!NetworkClient.active)
         {
+            addPV(1);
             level.DesactiveDestroyableObstacle(i);
         }
     }
@@ -505,6 +524,7 @@ public class RunnerController : AbstractPlayerController
     [ClientRpc]
     public void RpcUnactiveGameObject(int i)
     {
+        addPV(1);
         level.DesactiveDestroyableObstacle(i);
     }
 

@@ -241,7 +241,7 @@ public class LevelGeneratorScript : NetworkBehaviour
             do
             {
                 find = false;
-                Vector3 randomV = Vector3.up * .5f;
+                Vector3 randomV = Vector3.zero;
                 randomV.x = Random.Range(-levelWidth / 2, levelWidth / 2 + 1);
                 randomV.z = Random.Range(0, levelLength) + espace;
                 randomV.z += .5f;
@@ -256,6 +256,7 @@ public class LevelGeneratorScript : NetworkBehaviour
                 }
                 if (!find)
                 {
+                    randomV.y = destroyable[i].getY();
                     masterController.activeDestroyableObstacle(randomV, i, numPlayer);
                     numberOfPositionTaken++;
                     positionDestroyableobstacle.Add(randomV);
@@ -277,7 +278,7 @@ public class LevelGeneratorScript : NetworkBehaviour
             {
                 find = false;
                 randomV.Set(Random.Range(-levelWidth / 2, levelWidth / 2 + 1),
-                            .5f,
+                            0,
                             Random.Range(0, levelLength) + .5f + espace);
 
                 for (int j = 0; j < way.Count; j++)
@@ -291,6 +292,7 @@ public class LevelGeneratorScript : NetworkBehaviour
                 }
                 if (!find)
                 {
+                    randomV.y = undestroyable[i].getY();
                     masterController.activeUndestroyableObstacle(randomV, i, numPlayer);
                     numberOfPositionTaken++;
                     way.Add(randomV);
@@ -331,11 +333,13 @@ public class LevelGeneratorScript : NetworkBehaviour
         {
             destroyable[i].gameObject.SetActive(false);
             destroyable[i].transform.localPosition = -Vector3.one;
+            destroyable[i].setTransparent(false);
         }
         for (int i = 0; i < undestroyable.Count; i++)
         {
             undestroyable[i].gameObject.SetActive(false);
             undestroyable[i].transform.localPosition = -Vector3.one;
+            destroyable[i].setTransparent(false);
         }
     }
 

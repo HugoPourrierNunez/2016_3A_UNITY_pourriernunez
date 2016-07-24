@@ -1,0 +1,352 @@
+fileFormatVersion: 2
+guid: a94a84de2d14c7d4886009f121cdb30d
+timeCreated: 1469377665
+licenseType: Free
+SketchUpImporter:
+  generateBackFace: 0
+  mergeCoplanarFaces: 0
+  selectedNodes: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f000000100000001100000012000000130000001400000015000000160000001700000018000000190000001a0000001b0000001c0000001d0000001e0000001f000000200000002100000022000000230000002400000025000000260000002700000028000000290000002a0000002b0000002c0000002d0000002e0000002f000000300000003100000032000000330000003400000035000000360000003700000038000000390000003a0000003b0000003c0000003d0000003e0000003f000000400000004100000042000000430000004400000045000000460000004700000048000000490000004a0000004b0000004c0000004d0000004e0000004f000000500000005100000052000000530000005400000055000000560000005700000058000000590000005a0000005b0000005c0000005d0000005e0000005f000000600000006100000062000000630000006400000065000000660000006700000068000000690000006a0000006b0000006c0000006d0000006e0000006f000000700000007100000072000000730000007400000075000000
+  assetHash:
+    serializedVersion: 2
+    Hash: b741dfb1e4344cbc3da5dcce6e139272
+  longitude: -89.67
+  latitude: 39.85
+  northCorrection: -0
+  fileUnit: 0
+  sketchUpImportData:
+    defaultCamera:
+      position: {x: 121.48921, y: 55.561844, z: -68.75468}
+      lookAt: {x: 183.00143, y: -1.0500731, z: 1.00996}
+      up: {x: 0.3438546, y: 0.8542102, z: 0.3899858}
+      fov: 30
+      aspectRatio: 0
+      orthoSize: 1
+      isPerspective: 1
+    scenes:
+    - camera:
+        position: {x: 121.48921, y: 55.561844, z: -68.75468}
+        lookAt: {x: 183.00143, y: -1.0500731, z: 1.00996}
+        up: {x: 0.3438546, y: 0.8542102, z: 0.3899858}
+        fov: 30
+        aspectRatio: 0
+        orthoSize: 1
+        isPerspective: 1
+      name: Perspective
+    - camera:
+        position: {x: 349.98108, y: 299.8211, z: 2.4143606e-11}
+        lookAt: {x: 349.98108, y: 24.22107, z: 2.4143606e-11}
+        up: {x: 0, y: 0, z: 1}
+        fov: 45
+        aspectRatio: 0
+        orthoSize: 5635.788
+        isPerspective: 0
+      name: Pattern
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Construction
+    100002: Construction; cylinder, intersect
+    100004: Dodeca face
+    100006: Dodeca face 1
+    100008: Dodeca face 10
+    100010: Dodeca face 11
+    100012: Dodeca face 2
+    100014: Dodeca face 3
+    100016: Dodeca face 4
+    100018: Dodeca face 5
+    100020: Dodeca face 6
+    100022: Dodeca face 7
+    100024: Dodeca face 8
+    100026: Dodeca face 9
+    100028: Dodecahedron
+    100030: Dodecahedron 1
+    100032: //RootNode
+    100034: icosa face
+    100036: icosa face 1
+    100038: icosa face 10
+    100040: icosa face 11
+    100042: icosa face 12
+    100044: icosa face 13
+    100046: icosa face 14
+    100048: icosa face 15
+    100050: icosa face 16
+    100052: icosa face 17
+    100054: icosa face 18
+    100056: icosa face 2
+    100058: icosa face 3
+    100060: icosa face 4
+    100062: icosa face 5
+    100064: icosa face 6
+    100066: icosa face 7
+    100068: icosa face 8
+    100070: icosa face 9
+    100072: Icosahedron
+    100074: Net
+    100076: Node
+    100078: Node 1
+    100080: Node 10
+    100082: Node 11
+    100084: Node 12
+    100086: Node 13
+    100088: Node 14
+    100090: Node 15
+    100092: Node 16
+    100094: Node 17
+    100096: Node 18
+    100098: Node 19
+    100100: Node 2
+    100102: Node 20
+    100104: Node 3
+    100106: Node 4
+    100108: Node 5
+    100110: Node 6
+    100112: Node 7
+    100114: Node 8
+    100116: Node 9
+    100118: Node pattern
+    100120: Sphere; dodecahedron
+    400000: Construction
+    400002: Construction; cylinder, intersect
+    400004: Dodeca face
+    400006: Dodeca face 1
+    400008: Dodeca face 10
+    400010: Dodeca face 11
+    400012: Dodeca face 2
+    400014: Dodeca face 3
+    400016: Dodeca face 4
+    400018: Dodeca face 5
+    400020: Dodeca face 6
+    400022: Dodeca face 7
+    400024: Dodeca face 8
+    400026: Dodeca face 9
+    400028: Dodecahedron
+    400030: Dodecahedron 1
+    400032: //RootNode
+    400034: icosa face
+    400036: icosa face 1
+    400038: icosa face 10
+    400040: icosa face 11
+    400042: icosa face 12
+    400044: icosa face 13
+    400046: icosa face 14
+    400048: icosa face 15
+    400050: icosa face 16
+    400052: icosa face 17
+    400054: icosa face 18
+    400056: icosa face 2
+    400058: icosa face 3
+    400060: icosa face 4
+    400062: icosa face 5
+    400064: icosa face 6
+    400066: icosa face 7
+    400068: icosa face 8
+    400070: icosa face 9
+    400072: Icosahedron
+    400074: Net
+    400076: Node
+    400078: Node 1
+    400080: Node 10
+    400082: Node 11
+    400084: Node 12
+    400086: Node 13
+    400088: Node 14
+    400090: Node 15
+    400092: Node 16
+    400094: Node 17
+    400096: Node 18
+    400098: Node 19
+    400100: Node 2
+    400102: Node 20
+    400104: Node 3
+    400106: Node 4
+    400108: Node 5
+    400110: Node 6
+    400112: Node 7
+    400114: Node 8
+    400116: Node 9
+    400118: Node pattern
+    400120: Sphere; dodecahedron
+    2300000: Construction
+    2300002: Construction; cylinder, intersect
+    2300004: Dodeca face
+    2300006: Dodeca face 1
+    2300008: Dodeca face 10
+    2300010: Dodeca face 11
+    2300012: Dodeca face 2
+    2300014: Dodeca face 3
+    2300016: Dodeca face 4
+    2300018: Dodeca face 5
+    2300020: Dodeca face 6
+    2300022: Dodeca face 7
+    2300024: Dodeca face 8
+    2300026: Dodeca face 9
+    2300028: Dodecahedron 1
+    2300030: icosa face
+    2300032: icosa face 1
+    2300034: icosa face 10
+    2300036: icosa face 11
+    2300038: icosa face 12
+    2300040: icosa face 13
+    2300042: icosa face 14
+    2300044: icosa face 15
+    2300046: icosa face 16
+    2300048: icosa face 17
+    2300050: icosa face 18
+    2300052: icosa face 2
+    2300054: icosa face 3
+    2300056: icosa face 4
+    2300058: icosa face 5
+    2300060: icosa face 6
+    2300062: icosa face 7
+    2300064: icosa face 8
+    2300066: icosa face 9
+    2300068: Net
+    2300070: Node
+    2300072: Node 1
+    2300074: Node 10
+    2300076: Node 11
+    2300078: Node 12
+    2300080: Node 13
+    2300082: Node 14
+    2300084: Node 15
+    2300086: Node 16
+    2300088: Node 17
+    2300090: Node 18
+    2300092: Node 19
+    2300094: Node 2
+    2300096: Node 20
+    2300098: Node 3
+    2300100: Node 4
+    2300102: Node 5
+    2300104: Node 6
+    2300106: Node 7
+    2300108: Node 8
+    2300110: Node 9
+    2300112: Node pattern
+    3300000: Construction
+    3300002: Construction; cylinder, intersect
+    3300004: Dodeca face
+    3300006: Dodeca face 1
+    3300008: Dodeca face 10
+    3300010: Dodeca face 11
+    3300012: Dodeca face 2
+    3300014: Dodeca face 3
+    3300016: Dodeca face 4
+    3300018: Dodeca face 5
+    3300020: Dodeca face 6
+    3300022: Dodeca face 7
+    3300024: Dodeca face 8
+    3300026: Dodeca face 9
+    3300028: Dodecahedron 1
+    3300030: icosa face
+    3300032: icosa face 1
+    3300034: icosa face 10
+    3300036: icosa face 11
+    3300038: icosa face 12
+    3300040: icosa face 13
+    3300042: icosa face 14
+    3300044: icosa face 15
+    3300046: icosa face 16
+    3300048: icosa face 17
+    3300050: icosa face 18
+    3300052: icosa face 2
+    3300054: icosa face 3
+    3300056: icosa face 4
+    3300058: icosa face 5
+    3300060: icosa face 6
+    3300062: icosa face 7
+    3300064: icosa face 8
+    3300066: icosa face 9
+    3300068: Net
+    3300070: Node
+    3300072: Node 1
+    3300074: Node 10
+    3300076: Node 11
+    3300078: Node 12
+    3300080: Node 13
+    3300082: Node 14
+    3300084: Node 15
+    3300086: Node 16
+    3300088: Node 17
+    3300090: Node 18
+    3300092: Node 19
+    3300094: Node 2
+    3300096: Node 20
+    3300098: Node 3
+    3300100: Node 4
+    3300102: Node 5
+    3300104: Node 6
+    3300106: Node 7
+    3300108: Node 8
+    3300110: Node 9
+    3300112: Node pattern
+    4300000: Mesh icosa face
+    4300002: Mesh Dodeca face
+    4300004: Mesh Node
+    4300006: Mesh Net
+    4300008: Mesh Construction
+    4300010: Mesh Construction; cylinder, intersect
+    4300012: Mesh Node pattern
+  materials:
+    importMaterials: 1
+    materialName: 2
+    materialSearch: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.0254
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

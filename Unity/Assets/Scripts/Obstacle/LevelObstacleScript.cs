@@ -19,11 +19,18 @@ public class LevelObstacleScript : NetworkBehaviour {
     [SerializeField]
     Renderer myRenderer;
 
-    private Material myMaterial;
+    [SerializeField]
+    MeshScript meshScript;
 
-    public void Start()
+    [SerializeField]
+    Material myMaterial;
+
+    [SerializeField]
+    float y;
+
+    public float getY()
     {
-        myMaterial = myRenderer.material;
+        return y;
     }
 
     public void setTransparent(bool isTransparent)
@@ -31,12 +38,18 @@ public class LevelObstacleScript : NetworkBehaviour {
         if(isTransparent)
         {
             myCollider.enabled = false;
-            myRenderer.material = transparentMaterial;
+            if (myRenderer != null)
+                myRenderer.material = transparentMaterial;
+            else 
+                meshScript.setMaterial(transparentMaterial);
         }
         else
         {
             myCollider.enabled = true;
-            myRenderer.material = myMaterial;
+            if (myRenderer != null)
+                myRenderer.material = myMaterial;
+            else
+                meshScript.setMaterial(myMaterial);
         }
 
     }
