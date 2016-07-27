@@ -10,6 +10,9 @@ public class RunnerController : AbstractPlayerController
     AllContainerScript allContainerScript;
 
     [SerializeField]
+    ManageSoundScript soundScript;
+
+    [SerializeField]
     LevelGeneratorScript level;
 
     [SerializeField]
@@ -148,6 +151,7 @@ public class RunnerController : AbstractPlayerController
     {
         if (col.gameObject.layer != LayerMask.NameToLayer("Unfocusable") && col.gameObject!=level.getFloor().gameObject)
         {
+            soundScript.OnPlaySoundCollision();
             removePV(5f);
         }
     }
@@ -167,6 +171,7 @@ public class RunnerController : AbstractPlayerController
         {
             PV = 0;
             percent = 0;
+            soundScript.OnPlaySoundGameOver();
             if(controlActivated)
                 CmdEndLevel();
         }
@@ -204,6 +209,7 @@ public class RunnerController : AbstractPlayerController
         {
             Camera.main.gameObject.SetActive(false);
         }
+
         runnerLight.gameObject.SetActive(true);
         runnerCamera.gameObject.SetActive(true);
         runnerView.setRunnerController(this);
@@ -392,6 +398,7 @@ public class RunnerController : AbstractPlayerController
     [Command]
     public void CmdEndLevel()
     {
+        soundScript.OnStopSoundInGame();
         RpcEndLevel();
         if (!NetworkClient.active)
         {

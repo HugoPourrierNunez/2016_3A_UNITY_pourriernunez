@@ -42,6 +42,9 @@ public class LevelGeneratorScript : NetworkBehaviour
     GameObject floor;
 
     [SerializeField]
+    MeshRenderer floorRenderer;
+
+    [SerializeField]
     GameObject wallRight;
 
     [SerializeField]
@@ -160,6 +163,8 @@ public class LevelGeneratorScript : NetworkBehaviour
         numberObjectUndestroyable = (int)numberUndestroyable;
 
         masterController.changeSizeLevel(numPlayer, longueur,largeur);
+
+        floorRenderer.material.mainTextureScale = new Vector2(largeur/4, (longueur+espace)/4);
 
         // 0=gauche, 1=droite, 2=devant
 

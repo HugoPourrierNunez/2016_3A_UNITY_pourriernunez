@@ -5,14 +5,44 @@ public class ManageSoundScript : MonoBehaviour {
 
 
     [SerializeField]
+    AudioSource soundInGame;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    [SerializeField]
+    AudioSource soundGameOver;
+
+    [SerializeField]
+    AudioSource soundMenu;
+
+    [SerializeField]
+    AudioSource soundCollision;
+
+    public void OnPlaySoundInGame()
+    {
+        soundInGame.Play();
+    }
+
+    public void OnStopSoundInGame()
+    {
+        soundInGame.Pause();
+    }
+
+    public void OnPlaySoundMenu()
+    {
+        soundMenu.Play();
+    }
+
+    public void OnStopSoundMenu()
+    {
+        soundMenu.Stop();
+    }
+
+    public void OnPlaySoundGameOver()
+    {
+        soundGameOver.Play();
+    }
+
+    public void OnPlaySoundCollision()
+    {
+        soundCollision.Play();
+    }
 }

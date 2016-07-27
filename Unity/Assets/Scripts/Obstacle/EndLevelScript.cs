@@ -9,8 +9,12 @@ public class EndLevelScript : NetworkBehaviour
     [SerializeField]
     MenuManagerScript mmScript;
 
+    [SerializeField]
+    ManageSoundScript soundScript;
+
     void OnTriggerEnter(Collider other)
     {
+        soundScript.OnStopSoundInGame();
         mmScript.EndLevelShow(true);
     }
 }

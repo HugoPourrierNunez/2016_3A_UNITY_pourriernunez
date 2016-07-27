@@ -10,12 +10,16 @@ public class NetworkMenuScript : MonoBehaviour {
     NetworkManager manager;
 
     [SerializeField]
+    ManageSoundScript soundScript;
+
+    [SerializeField]
     Text ipText;
 
     public void StartHost()
     {
         if (ipText.text != "")
             manager.networkAddress = ipText.text;
+        soundScript.OnStopSoundMenu();
         manager.StartHost();
     }
 
@@ -23,6 +27,7 @@ public class NetworkMenuScript : MonoBehaviour {
     {
         if (ipText.text != "")
             manager.networkAddress = ipText.text;
+        soundScript.OnStopSoundMenu();
         manager.StartClient();
     }
 }
