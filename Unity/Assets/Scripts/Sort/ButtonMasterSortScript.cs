@@ -37,12 +37,15 @@ public class ButtonMasterSortScript : MonoBehaviour {
 
     public void selectSort()
     {
-        if (masterController.getMana() < sort.getCout())
+        if (btn.enabled)
         {
-            WarningMana();
+            if (masterController.getMana() < sort.getCout())
+            {
+                WarningMana();
+            }
+            else
+                masterController.setSortSelected(sortNumber);
         }
-        else
-            masterController.setSortSelected(sortNumber);
     }
 
     private void WarningMana()

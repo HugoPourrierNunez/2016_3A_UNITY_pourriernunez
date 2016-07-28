@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 /*Classe qui gère la navigation dans l'UI du master*/
 public class MasterUIManagerScript : MonoBehaviour {
@@ -41,8 +42,20 @@ public class MasterUIManagerScript : MonoBehaviour {
     [SerializeField]
     HBarScript masterManaBar;
 
+    [SerializeField]
+    List<ButtonMasterSortScript> buttonsSort;
+
+    [SerializeField]
+    List<ButtonMasterActionScript> buttonsObject;
+
+    [SerializeField]
+    List<ButtonMasterActionScript> buttonsMonster;
+
     private Color colorFocused = new Color(1, 1, 1, 1);
     private Color colorUnfocused = new Color(1, 1, 1, .39f);
+
+    private ButtonMasterActionScript lastSelectedAction=null;
+    private ButtonMasterSortScript lastSelectedSort = null;
 
     /*Renvoie la barre de progression de mana du master*/
     public HBarScript getMasterManaBar()
@@ -88,28 +101,119 @@ public class MasterUIManagerScript : MonoBehaviour {
         {
             if (panelBasPrincipal.gameObject.active)
                 showPanelBasMonstre();
+            else if (panelBasSort.gameObject.active)
+            {
+                buttonsSort[0].selectSort();
+                lastSelectedSort = buttonsSort[0];
+                lastSelectedAction = null;
+            }
+            else if (panelBasMonstre.gameObject.active)
+            {
+                buttonsMonster[0].selectObject();
+                lastSelectedSort = null;
+                lastSelectedAction = buttonsMonster[0];
+            }
+            else if (panelBasObject.gameObject.active)
+            {
+                buttonsObject[0].selectObject();
+                lastSelectedSort = null;
+                lastSelectedAction = buttonsObject[0];
+            }
         }
         else if (key == KeyCode.Alpha2)
         {
             if (panelBasPrincipal.gameObject.active)
                 showPanelBasObject();
+            else if (panelBasSort.gameObject.active)
+            { 
+                buttonsSort[1].selectSort();
+                lastSelectedSort = buttonsSort[1];
+                lastSelectedAction = null;
+            }
+            else if (panelBasMonstre.gameObject.active)
+            {
+                buttonsMonster[1].selectObject();
+                lastSelectedSort = null;
+                lastSelectedAction = buttonsMonster[1];
+            }
+            else if (panelBasObject.gameObject.active)
+            {
+                buttonsObject[1].selectObject();
+                lastSelectedSort = null;
+                lastSelectedAction = buttonsObject[1];
+            }
         }
         else if (key == KeyCode.Alpha3)
         {
             if (panelBasPrincipal.gameObject.active)
                 showPanelBasSort();
+            else if (panelBasSort.gameObject.active)
+            {
+                buttonsSort[2].selectSort();
+                lastSelectedSort = buttonsSort[2];
+                lastSelectedAction = null;
+            }
+            else if (panelBasMonstre.gameObject.active)
+            {
+                buttonsMonster[2].selectObject();
+                lastSelectedSort = null;
+                lastSelectedAction = buttonsMonster[2];
+            }
+            else if (panelBasObject.gameObject.active)
+            {
+                buttonsObject[2].selectObject();
+                lastSelectedSort = null;
+                lastSelectedAction = buttonsObject[2];
+            }
         }
         else if (key == KeyCode.Alpha4)
         {
-            
+            if (panelBasSort.gameObject.active)
+            {
+                buttonsSort[3].selectSort();
+                lastSelectedSort = buttonsSort[3];
+                lastSelectedAction = null;
+            }
+            else if (panelBasMonstre.gameObject.active)
+            {
+                buttonsMonster[3].selectObject();
+                lastSelectedSort = null;
+                lastSelectedAction = buttonsMonster[3];
+            }
+            else if (panelBasObject.gameObject.active)
+            {
+                buttonsObject[3].selectObject();
+                lastSelectedSort = null;
+                lastSelectedAction = buttonsObject[3];
+            }
         }
         else if (key == KeyCode.Alpha5)
         {
-            
+            if (panelBasSort.gameObject.active)
+            {
+                buttonsSort[4].selectSort();
+                lastSelectedSort = buttonsSort[4];
+                lastSelectedAction = null;
+            }
+            else if (panelBasMonstre.gameObject.active)
+            {
+                buttonsMonster[4].selectObject();
+                lastSelectedSort = null;
+                lastSelectedAction = buttonsMonster[4];
+            }
+            else if (panelBasObject.gameObject.active)
+            {
+                buttonsObject[4].selectObject();
+                lastSelectedSort = null;
+                lastSelectedAction = buttonsObject[4];
+            }
         }
         else if (key == KeyCode.Tab)
         {
-            
+            if (lastSelectedAction != null)
+                lastSelectedAction.selectObject();
+            else if (lastSelectedSort != null)
+                lastSelectedSort.selectSort();
         }
         else if (key == KeyCode.Escape)
         {

@@ -40,14 +40,18 @@ public class ButtonMasterActionScript : MonoBehaviour {
     /*Méthode appelée par le bouton à l'appuie pour dire au mastercontroller qu'il a selectionné l'objet*/
     public void selectObject()
     {
-        int indice = go.getFirstDisableGOIndice();
-        if (masterController.getMana() < go.GetChildren()[indice].getCout())
+        if(btn.enabled)
         {
-            WarningMana();
-            go.GetChildren()[indice].gameObject.SetActive(false);
+            int indice = go.getFirstDisableGOIndice();
+            if (masterController.getMana() < go.GetChildren()[indice].getCout())
+            {
+                WarningMana();
+                go.GetChildren()[indice].gameObject.SetActive(false);
+            }
+            else
+                masterController.setObjectSelected(numberContainer, indice);
         }
-        else
-            masterController.setObjectSelected(numberContainer, indice);
+        
     }
 
     /*Message de warning si le joueur n'a pas assez de mana*/
