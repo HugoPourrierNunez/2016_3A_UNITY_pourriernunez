@@ -130,6 +130,8 @@ public class LevelGeneratorScript : NetworkBehaviour
 
         endLevel.transform.localScale = Vector3.right * largeur + Vector3.up * 5;
         endLevel.transform.localPosition = Vector3.up*2.5f+Vector3.forward*(longueur + espace);
+
+        floorRenderer.material.mainTextureScale = new Vector2(largeur / 4, (longueur + espace) / 4);
     }
 
     /*Return le conteneur qui contient tout les object destructible du level*/
@@ -163,8 +165,6 @@ public class LevelGeneratorScript : NetworkBehaviour
         numberObjectUndestroyable = (int)numberUndestroyable;
 
         masterController.changeSizeLevel(numPlayer, longueur,largeur);
-
-        floorRenderer.material.mainTextureScale = new Vector2(largeur/4, (longueur+espace)/4);
 
         // 0=gauche, 1=droite, 2=devant
 
