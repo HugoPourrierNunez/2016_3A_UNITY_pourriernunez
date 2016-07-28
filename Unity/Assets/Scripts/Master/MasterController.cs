@@ -116,8 +116,35 @@ public class MasterController : AbstractPlayerController
         {
             if(Input.GetKeyUp(KeyCode.Space))
             {
-                print("space");
                 changeRunnerFocused();
+            }
+            if(Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                masterUI.keyPressed(KeyCode.Alpha1);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                masterUI.keyPressed(KeyCode.Alpha2);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                masterUI.keyPressed(KeyCode.Alpha3);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                masterUI.keyPressed(KeyCode.Alpha4);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha5))
+            {
+                masterUI.keyPressed(KeyCode.Alpha5);
+            }
+            else if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                masterUI.keyPressed(KeyCode.Tab);
+            }
+            else if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                masterUI.keyPressed(KeyCode.Escape);
             }
             if (Input.GetAxis("Mouse ScrollWheel") < 0 && effectiveZoom > minZoom) // back
             {

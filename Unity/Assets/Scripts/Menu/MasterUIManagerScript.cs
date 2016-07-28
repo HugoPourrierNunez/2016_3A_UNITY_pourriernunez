@@ -82,6 +82,46 @@ public class MasterUIManagerScript : MonoBehaviour {
             
     }
 
+    public void keyPressed(KeyCode key)
+    {
+        if (key==KeyCode.Alpha1)
+        {
+            if (panelBasPrincipal.gameObject.active)
+                showPanelBasMonstre();
+        }
+        else if (key == KeyCode.Alpha2)
+        {
+            if (panelBasPrincipal.gameObject.active)
+                showPanelBasObject();
+        }
+        else if (key == KeyCode.Alpha3)
+        {
+            if (panelBasPrincipal.gameObject.active)
+                showPanelBasSort();
+        }
+        else if (key == KeyCode.Alpha4)
+        {
+            
+        }
+        else if (key == KeyCode.Alpha5)
+        {
+            
+        }
+        else if (key == KeyCode.Tab)
+        {
+            
+        }
+        else if (key == KeyCode.Escape)
+        {
+            if (panelBasMonstre.gameObject.active)
+                hidePanelBasMonstre();
+            else if (panelBasObject.gameObject.active)
+                hidePanelBasObject();
+            else if (panelBasSort.gameObject.active)
+                hidePanelBasSort();
+        }
+    }
+
     /*Change le panel actif et visible*/
     public void hidePanelBasMonstre()
     {

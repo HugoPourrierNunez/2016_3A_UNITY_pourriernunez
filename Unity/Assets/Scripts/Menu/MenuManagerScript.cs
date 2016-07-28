@@ -250,17 +250,17 @@ public class MenuManagerScript : NetworkBehaviour {
             if (localPlayerScript.localPlayer.isServer)
             {
                 if (!runnerWin)
-                    endMenuMasterText.text = "YOU WIN";
+                    endMenuMasterText.text = "you win";
                 else
-                    endMenuMasterText.text = "GAME OVER";
+                    endMenuMasterText.text = "game over";
                 endMenuMaster.gameObject.SetActive(true);
             }
             else
             {
                 if (runnerWin)
-                    endMenuRunnerText.text = "YOU WIN";
+                    endMenuRunnerText.text = "you win";
                 else
-                    endMenuRunnerText.text = "GAME OVER";
+                    endMenuRunnerText.text = "game over";
                 endMenuRunner.gameObject.SetActive(true);
             }
         }
