@@ -1,0 +1,5 @@
+TO DO LIST
+
+•	Il faudra également implémenter les Monstres, les Obstacles et les Pièges. Pour l’instant juste la sélection d’un des trois et le placement sur le terrain est possible
+•	Tout une partie du menu où le joueur sélectionne son personnage
+•	Les outils à savoir : la génération de niveau procédurale (en partie faite mais pas intégrée pleinement), le multijoueur exotique (pas implémenté mais déjà réfléchis) et le profil de joueur par niveau.

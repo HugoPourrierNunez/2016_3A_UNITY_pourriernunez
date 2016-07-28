@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - RunnerView
+  - Destroyable
   layers:
   - Default
   - TransparentFX
@@ -13,14 +15,14 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - ObstacleDestroyable
+  - Unfocusable
+  - Player
+  - Canon
+  - Balle
+  - Monster
+  - SpecialObstacle
+  - ObstacleUndestroyable
   - 
   - 
   - 

@@ -1,0 +1,200 @@
+fileFormatVersion: 2
+guid: 1e10ade1e4a01d4478754d7a8a6b2c5c
+timeCreated: 1469376264
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: icosahedron_1
+    100002: icosahedron_1 1
+    100004: icosahedron_1 2
+    100006: icosahedron_1 3
+    100008: icosahedron_1 4
+    100010: icosahedron_2
+    100012: icosahedron_2 1
+    100014: icosahedron_2 2
+    100016: icosahedron_2 3
+    100018: icosahedron_2 4
+    100020: icosahedron_3
+    100022: icosahedron_3 1
+    100024: icosahedron_3 2
+    100026: icosahedron_3 3
+    100028: icosahedron_3 4
+    100030: icosahedron_4
+    100032: icosahedron_4 1
+    100034: icosahedron_4 2
+    100036: icosahedron_4 3
+    100038: icosahedron_4 4
+    100040: instance_0
+    100042: instance_1
+    100044: instance_10
+    100046: instance_11
+    100048: instance_12
+    100050: instance_13
+    100052: instance_14
+    100054: instance_15
+    100056: instance_16
+    100058: instance_17
+    100060: instance_18
+    100062: instance_19
+    100064: instance_2
+    100066: instance_3
+    100068: instance_4
+    100070: instance_5
+    100072: instance_6
+    100074: instance_7
+    100076: instance_8
+    100078: instance_9
+    100080: Last Saved SketchUp View
+    100082: //RootNode
+    400000: icosahedron_1
+    400002: icosahedron_1 1
+    400004: icosahedron_1 2
+    400006: icosahedron_1 3
+    400008: icosahedron_1 4
+    400010: icosahedron_2
+    400012: icosahedron_2 1
+    400014: icosahedron_2 2
+    400016: icosahedron_2 3
+    400018: icosahedron_2 4
+    400020: icosahedron_3
+    400022: icosahedron_3 1
+    400024: icosahedron_3 2
+    400026: icosahedron_3 3
+    400028: icosahedron_3 4
+    400030: icosahedron_4
+    400032: icosahedron_4 1
+    400034: icosahedron_4 2
+    400036: icosahedron_4 3
+    400038: icosahedron_4 4
+    400040: instance_0
+    400042: instance_1
+    400044: instance_10
+    400046: instance_11
+    400048: instance_12
+    400050: instance_13
+    400052: instance_14
+    400054: instance_15
+    400056: instance_16
+    400058: instance_17
+    400060: instance_18
+    400062: instance_19
+    400064: instance_2
+    400066: instance_3
+    400068: instance_4
+    400070: instance_5
+    400072: instance_6
+    400074: instance_7
+    400076: instance_8
+    400078: instance_9
+    400080: Last Saved SketchUp View
+    400082: //RootNode
+    2300000: icosahedron_1
+    2300002: icosahedron_1 1
+    2300004: icosahedron_1 2
+    2300006: icosahedron_1 3
+    2300008: icosahedron_1 4
+    2300010: icosahedron_2
+    2300012: icosahedron_2 1
+    2300014: icosahedron_2 2
+    2300016: icosahedron_2 3
+    2300018: icosahedron_2 4
+    2300020: icosahedron_3
+    2300022: icosahedron_3 1
+    2300024: icosahedron_3 2
+    2300026: icosahedron_3 3
+    2300028: icosahedron_3 4
+    2300030: icosahedron_4
+    2300032: icosahedron_4 1
+    2300034: icosahedron_4 2
+    2300036: icosahedron_4 3
+    2300038: icosahedron_4 4
+    3300000: icosahedron_1
+    3300002: icosahedron_1 1
+    3300004: icosahedron_1 2
+    3300006: icosahedron_1 3
+    3300008: icosahedron_1 4
+    3300010: icosahedron_2
+    3300012: icosahedron_2 1
+    3300014: icosahedron_2 2
+    3300016: icosahedron_2 3
+    3300018: icosahedron_2 4
+    3300020: icosahedron_3
+    3300022: icosahedron_3 1
+    3300024: icosahedron_3 2
+    3300026: icosahedron_3 3
+    3300028: icosahedron_3 4
+    3300030: icosahedron_4
+    3300032: icosahedron_4 1
+    3300034: icosahedron_4 2
+    3300036: icosahedron_4 3
+    3300038: icosahedron_4 4
+    4300000: icosahedron_1
+    4300002: icosahedron_2
+    4300004: icosahedron_3
+    4300006: icosahedron_4
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
