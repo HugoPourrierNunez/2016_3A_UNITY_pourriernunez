@@ -302,6 +302,22 @@ public class MasterController : AbstractPlayerController
 
     public void DesactiveAll()
     {
+        CmdDesactiveAll();
+    }
+
+    [Command]
+    public void CmdDesactiveAll()
+    {
+        RpcDesactiveAll();
+        if (!NetworkClient.active)
+        {
+            allContainerScript.DesactiveAll();
+        }
+    }
+
+    [ClientRpc]
+    public void RpcDesactiveAll()
+    {
         allContainerScript.DesactiveAll();
     }
 

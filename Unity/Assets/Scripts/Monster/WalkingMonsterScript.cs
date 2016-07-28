@@ -17,11 +17,15 @@ public class WalkingMonsterScript : SpawnableObjectScript {
     [SerializeField]
     float degat = 5;
 
-    float interval = 1f;
+    [SerializeField]
+    float vitesse = 3;
+
+    float interval = .1f;
     float nextTime = 0;
 
     private static int numConteneur=1;
     private float timeEnd;
+    private bool right=true;
 
     // Use this for initialization
     void Start () {
@@ -40,24 +44,42 @@ public class WalkingMonsterScript : SpawnableObjectScript {
                     masterController.DesactiveMonster(numConteneur, indice);
                 }
             }
-            nextTime += interval;
+            nextTime = Time.time+interval;
             
 
+        }
+    }
+
+    public void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.name!="floor" && !col.gameObject.CompareTag("RunnerView"))
+        {
+            right = !right;
+        }
+        if(col.gameObject.CompareTag("RunnerView"))
+        {
+            runnerController.removePV(degat);
+            masterController.DesactiveMonster(numConteneur, indice);
         }
     }
 
     /*Méthode qui joue une séquence d'action du monstre*/
     override public void Play()
     {
-        rb.velocity = Vector3.up * force;
-        runnerController.removePV(degat);
+        //rb.velocity = Vector3.up * force;
+        //print("play");
+        if (right)
+            rb.velocity = Vector3.right*vitesse;
+        else
+            rb.velocity = Vector3.left * vitesse;
+        //new Vector3(runnerController.getView().transform.position.x
+        //runnerController.removePV(degat);
     }
 
     /*Désactive le monstre*/
     public override void Desactive()
     {
         base.Desactive();
-        rb.isKinematic = true;
     }
 
     /*Fonction appelé lorsque l'on fait spawn le monstre*/
@@ -66,8 +88,6 @@ public class WalkingMonsterScript : SpawnableObjectScript {
         base.PoseObject(pos, runnerInd);
         rb.isKinematic = false;
         timeEnd = Time.time + lifeTimeInSecond;
-
-        print("time end =" + timeEnd);
         nextTime = 0;
     }
 

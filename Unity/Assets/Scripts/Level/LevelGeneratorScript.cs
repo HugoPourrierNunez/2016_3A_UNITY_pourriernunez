@@ -319,6 +319,16 @@ public class LevelGeneratorScript : NetworkBehaviour
         }
     }
 
+    public int getXFromPos(Vector3 pos)
+    {
+        return (int)pos.x + (levelWidth - 1) / 2;
+    }
+
+    public int getYFromPos(Vector3 pos)
+    {
+        return (int)(pos.z - .5f);
+    }
+
     public void setPositionNotOccuped(Vector3 pos,bool localPosition)
     {
         if (localPosition)
