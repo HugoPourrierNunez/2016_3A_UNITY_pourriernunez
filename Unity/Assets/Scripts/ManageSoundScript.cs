@@ -18,6 +18,7 @@ public class ManageSoundScript : MonoBehaviour {
 
     public void OnPlaySoundInGame()
     {
+        soundInGame.Stop();
         soundInGame.Play();
     }
 
