@@ -83,6 +83,7 @@ public class RunnerController : AbstractPlayerController
     private const float timeElapse = .1f;
     private WaitForSeconds wait = new WaitForSeconds(timeElapse);
     private bool right=false,left=false,forward=false,back=false;
+    private float savVitesseGlobale, savvitesseMovement;
 
 
     List<AbstractSortScript> effectiveSorts = new List<AbstractSortScript>();
@@ -102,6 +103,7 @@ public class RunnerController : AbstractPlayerController
             {
                 if (!effectiveSorts[i].executeSort(this, timeElapse))
                 {
+                    print("test");
                     CmdRemoveEffectiveSort(i);
                     i--;
                 }
@@ -137,6 +139,7 @@ public class RunnerController : AbstractPlayerController
     /*Ajoute un sort actif sur le runner*/
     public void addEffectiveSort(int sortInd)
     {
+        print("add sort");
         effectiveSorts.Add(sortContainerScript.GetChildren()[sortInd]);
     }
 
@@ -160,6 +163,35 @@ public class RunnerController : AbstractPlayerController
     public void RemovePVNetwork(float nb)
     {
         CmdRemovePV(nb);
+    }
+
+    public void changeSpeed(float coef)
+    {
+        if(vitesseMovement==savvitesseMovement)
+        {
+            vitesseGlobale *= coef;
+            vitesseMovement *= coef;
+        }
+    }
+
+    public void reinitSpeed()
+    {
+        print("reinitspeed");
+        vitesseGlobale = savVitesseGlobale;
+        vitesseMovement = savvitesseMovement;
+    }
+
+    public void changeSpeedNetwork(float coef)
+    {
+        if (vitesseMovement == savvitesseMovement)
+        {
+            CmdChangeSpeed(coef);
+        }
+    }
+
+    public void reinitSpeedNetwork()
+    {
+        CmdReinitSpeed();
     }
 
     /*Enlève des pv au runner*/
@@ -213,6 +245,8 @@ public class RunnerController : AbstractPlayerController
         runnerLight.gameObject.SetActive(true);
         runnerCamera.gameObject.SetActive(true);
         runnerView.setRunnerController(this);
+        savVitesseGlobale = vitesseGlobale;
+        savvitesseMovement = vitesseMovement;
         RestartPlayer();
         runnerLevel.activate();
     }
@@ -226,6 +260,7 @@ public class RunnerController : AbstractPlayerController
     /*remet à zéro les données du runner*/
     public override void RestartPlayer()
     {
+        reinitSpeed();
         runnerRigidbody.isKinematic = false;
         runnerView.transform.localPosition = startPosition;
         PV = maxPV;
@@ -359,6 +394,39 @@ public class RunnerController : AbstractPlayerController
     public LevelGeneratorScript getLevel()
     {
         return level;
+    }
+    
+
+    [Command]
+    public void CmdReinitSpeed()
+    {
+        RpcReinitSpeed();
+        if (!NetworkClient.active)
+        {
+            reinitSpeed();
+        }
+    }
+
+    [ClientRpc]
+    public void RpcReinitSpeed()
+    {
+        reinitSpeed();
+    }
+
+    [Command]
+    public void CmdChangeSpeed(float nb)
+    {
+        RpcChangeSpeed(nb);
+        if (!NetworkClient.active)
+        {
+            changeSpeed(nb);
+        }
+    }
+
+    [ClientRpc]
+    public void RpcChangeSpeed(float nb)
+    {
+        changeSpeed(nb);
     }
 
     [Command]
