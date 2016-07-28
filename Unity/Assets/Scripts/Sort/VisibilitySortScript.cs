@@ -13,13 +13,13 @@ public class VisibilitySortScript : AbstractSortScript
         {
             startTime[player] -= timeElapsed;
 
-            player.getLight().intensity = intensityLight + (1 - intensityLight) * (totalTime - startTime[player]) / totalTime;
+            player.getLight().intensity = intensityLight - (intensityLight) * (totalTime - startTime[player]) / totalTime;
 
             if (startTime[player] <= 0)
             {
                 player.getLight().intensity = 1;
                 startTime.Remove(player);
-                print("fin sort");
+                //print("fin sort");
                 return false;
             }
         }

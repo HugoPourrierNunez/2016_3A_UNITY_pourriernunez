@@ -78,6 +78,9 @@ public class RunnerController : AbstractPlayerController
     [SerializeField]
     RunnerListScript runnerList;
 
+    [SerializeField]
+    ManageSoundScript manageSoundScript;
+
     private GameObject pointedGO=null;
     private float PV;
     private const float timeElapse = .1f;
@@ -203,8 +206,11 @@ public class RunnerController : AbstractPlayerController
             PV = 0;
             percent = 0;
             soundScript.OnPlaySoundGameOver();
-            if(controlActivated)
+            if (controlActivated)
+            {
+                manageSoundScript.OnStopSoundInGame();
                 CmdEndLevel();
+            }
         }
         else
         {
@@ -465,7 +471,6 @@ public class RunnerController : AbstractPlayerController
     [Command]
     public void CmdEndLevel()
     {
-        soundScript.OnStopSoundInGame();
         RpcEndLevel();
         if (!NetworkClient.active)
         {

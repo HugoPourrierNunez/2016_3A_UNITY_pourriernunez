@@ -72,6 +72,9 @@ public class MenuManagerScript : NetworkBehaviour {
     [SerializeField]
     Canvas levelParameterMenu;
 
+    [SerializeField]
+    ManageSoundScript manageSoundScript;
+
     private int numberOfPlayers = -1;
     private int numberOfActivePlayers = 0;
     private int numberOfRunnerDead = 0;
@@ -179,6 +182,7 @@ public class MenuManagerScript : NetworkBehaviour {
 
     public void HideWaitingMenuRunner()
     {
+        manageSoundScript.OnPlaySoundInGame();
         waitingMenu.gameObject.SetActive(false);
     }
 
@@ -254,6 +258,7 @@ public class MenuManagerScript : NetworkBehaviour {
 
             if (localPlayerScript.localPlayer.isServer)
             {
+                manageSoundScript.OnStopSoundInGame();
                 if (!runnerWin)
                     endMenuMasterText.text = "you win";
                 else
@@ -262,6 +267,7 @@ public class MenuManagerScript : NetworkBehaviour {
             }
             else
             {
+                manageSoundScript.OnStopSoundInGame();
                 if (runnerWin)
                     endMenuRunnerText.text = "you win";
                 else

@@ -172,7 +172,7 @@ MonoBehaviour:
   takePlace: 0
   normal: {fileID: 2100000, guid: 43d88b074c6d10d46bca2aa09bbc8dcc, type: 2}
   numConteneur: 5
-  nbSpawn: 50
+  nbSpawn: 15
   indice: -1
   force: 3
   rb: {fileID: 5425860}

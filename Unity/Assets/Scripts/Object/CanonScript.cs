@@ -40,7 +40,8 @@ public class CanonScript : SpawnableObjectScript {
 
     void OnDisable()
     {
-        runnerController.DesactiveObject(numConteneur, indice);
+        if(runnerController!=null)
+            runnerController.DesactiveObject(numConteneur, indice);
     }
 
     // Update is called once per frame

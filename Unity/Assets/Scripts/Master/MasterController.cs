@@ -50,6 +50,9 @@ public class MasterController : AbstractPlayerController
     [SerializeField]
     Transform masterView;
 
+    [SerializeField]
+    ManageSoundScript manageSoundScript;
+
     private Vector3 positionCamera=new Vector3();
     private Vector3 translationCamera = new Vector3(0, 0, 0);
     private float effectiveZoom = 0;
@@ -353,6 +356,10 @@ public class MasterController : AbstractPlayerController
                 objectSelected.gameObject.SetActive(false);
                 objectSelected = null;
             }
+            if (sortSelected != null)
+            {
+                sortSelected.getSortVisualScript().gameObject.SetActive(false);
+            }
 
             sortSelected = panelSortScript.getSort(i);
         }
@@ -365,6 +372,10 @@ public class MasterController : AbstractPlayerController
         {
             objectSelected.gameObject.SetActive(false);
             objectSelected = null;
+        }
+        if (sortSelected != null)
+        {
+            sortSelected.getSortVisualScript().gameObject.SetActive(false);
         }
 
         sortSelected = panelSortScript.getSort(i);
