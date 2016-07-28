@@ -38,7 +38,12 @@ public class SpawnableObjectScript : NetworkBehaviour {
     [SerializeField]
     RunnerListScript runnerList;
 
-    private Material normal;
+    [SerializeField]
+    bool takePlace = true;
+
+    [SerializeField]
+    Material normal;
+
     private bool isHide = false;
 
     private bool canBePosed = false;
@@ -50,9 +55,16 @@ public class SpawnableObjectScript : NetworkBehaviour {
     [SerializeField]
     int numConteneur;
 
+    [SerializeField]
+    int nbSpawn = 1;
 
     [SerializeField]
     protected int indice = -1;
+
+    public int getNbSpawn()
+    {
+        return nbSpawn;
+    }
 
     public void setIndice(int ind)
     {
@@ -145,7 +157,8 @@ public class SpawnableObjectScript : NetworkBehaviour {
         runnerController = runnerList.getRunner(runnerInd);
 
         //pos = Vector3.right * (pos.x - runnerController.getLevel().getFloor().transform.position.x) + Vector3.up * pos.y + Vector3.forward * pos.z;
-        runnerController.getLevel().setPositionOccuped(pos,false);
+        if(takePlace)
+            runnerController.getLevel().setPositionOccuped(pos,false);
     }
     
     virtual public void Desactive()

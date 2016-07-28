@@ -176,7 +176,6 @@ public class RunnerController : AbstractPlayerController
 
     public void reinitSpeed()
     {
-        print("reinitspeed");
         vitesseGlobale = savVitesseGlobale;
         vitesseMovement = savvitesseMovement;
     }

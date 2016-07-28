@@ -61,6 +61,7 @@ public class MasterController : AbstractPlayerController
 
     private RunnerController runnerController=null;
     private int runnerId = -1;
+    private int numContainer=-1;
 
 
     // Use this for initialization
@@ -188,7 +189,7 @@ public class MasterController : AbstractPlayerController
                 if(objectSelected.CanBePosed() && Input.GetMouseButtonUp(0))
                 {
                     removeMana(objectSelected.getCout());
-                    print("name =" + rayInfo.collider.gameObject.name);
+                    //print("name =" + rayInfo.collider.gameObject.name);
                     CmdPoseObject(objectSelected.transform.position, runnerId);
                     runnerController.getLevel().setAllObstacleTransparent(false);
                 }
@@ -408,6 +409,19 @@ public class MasterController : AbstractPlayerController
         if (!NetworkClient.active)
         {
             objectSelected.PoseObject(pos, runnerInd);
+            for (int i = 1; i < objectSelected.getNbSpawn(); i++)
+            {
+                SpawnableObjectScript obj = allContainerScript.getContainer(numContainer).getFirstDisableGO();
+                if(obj!=null)
+                {
+                    obj.gameObject.SetActive(true);
+                    obj.setLocalPlayerScript(localPlayerScript);
+                    obj.UpdatePosition(pos, 0, false);
+                    obj.PoseObject(pos, runnerInd);
+                }
+                
+            }
+
             //objectSelected = null;
         }
     }
@@ -416,6 +430,17 @@ public class MasterController : AbstractPlayerController
     public void RpcPoseObject(Vector3 pos, int runnerInd)
     {
         objectSelected.PoseObject(pos, runnerInd);
+        for (int i = 1; i < objectSelected.getNbSpawn(); i++)
+        {
+            SpawnableObjectScript obj = allContainerScript.getContainer(numContainer).getFirstDisableGO();
+            if (obj != null)
+            {
+                obj.gameObject.SetActive(true);
+                obj.setLocalPlayerScript(localPlayerScript);
+                obj.UpdatePosition(pos, 0, false);
+                obj.PoseObject(pos, runnerInd);
+            }
+        }
         objectSelected = null;
     }
 
@@ -441,6 +466,7 @@ public class MasterController : AbstractPlayerController
         RpcSetObjectSelected(i, j);
         if (!NetworkClient.active)
         {
+            numContainer = i;
             if (objectSelected != null)
                 objectSelected.gameObject.SetActive(false);
             objectSelected = allContainerScript.getContainer(i).GetChildren()[j];
@@ -453,6 +479,7 @@ public class MasterController : AbstractPlayerController
     [ClientRpc]
     public void RpcSetObjectSelected(int i, int j)
     {
+        numContainer = i;
         if (objectSelected != null)
             objectSelected.gameObject.SetActive(false);
         objectSelected = allContainerScript.getContainer(i).GetChildren()[j];
@@ -520,7 +547,8 @@ public class MasterController : AbstractPlayerController
 
     public void DesactiveMonster(int i, int j)
     {
-        CmdDesactiveMonster(i, j);
+        if(NetworkClient.active)
+            CmdDesactiveMonster(i, j);
     }
 
     [Command]
