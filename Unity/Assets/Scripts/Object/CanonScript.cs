@@ -78,8 +78,9 @@ public class CanonScript : SpawnableObjectScript {
     /*Appele une séquence d'action de l'objet, ici un tir*/
     public override void Play()
     {
+        print("Play");
         base.Play();
-        timerShot -= intervalTir;
+        timerShot =0;
         BalleScript b = balles.getFirstDisableGO();
         if (b != null)
         {

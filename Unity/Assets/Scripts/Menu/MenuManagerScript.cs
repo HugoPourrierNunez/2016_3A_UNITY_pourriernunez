@@ -172,11 +172,16 @@ public class MenuManagerScript : NetworkBehaviour {
     /*Cache le menu d'attente de connection des joueurs*/
     public void HideWaitingMenu()
     {
-        waitingMenu.gameObject.SetActive(false);
         if (NetworkServer.active)
             levelParameterMenu.gameObject.SetActive(true);
             //startMenu.gameObject.SetActive(true);
     }
+
+    public void HideWaitingMenuRunner()
+    {
+        waitingMenu.gameObject.SetActive(false);
+    }
+
 
     /*Renvoie le nombre de joueurs voulu sur la partie*/
     public int getNumberOfPlayer()

@@ -89,7 +89,9 @@ public class MasterController : AbstractPlayerController
 
     private void IncomeMana()
     {
-        mana += incomeMana;
+        if(menuManager.getNumberOfPlayer()==3)
+            mana += incomeMana*2;
+        else mana += incomeMana;
         if (mana > manaOnStart) mana = manaOnStart;
         masterUI.getMasterManaBar().changePercentage(mana / (float)manaOnStart);
     }
@@ -528,6 +530,7 @@ public class MasterController : AbstractPlayerController
         RpcActivePlayers();
         if (!NetworkClient.active)
         {
+            menuManager.HideWaitingMenuRunner();
             if (isLocalPlayer)
             {
                 controlActivated = true;
@@ -561,6 +564,7 @@ public class MasterController : AbstractPlayerController
     [ClientRpc]
     public void RpcActivePlayers()
     {
+        menuManager.HideWaitingMenuRunner();
         if (isLocalPlayer)
         {
             controlActivated = true;
